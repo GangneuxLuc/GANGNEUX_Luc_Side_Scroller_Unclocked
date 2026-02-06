@@ -1,0 +1,507 @@
+fileFormatVersion: 2
+guid: 5d4bb5725884deb4eb3ac041544a164f
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 1725076269225666564
+    second: CHARA_PLACEHOLDER_spritesheet_0
+  - first:
+      213: 3609677136664049240
+    second: CHARA_PLACEHOLDER_spritesheet_1
+  - first:
+      213: -2534031865224438782
+    second: CHARA_PLACEHOLDER_spritesheet_2
+  - first:
+      213: -2239795512899675156
+    second: CHARA_PLACEHOLDER_spritesheet_3
+  - first:
+      213: -7189553759004437899
+    second: CHARA_PLACEHOLDER_spritesheet_4
+  - first:
+      213: 5016318127521264523
+    second: CHARA_PLACEHOLDER_spritesheet_5
+  - first:
+      213: -4170356009404100934
+    second: CHARA_PLACEHOLDER_spritesheet_6
+  - first:
+      213: 7444520260249176516
+    second: CHARA_PLACEHOLDER_spritesheet_7
+  - first:
+      213: 5574474693409923799
+    second: CHARA_PLACEHOLDER_spritesheet_8
+  - first:
+      213: -3678906531243086046
+    second: CHARA_PLACEHOLDER_spritesheet_9
+  - first:
+      213: 56734828457490770
+    second: CHARA_PLACEHOLDER_spritesheet_10
+  - first:
+      213: -4807726905918536700
+    second: CHARA_PLACEHOLDER_spritesheet_11
+  - first:
+      213: -5473856167787004382
+    second: CHARA_PLACEHOLDER_spritesheet_12
+  - first:
+      213: 6885942976899043900
+    second: CHARA_PLACEHOLDER_spritesheet_13
+  - first:
+      213: -5824782936554632900
+    second: CHARA_PLACEHOLDER_spritesheet_14
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 256
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 1
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: CHARA_PLACEHOLDER_spritesheet_0
+      rect:
+        serializedVersion: 2
+        x: 2038
+        y: 558
+        width: 234
+        height: 317
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 408e6ad1ab3b0f710800000000000000
+      internalID: 1725076269225666564
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CHARA_PLACEHOLDER_spritesheet_1
+      rect:
+        serializedVersion: 2
+        x: 2923
+        y: 557
+        width: 240
+        height: 316
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 856b5bc1b36281230800000000000000
+      internalID: 3609677136664049240
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CHARA_PLACEHOLDER_spritesheet_2
+      rect:
+        serializedVersion: 2
+        x: 3807
+        y: 557
+        width: 249
+        height: 313
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 20cd6c7c17f45dcd0800000000000000
+      internalID: -2534031865224438782
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CHARA_PLACEHOLDER_spritesheet_3
+      rect:
+        serializedVersion: 2
+        x: 4684
+        y: 557
+        width: 272
+        height: 312
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cebd91419d5aae0e0800000000000000
+      internalID: -2239795512899675156
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CHARA_PLACEHOLDER_spritesheet_4
+      rect:
+        serializedVersion: 2
+        x: 5571
+        y: 557
+        width: 288
+        height: 309
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 57257f4b2f2993c90800000000000000
+      internalID: -7189553759004437899
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CHARA_PLACEHOLDER_spritesheet_5
+      rect:
+        serializedVersion: 2
+        x: 6449
+        y: 557
+        width: 278
+        height: 311
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b83f14762ca8d9540800000000000000
+      internalID: 5016318127521264523
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CHARA_PLACEHOLDER_spritesheet_6
+      rect:
+        serializedVersion: 2
+        x: 7336
+        y: 558
+        width: 256
+        height: 311
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: abe8d801e4bef16c0800000000000000
+      internalID: -4170356009404100934
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CHARA_PLACEHOLDER_spritesheet_7
+      rect:
+        serializedVersion: 2
+        x: 8216
+        y: 559
+        width: 234
+        height: 314
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4c9c953ebbf305760800000000000000
+      internalID: 7444520260249176516
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CHARA_PLACEHOLDER_spritesheet_8
+      rect:
+        serializedVersion: 2
+        x: 9096
+        y: 558
+        width: 233
+        height: 317
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7d26a16e2338c5d40800000000000000
+      internalID: 5574474693409923799
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CHARA_PLACEHOLDER_spritesheet_9
+      rect:
+        serializedVersion: 2
+        x: 9981
+        y: 557
+        width: 248
+        height: 316
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 22f24636006e1fcc0800000000000000
+      internalID: -3678906531243086046
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CHARA_PLACEHOLDER_spritesheet_10
+      rect:
+        serializedVersion: 2
+        x: 10865
+        y: 557
+        width: 248
+        height: 313
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 259f990a60099c000800000000000000
+      internalID: 56734828457490770
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CHARA_PLACEHOLDER_spritesheet_11
+      rect:
+        serializedVersion: 2
+        x: 11742
+        y: 557
+        width: 273
+        height: 312
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 40443abf9d5874db0800000000000000
+      internalID: -4807726905918536700
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CHARA_PLACEHOLDER_spritesheet_12
+      rect:
+        serializedVersion: 2
+        x: 12628
+        y: 557
+        width: 289
+        height: 309
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 22e797f21d4f804b0800000000000000
+      internalID: -5473856167787004382
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CHARA_PLACEHOLDER_spritesheet_13
+      rect:
+        serializedVersion: 2
+        x: 13507
+        y: 557
+        width: 277
+        height: 311
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c32d9a977a8cf8f50800000000000000
+      internalID: 6885942976899043900
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CHARA_PLACEHOLDER_spritesheet_14
+      rect:
+        serializedVersion: 2
+        x: 14394
+        y: 558
+        width: 255
+        height: 311
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c3987ecb7c63a2fa0800000000000000
+      internalID: -5824782936554632900
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      CHARA_PLACEHOLDER_spritesheet_0: 1725076269225666564
+      CHARA_PLACEHOLDER_spritesheet_1: 3609677136664049240
+      CHARA_PLACEHOLDER_spritesheet_10: 56734828457490770
+      CHARA_PLACEHOLDER_spritesheet_11: -4807726905918536700
+      CHARA_PLACEHOLDER_spritesheet_12: -5473856167787004382
+      CHARA_PLACEHOLDER_spritesheet_13: 6885942976899043900
+      CHARA_PLACEHOLDER_spritesheet_14: -5824782936554632900
+      CHARA_PLACEHOLDER_spritesheet_2: -2534031865224438782
+      CHARA_PLACEHOLDER_spritesheet_3: -2239795512899675156
+      CHARA_PLACEHOLDER_spritesheet_4: -7189553759004437899
+      CHARA_PLACEHOLDER_spritesheet_5: 5016318127521264523
+      CHARA_PLACEHOLDER_spritesheet_6: -4170356009404100934
+      CHARA_PLACEHOLDER_spritesheet_7: 7444520260249176516
+      CHARA_PLACEHOLDER_spritesheet_8: 5574474693409923799
+      CHARA_PLACEHOLDER_spritesheet_9: -3678906531243086046
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
