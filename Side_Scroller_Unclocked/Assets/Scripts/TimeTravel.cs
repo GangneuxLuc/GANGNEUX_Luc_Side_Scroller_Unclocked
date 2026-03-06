@@ -1,18 +1,19 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TimeTravel : MonoBehaviour
 {
+    [SerializeField] borderTrigger borderTrigger; // référence au script borderTrigger pour vérifier si le joueur est dans le trigger
+    public Image image;
+
     // STEP 1
     [SerializeField] GameObject present, past;
     [SerializeField] bool pastIsVisible;
     [SerializeField] bool canTimeSwitch;
     public float switchCooldown;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    private void Start()
-    {
-    
-    }
+ 
     private void Update()
     {
         TimelineSwitch();

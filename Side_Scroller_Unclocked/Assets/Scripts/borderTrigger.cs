@@ -1,14 +1,22 @@
+using System.Collections;
 using UnityEngine;
 
 public class borderTrigger : MonoBehaviour
 {
+    public bool playerInTrigger = false;
+    bool canTp = false;
+    Transform player;
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Player"))
-        {
-            // Si le joueur entre en collision avec ce trigger, on le téléporte à la position de départ
-            other.transform.position = new Vector3(0f, 0f, 0f); // Remplacez (0f, 0f, 0f) par la position de départ souhaitée
-        }
+        if (other.CompareTag("Player")) StartCoroutine(ScreenFade());
     }
 
+    IEnumerator ScreenFade()
+    {
+        playerInTrigger = true;
+        canTp = true;
+        yield return new WaitForSeconds(0.2f);
+        playerInTrigger = false;
+        yield return new WaitForSeconds(0.2f);
+    }
 }
