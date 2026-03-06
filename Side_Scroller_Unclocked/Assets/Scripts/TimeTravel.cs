@@ -1,30 +1,52 @@
+using System.Collections;
 using UnityEngine;
 
 public class TimeTravel : MonoBehaviour
 {
     // STEP 1
     [SerializeField] GameObject present, past;
-    [SerializeField] bool presentIsVisible = true;
+    [SerializeField] bool pastIsVisible;
+    [SerializeField] bool canTimeSwitch;
+    public float switchCooldown;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private void Start()
     {
-        present.SetActive(presentIsVisible);
-        past.SetActive(!presentIsVisible);
+    
+    }
+    private void Update()
+    {
+        TimelineSwitch();
+        
     }
 
-    // Update is called once per frame
-    void Update()
+   IEnumerator SwitchCooldown()
     {
-        if (Input.GetKeyDown(KeyCode.A))
+        canTimeSwitch = false;
+        yield return new WaitForSeconds(switchCooldown);
+        canTimeSwitch = true;
+    }
+
+    void TimelineSwitch()
+    {
+        if (canTimeSwitch)
         {
-            SwitchActiveLayers();
+            if (Input.GetKeyDown(KeyCode.Q)) 
+            {
+                StartCoroutine(SwitchCooldown());
+                pastIsVisible = !pastIsVisible;
+                if (pastIsVisible)
+                {
+                    present.SetActive(false);
+                    past.SetActive(true);
+                }
+                if (!pastIsVisible)
+                {
+                    present.SetActive(true);
+                    past.SetActive(false);
+                }
+            }
         }
-    }
+            
 
-    void SwitchActiveLayers()
-    {
-        presentIsVisible = !presentIsVisible;
-        present.SetActive(!present.activeSelf);
-        past.SetActive(!past.activeSelf);
     }
 }
