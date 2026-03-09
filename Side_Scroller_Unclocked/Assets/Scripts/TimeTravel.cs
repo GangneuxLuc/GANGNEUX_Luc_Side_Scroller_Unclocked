@@ -6,6 +6,7 @@ public class TimeTravel : MonoBehaviour
 {
     [SerializeField] borderTrigger borderTrigger; // référence au script borderTrigger pour vérifier si le joueur est dans le trigger
     public Image image;
+    
 
     // STEP 1
     [SerializeField] GameObject present, past;

@@ -20,14 +20,14 @@ public class EnnemyClass : MonoBehaviour
     protected Color originalColor;
 
 
-    void Awake()
+    protected void Awake()
     {
         player = GameObject.FindGameObjectWithTag("Player");
         originalColor = spriteRenderer.color;
     }
 
   
-    void OnTriggerEnter2D(Collider2D collision) // Détection des collisions avec le joueur
+    protected void OnTriggerEnter2D(Collider2D collision) // Détection des collisions avec le joueur
     {
         
         if (collision.gameObject.CompareTag("DaggerSlice"))
@@ -44,7 +44,7 @@ public class EnnemyClass : MonoBehaviour
             }
         }
     }
-    IEnumerator Feedback() // Feedback visuel lorsque l'ennemi est touché
+    protected IEnumerator Feedback() // Feedback visuel lorsque l'ennemi est touché
     {
         Debug.Log("Feedback visuel de l'ennemi touché");
         spriteRenderer.color = Color.red;
