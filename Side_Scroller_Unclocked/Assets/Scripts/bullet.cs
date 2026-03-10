@@ -2,25 +2,14 @@ using UnityEngine;
 
 public class bullet : MonoBehaviour
 {
-    Rigidbody2D rb;
-    int speed = 25;
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Awake()
     {
-        rb = GetComponent<Rigidbody2D>();
-        Destroy(gameObject, 5f); // Détruire la balle après 5 secondes pour éviter les fuites de mémoire
-    }
-
-    private void Update()
-    {
-        // Déplacer la balle vers la droite à une vitesse constante
-
-        rb.linearVelocity = new Vector2(speed, rb.linearVelocity.y); // Ajustez la vitesse selon vos besoins
+        Destroy(gameObject, 5f); // Détruire la balle après 5 secondes 
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        Debug.Log("Collision détectée avec : " + collision.gameObject.name);
         if (collision.CompareTag("Player"))
         {
             Debug.Log("Collision détectée entre la balle et le joueur");

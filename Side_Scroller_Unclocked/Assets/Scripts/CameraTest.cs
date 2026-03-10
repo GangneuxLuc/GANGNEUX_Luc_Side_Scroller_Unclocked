@@ -8,7 +8,7 @@ public class CameraTest : MonoBehaviour
     public float distance = 5f;
 
     Vector3 Velocity = Vector3.zero;
-    private void LateUpdate()
+    private void FixedUpdate()
     {
         if (target == null) return;
 

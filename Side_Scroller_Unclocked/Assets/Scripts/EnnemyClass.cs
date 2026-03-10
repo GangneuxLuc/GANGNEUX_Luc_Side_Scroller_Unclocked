@@ -10,11 +10,14 @@ public class EnnemyClass : MonoBehaviour
     [SerializeField] protected int AttackDmg;
     [SerializeField] protected float AttackSpeed = 2f;
     [SerializeField] protected bool isAttacking = false;
+    [Range(0, 20f)] public float range;
 
     [Header("Références")]
+    public Transform activeTimeline;
     public GameObject player;
+    protected Transform playerPos;
     public SpriteRenderer spriteRenderer;
-    [SerializeField] protected float range = 0f;
+    
     protected float dst;
     public bool bDebugCanMove = true;
     protected Color originalColor;
@@ -22,7 +25,10 @@ public class EnnemyClass : MonoBehaviour
 
     protected void Awake()
     {
+       // activeTimeline = 
         player = GameObject.FindGameObjectWithTag("Player");
+        playerPos = player.GetComponent<Transform>();
+
         originalColor = spriteRenderer.color;
     }
 
@@ -54,6 +60,12 @@ public class EnnemyClass : MonoBehaviour
         Debug.Log("Restauration de la couleur originale de l'ennemi");
     }
 
+    protected virtual void OnDisable()
+    {
+        Debug.Log("Ennemi désactivé, arrêt de toutes les coroutines");
+        StopAllCoroutines();
+        return;
+    }
     protected virtual void Die() // Mort de l'ennemi
     {
         Destroy(gameObject);
