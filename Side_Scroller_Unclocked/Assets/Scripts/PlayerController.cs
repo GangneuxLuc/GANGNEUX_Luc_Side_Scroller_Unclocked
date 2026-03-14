@@ -86,7 +86,7 @@ public class PlayerController : MonoBehaviour
     // On change l'orientation du joueur en fonction de la direction dans laquelle il se déplace
     private void SetFacing(int direction)
     {
-        Vector3 s = transform.localScale;
+        Vector2 s = transform.localScale;
         s.x = Mathf.Abs(s.x) * direction;
         transform.localScale = s;
     }

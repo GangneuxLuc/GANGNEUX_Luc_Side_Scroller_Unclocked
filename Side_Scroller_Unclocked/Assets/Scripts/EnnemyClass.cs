@@ -42,7 +42,6 @@ public class EnnemyClass : MonoBehaviour
             HP -= player.GetComponent<PlayerController>().attackDamage; // Réduction des HP de l'ennemi
 
             StartCoroutine(Feedback());
-            Debug.Log("L'ennemi a été touché ! HP restant : " + HP);
             if (HP <= 0) // Mort de l'ennemi
             {
                 Die();
@@ -52,17 +51,14 @@ public class EnnemyClass : MonoBehaviour
     }
     protected IEnumerator Feedback() // Feedback visuel lorsque l'ennemi est touché
     {
-        Debug.Log("Feedback visuel de l'ennemi touché");
         spriteRenderer.color = Color.red;
-        Debug.Log("Changement de couleur de l'ennemi en rouge");
         yield return new WaitForSeconds(0.05f);
         spriteRenderer.color = originalColor;
-        Debug.Log("Restauration de la couleur originale de l'ennemi");
     }
 
     protected virtual void OnDisable()
     {
-        Debug.Log("Ennemi désactivé, arrêt de toutes les coroutines");
+       // Debug.Log("Ennemi désactivé, arrêt de toutes les coroutines");
         StopAllCoroutines();
         return;
     }

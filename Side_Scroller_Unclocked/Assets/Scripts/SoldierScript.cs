@@ -1,7 +1,5 @@
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
 public class SoldierScript : EnnemyClass
 {
@@ -45,13 +43,13 @@ public class SoldierScript : EnnemyClass
     IEnumerator Shoot()
     {
         Rigidbody2D rb;
+        
         for (int i = 0; i < burst; i++)
         {
             for (int j = 0; j < bulletPerBurst; j++)
             {
                 
-             
- 
+
                 GameObject bullet = Instantiate(bulletPrefab, firePoint.position, Quaternion.Euler(0, 0, -90));
                 bullet.transform.SetParent(transform, true);
 
@@ -61,6 +59,7 @@ public class SoldierScript : EnnemyClass
                 if (playerPos != null)
                 {
                     // Vers une cible
+                   
                     direction = (playerPos.position - firePoint.position).normalized;
                     rotation = new Vector2(direction.x, direction.y);
                     bullet.transform.rotation = Quaternion.LookRotation(Vector3.forward, rotation);
@@ -77,12 +76,12 @@ public class SoldierScript : EnnemyClass
                 { 
                     rb.linearVelocity = direction * bulletSpeed;
                 }
+               
                 yield return new WaitForSeconds(AttackSpeed);
             }
             yield return new WaitForSeconds(AttackSpeed * 20);
         }
     }
-
 
     private bool PlayerDetection(bool isPlayerDetected = false)
     {
@@ -90,6 +89,7 @@ public class SoldierScript : EnnemyClass
         if (dst < range)
         {
             isPlayerDetected = true;
+
         }
         else
         {

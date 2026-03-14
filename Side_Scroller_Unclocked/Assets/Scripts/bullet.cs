@@ -1,15 +1,24 @@
 using UnityEngine;
+using System.Collections;
 
 public class bullet : MonoBehaviour
 {
+    Vector2 baseSpeed;
+    Rigidbody2D rb;
     private void Awake()
     {
+        rb = GetComponent<Rigidbody2D>();
         Destroy(gameObject, 5f); // Détruire la balle après 5 secondes 
+    }
+
+    private void FixedUpdate()
+    {
+         GetSpeedBack();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("Collision détectée avec : " + collision.gameObject.name);
+        
         if (collision.CompareTag("Player"))
         {
             Debug.Log("Collision détectée entre la balle et le joueur");
@@ -23,10 +32,23 @@ public class bullet : MonoBehaviour
             }
             Destroy(gameObject); // Détruire la balle après l'impact
         }
+        
         else if (collision.CompareTag("Ground"))
         {
             Destroy(gameObject); // Détruire la balle si elle touche un mur
         }
+    }
+    void GetSpeedBack()
+    {
+        if (gameObject.activeSelf)
+        {
+            baseSpeed = rb.linearVelocity; // On récupère la vélocité pour la réappliquer lorsque l'objet est réactivé
+        }
+    }
+
+    private void OnEnable()
+    {
+        rb.linearVelocity = baseSpeed;
     }
 }
 
