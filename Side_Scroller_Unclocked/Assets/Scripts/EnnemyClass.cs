@@ -7,8 +7,8 @@ public class EnnemyClass : MonoBehaviour
     [SerializeField] public int HP;
     [SerializeField] protected string Name;
     [SerializeField] protected float speed;
-    [SerializeField] protected int AttackDmg;
-    [SerializeField] protected float AttackSpeed = 2f;
+    [SerializeField] protected int attackDmg;
+    [SerializeField] protected float attackSpeed = 2f;
     [SerializeField] protected bool isAttacking = false;
     [Range(0, 20f)] public float range;
 
@@ -17,6 +17,7 @@ public class EnnemyClass : MonoBehaviour
     public GameObject player;
     protected Transform playerPos;
     public SpriteRenderer spriteRenderer;
+    protected Rigidbody2D rb;
     
     protected float dst;
     public bool bDebugCanMove = true;
@@ -28,17 +29,21 @@ public class EnnemyClass : MonoBehaviour
        // activeTimeline = 
         player = GameObject.FindGameObjectWithTag("Player");
         playerPos = player.GetComponent<Transform>();
+        rb = GetComponent<Rigidbody2D>();
 
         originalColor = spriteRenderer.color;
     }
 
-  
+   
+        
+    
+
     protected void OnTriggerEnter2D(Collider2D collision) // Détection des collisions avec le joueur
     {
         
         if (collision.gameObject.CompareTag("DaggerSlice"))
         {
-            Debug.Log("Collision détectée entre l'ennemi et la DaggerSlice");
+            //Debug.Log("Collision détectée entre l'ennemi et la DaggerSlice");
             HP -= player.GetComponent<PlayerController>().attackDamage; // Réduction des HP de l'ennemi
 
             StartCoroutine(Feedback());

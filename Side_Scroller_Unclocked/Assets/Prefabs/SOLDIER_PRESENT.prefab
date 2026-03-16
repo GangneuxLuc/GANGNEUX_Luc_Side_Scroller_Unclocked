@@ -179,7 +179,7 @@ SpriteRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 1725076269225666564, guid: 5d4bb5725884deb4eb3ac041544a164f, type: 3}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_Color: {r: 0.9960785, g: 0.6431373, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -344,8 +344,8 @@ MonoBehaviour:
   HP: 50
   Name: 
   speed: 0
-  AttackDmg: 0
-  AttackSpeed: 0.05
+  attackDmg: 0
+  attackSpeed: 2
   isAttacking: 0
   range: 7.56
   activeTimeline: {fileID: 0}
@@ -354,6 +354,9 @@ MonoBehaviour:
   bDebugCanMove: 1
   bulletPrefab: {fileID: 3541597306249737933, guid: a3e39910d0688534bac312320f062b30, type: 3}
   bulletSpeed: 5
+  burstsCooldown: 2
+  shootingSpeed: 0.05
   bulletPerBurst: 5
-  burst: 5
+  burst: 3
+  magazineNumber: 5
   firePoint: {fileID: 2091969617953263883}

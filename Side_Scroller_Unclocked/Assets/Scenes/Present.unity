@@ -787,11 +787,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6573325974720004529, guid: 0e08f8401dde0bf4baa80752fb285d51, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -3.274022
+      value: 4.44
       objectReference: {fileID: 0}
     - target: {fileID: 6573325974720004529, guid: 0e08f8401dde0bf4baa80752fb285d51, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.7240728
+      value: -1.67
       objectReference: {fileID: 0}
     - target: {fileID: 6573325974720004529, guid: 0e08f8401dde0bf4baa80752fb285d51, type: 3}
       propertyPath: m_LocalPosition.z
@@ -830,7 +830,23 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7688592273383792410, guid: 0e08f8401dde0bf4baa80752fb285d51, type: 3}
+      propertyPath: range
+      value: 7.56
+      objectReference: {fileID: 0}
+    - target: {fileID: 7688592273383792410, guid: 0e08f8401dde0bf4baa80752fb285d51, type: 3}
+      propertyPath: shootingSpeed
+      value: 0.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 7688592273383792410, guid: 0e08f8401dde0bf4baa80752fb285d51, type: 3}
       propertyPath: bulletPerBurst
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7688592273383792410, guid: 0e08f8401dde0bf4baa80752fb285d51, type: 3}
+      propertyPath: burstsCooldown
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7688592273383792410, guid: 0e08f8401dde0bf4baa80752fb285d51, type: 3}
+      propertyPath: magazineNumber
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 9003371597204477646, guid: 0e08f8401dde0bf4baa80752fb285d51, type: 3}
@@ -927,7 +943,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
-  m_AdditionalShaderChannelsFlag: 0
+  m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0

@@ -69,8 +69,10 @@ public class PlayerController : MonoBehaviour
     {
         Movement();
        
-        if (inputX > deadzone) SetFacing(1);
+       if (inputX > deadzone) SetFacing(1);
         else if (inputX < -deadzone) SetFacing(-1);
+
+        
     }
 
     //Mouvement vertical + animation
@@ -90,6 +92,15 @@ public class PlayerController : MonoBehaviour
         s.x = Mathf.Abs(s.x) * direction;
         transform.localScale = s;
     }
+
+    /*
+    private void SetFacingg(int direction)
+    {
+        Quaternion r = transform.localRotation;
+        r.y = Mathf.Abs(r.y) * direction;
+        transform.localRotation = r;
+    }
+    */
 
     IEnumerator SliceAttackCoroutine()
     {

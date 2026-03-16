@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Runtime.InteropServices;
 using UnityEngine;
 
 public class SoldierScript : EnnemyClass
@@ -12,20 +13,31 @@ public class SoldierScript : EnnemyClass
 
 
     [Header("Shoot infos")]
+    [Range(0f, 2f)] public float burstsCooldown;
+    [Range(0f, 2f)] public float shootingSpeed;
     [Range(0f, 10f)] public int bulletPerBurst;
     [Range(0f, 5f)] public int burst;
+    [Range(0f, 5f)] public int magazineNumber;
     
+
 
     [Header("Target References")]
     [SerializeField] Transform firePoint;
 
     Coroutine shootCoroutine;
+    Coroutine patrolCoroutine;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
   
     private void FixedUpdate()
     {
         if (PlayerDetection())
         {
+            if (patrolCoroutine != null)
+            {
+                StopCoroutine(patrolCoroutine);
+                rb.linearVelocity = Vector3.zero;
+                patrolCoroutine = null;
+            }
             if (shootCoroutine == null)
             {
                 shootCoroutine = StartCoroutine(Shoot());
@@ -38,56 +50,99 @@ public class SoldierScript : EnnemyClass
                 StopCoroutine(shootCoroutine);
                 shootCoroutine = null;
             }
+            if (patrolCoroutine == null)
+            {
+                patrolCoroutine = StartCoroutine(Patrol());
+            }
         }
     }
     IEnumerator Shoot()
     {
         Rigidbody2D rb;
-        
-        for (int i = 0; i < burst; i++)
+        for (int h = 0; h < magazineNumber; h++)
         {
-            for (int j = 0; j < bulletPerBurst; j++)
+            for (int i = 0; i < burst; i++)
             {
-                
-
-                GameObject bullet = Instantiate(bulletPrefab, firePoint.position, Quaternion.Euler(0, 0, -90));
-                bullet.transform.SetParent(transform, true);
-
-                // Calcul de la direction
-                Vector2 direction;
-                Vector2 rotation;
-                if (playerPos != null)
+                for (int j = 0; j < bulletPerBurst; j++)
                 {
-                    // Vers une cible
+                    GameObject bullet = Instantiate(bulletPrefab, firePoint.position, Quaternion.Euler(0, 0, -90));
+
+                    GameObject activeChild = null;
+                    foreach (Transform child in activeTimeline)
+                    {
+                        if (child.gameObject.activeSelf)
+                        {
+                            activeChild = child.gameObject;
+                            bullet.transform.SetParent(child, true);
+                            break; // stop after finding the first active one
+                        }
+                    } 
                    
-                    direction = (playerPos.position - firePoint.position).normalized;
-                    rotation = new Vector2(direction.x, direction.y);
-                    bullet.transform.rotation = Quaternion.LookRotation(Vector3.forward, rotation);
-                }
-                else
-                {
-                    // Vers l'avant du FirePoint
-                    direction = firePoint.forward;
-                }
 
-                // Ajouter une vitesse (si Rigidbody)
-                 rb = bullet.GetComponent<Rigidbody2D>();
-                if (rb != null)
-                { 
-                    rb.linearVelocity = direction * bulletSpeed;
+                    // Calcul de la direction
+                    Vector2 direction;
+                    Vector2 rotation;
+                    if (playerPos != null)
+                    {
+                        // Vers une cible
+                        direction = (playerPos.position - firePoint.position).normalized;
+                        rotation = new Vector2(direction.x, direction.y);
+                        bullet.transform.rotation = Quaternion.LookRotation(Vector3.forward, rotation);
+                    }
+                    else
+                    {
+                        // Vers l'avant du FirePoint
+                        direction = firePoint.forward;
+                    }
+
+                    // Ajouter une vitesse (si Rigidbody)
+                    rb = bullet.GetComponent<Rigidbody2D>();
+                    if (rb != null)
+                    {
+                        rb.linearVelocity = direction * bulletSpeed;
+                    }
+
+                    yield return new WaitForSeconds(shootingSpeed);
                 }
-               
-                yield return new WaitForSeconds(AttackSpeed);
+                Debug.Log("Cooldown between bursts");
+                yield return new WaitForSeconds(burstsCooldown);
             }
-            yield return new WaitForSeconds(AttackSpeed * 20);
+            Debug.Log("On recommence les bursts");
+        }
+    }
+
+    IEnumerator Patrol()
+    {
+        for (int i = 0; i < 10; i++)
+        {
+            SetFacing(1);
+            rb.linearVelocity = new Vector2(1f, 0f);
+            yield return new WaitForSeconds(2f);
+            SetFacing(-1);
+            rb.linearVelocity = new Vector2(-1f, 0f);
+            yield return new WaitForSeconds(2f);
         }
     }
 
     private bool PlayerDetection(bool isPlayerDetected = false)
     {
         dst = Vector2.Distance(transform.position, playerPos.position);
+        Vector3 directionToTarget = playerPos.position - transform.position;
+        float dot = Vector3.Dot( directionToTarget, transform.right);
+       
         if (dst < range)
         {
+            if (dot > 0)
+            {
+                Debug.Log($"Joueur est à DROITE de Ennemi ");
+                SetFacing(1);
+
+            }
+            else if (dot < 0)
+            {
+                Debug.Log($"Joueur est à GAUCHE de Ennemi");
+                SetFacing(-1);
+            }
             isPlayerDetected = true;
 
         }
@@ -97,6 +152,16 @@ public class SoldierScript : EnnemyClass
         }
         return isPlayerDetected;
     }
+    private void SetFacing(int direction)
+    {
+        Vector2 s = transform.localScale;
+        s.x = Mathf.Abs(s.x) * direction;
+        transform.localScale = s;
+    }
 
-    
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, range);
+    }
 }

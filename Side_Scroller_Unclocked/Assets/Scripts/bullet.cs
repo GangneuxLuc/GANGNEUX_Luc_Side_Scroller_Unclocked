@@ -21,12 +21,10 @@ public class bullet : MonoBehaviour
         
         if (collision.CompareTag("Player"))
         {
-            Debug.Log("Collision détectée entre la balle et le joueur");
             // Infliger des dégâts au joueur
             PlayerController playerHealth = collision.GetComponent<PlayerController>();
             if (playerHealth != null)
             {
-                Debug.Log("Infliger des dégâts au joueur");
                 playerHealth.HP -= 10; // Réduire les HP du joueur de 10 (ajustez selon vos besoins)
 
             }
