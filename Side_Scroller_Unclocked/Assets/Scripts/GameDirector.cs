@@ -4,6 +4,7 @@ using UnityEngine.UI;
 public class GameDirector : MonoBehaviour
 {
     [SerializeField] private GameObject player; 
+    private PlayerController playerController;
     public Image RespawnFadeImage;
     public borderTrigger borderTrigger; // référence au script borderTrigger pour vérifier si le joueur est dans le trigger
                                         // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -11,6 +12,8 @@ public class GameDirector : MonoBehaviour
     {
         RespawnFadeImage.enabled = true; // Assurez-vous que l'image est activ
         player = GameObject.FindGameObjectWithTag("Player");
+        playerController = player.GetComponent<PlayerController>();
+            
         borderTrigger = FindAnyObjectByType<borderTrigger>(); // Trouve une instance de borderTrigger dans la scène
     }
 
@@ -25,7 +28,9 @@ public class GameDirector : MonoBehaviour
     {
         Respawn();
     }
-    void Respawn()
+
+    
+    void Respawn() //Méthode qui gère le respawn de mon joueur au dernier checkpoint passé.
     {
         if (borderTrigger.playerInTrigger)
         {
@@ -36,6 +41,15 @@ public class GameDirector : MonoBehaviour
         else
         {
             RespawnFadeImage.CrossFadeAlpha(0.0f, 0.2f, false); // Fade to 50% alpha over 1 second
+        }
+        if (playerController != null)
+        {
+            if (playerController.HP <= 0)
+            {
+                player.transform.position = new Vector3(0f, 0f, 0f);
+                playerController.HP = playerController.maxHP;
+            }
+            
         }
     }
 }

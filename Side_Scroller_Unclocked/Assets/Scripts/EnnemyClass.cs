@@ -32,15 +32,11 @@ public class EnnemyClass : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
 
         originalColor = spriteRenderer.color;
-    }
-
-   
-        
+    }     
     
 
     protected void OnTriggerEnter2D(Collider2D collision) // Détection des collisions avec le joueur
     {
-        
         if (collision.gameObject.CompareTag("DaggerSlice"))
         {
             //Debug.Log("Collision détectée entre l'ennemi et la DaggerSlice");
@@ -52,6 +48,13 @@ public class EnnemyClass : MonoBehaviour
                 Die();
                 Debug.Log("L'ennemi est mort !");
             }
+        }
+
+        if (collision.gameObject.CompareTag("Player") && Input.GetKeyDown(KeyCode.F))
+        {
+            StartCoroutine(Feedback());
+            Die();
+            Debug.Log("Ennemi assassiné");
         }
     }
     protected IEnumerator Feedback() // Feedback visuel lorsque l'ennemi est touché

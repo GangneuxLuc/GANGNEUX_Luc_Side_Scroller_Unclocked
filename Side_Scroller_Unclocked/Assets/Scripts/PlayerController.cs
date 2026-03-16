@@ -10,7 +10,6 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float acceleration = 10f;
     [SerializeField] float deadzone = 0.01f;
 
-
     [Header("Gravity/jump")]
     [SerializeField] float gravity = -10f;
     [SerializeField] float jumpForce = 5f;
@@ -20,6 +19,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] public int maxHP = 100;
     [SerializeField] public int min = 0;
     [SerializeField] public int attackDamage = 10;
+
+    [Header("Sprite infos")]
+    [SerializeField] Color originalColor;
 
 
     [Header("External References")]
@@ -39,6 +41,7 @@ public class PlayerController : MonoBehaviour
     //On récupère les composants nécessaires et on s'assure que le joueur ne soit pas détruit lors du changement de scène dans l'Awake
     private void Awake() 
     {
+        originalColor = spriteRenderer.color;
         DontDestroyOnLoad(gameObject);
         sliceSprite = transform.GetChild(0).gameObject;
         rb = GetComponent<Rigidbody2D>();
@@ -62,6 +65,7 @@ public class PlayerController : MonoBehaviour
 
 
         if (inputSlice) StartCoroutine(SliceAttackCoroutine());
+        
     }
 
     // Appel du Mouvement et Appel changement de direction
@@ -93,6 +97,27 @@ public class PlayerController : MonoBehaviour
         transform.localScale = s;
     }
 
+    private IEnumerator Feedback() // Feedback visuel lorsque l'ennemi est touchéµ
+    { 
+        spriteRenderer.color = Color.red;
+        yield return new WaitForSeconds(0.05f);
+        spriteRenderer.color = originalColor;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Bullet"))
+        {
+            StartCoroutine(Feedback()); 
+        }
+
+        if (HP <= 0) Die();
+    }
+
+    void Die() // Mort du joueur
+    {
+       ;
+    }
     /*
     private void SetFacingg(int direction)
     {

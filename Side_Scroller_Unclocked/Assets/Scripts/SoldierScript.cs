@@ -134,13 +134,10 @@ public class SoldierScript : EnnemyClass
         {
             if (dot > 0)
             {
-                Debug.Log($"Joueur est à DROITE de Ennemi ");
                 SetFacing(1);
-
             }
             else if (dot < 0)
             {
-                Debug.Log($"Joueur est à GAUCHE de Ennemi");
                 SetFacing(-1);
             }
             isPlayerDetected = true;
