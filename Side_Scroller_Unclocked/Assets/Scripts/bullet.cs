@@ -30,8 +30,7 @@ public class bullet : MonoBehaviour
             }
             Destroy(gameObject); // Détruire la balle après l'impact
         }
-        
-        else if (collision.CompareTag("Ground"))
+        else 
         {
             Destroy(gameObject); // Détruire la balle si elle touche un mur
         }

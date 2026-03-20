@@ -30,7 +30,7 @@ public class SoldierScript : EnnemyClass
   
     private void FixedUpdate()
     {
-        if (PlayerDetection())
+        if (PlayerDetectionWithRaycast())
         {
             if (patrolCoroutine != null)
             {
@@ -74,7 +74,7 @@ public class SoldierScript : EnnemyClass
                         {
                             activeChild = child.gameObject;
                             bullet.transform.SetParent(child, true);
-                            break; // stop after finding the first active one
+                            break; // stop aprèes avoir trouvé le premier enfant actif
                         }
                     } 
                    
@@ -124,7 +124,7 @@ public class SoldierScript : EnnemyClass
         }
     }
 
-    private bool PlayerDetection(bool isPlayerDetected = false)
+  /*  private bool PlayerDetection(bool isPlayerDetected = false)
     {
         dst = Vector2.Distance(transform.position, playerPos.position);
         Vector3 directionToTarget = playerPos.position - transform.position;
@@ -148,6 +148,30 @@ public class SoldierScript : EnnemyClass
             isPlayerDetected = false;
         }
         return isPlayerDetected;
+    } */
+
+    private bool PlayerDetectionWithRaycast(bool isPlayerDetected = false)
+    {
+        dst = Vector2.Distance(transform.position, playerPos.position);
+        if (dst < range)
+        {
+            //Faire un raycast en cone pour detecter le joueur
+            Vector3 directionToTarget = playerPos.position - transform.position;
+            RaycastHit2D hit = Physics2D.Raycast(transform.position, directionToTarget.normalized, range);
+            Debug.DrawRay(transform.position, directionToTarget.normalized * range, Color.red);
+            float dot = Vector3.Dot(directionToTarget, transform.right);
+
+            if (hit.collider != null && hit.collider.gameObject.CompareTag("Player"))
+            {
+                SetFacing(dot > 0 ? 1 : -1);
+                isPlayerDetected = true;
+            }
+        }
+        else
+        {
+            isPlayerDetected = false;
+        }
+        return isPlayerDetected;
     }
     private void SetFacing(int direction)
     {
@@ -156,9 +180,9 @@ public class SoldierScript : EnnemyClass
         transform.localScale = s;
     }
 
-    private void OnDrawGizmos()
+   /* private void OnDrawGizmos()
     {
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, range);
-    }
+    } */
 }

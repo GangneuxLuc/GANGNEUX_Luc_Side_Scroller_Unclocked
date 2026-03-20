@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour
     [Header("Gravity/jump")]
     [SerializeField] float gravity = -10f;
     [SerializeField] float jumpForce = 5f;
+    [Range(0f,1f)] public float jumpRange;
 
     [Header("Stats")]
     [SerializeField] public int HP = 100;
@@ -60,7 +61,7 @@ public class PlayerController : MonoBehaviour
         inputSlice = Input.GetKeyDown(KeyCode.E);
         
 
-        bool isGrounded = Physics2D.Raycast(transform.position, Vector2.down, 1.1f, groundLayer);
+        bool isGrounded = Physics2D.Raycast(transform.position, Vector2.down,jumpRange, groundLayer);
         if (Input.GetButton("Jump") && isGrounded) rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
 
 
@@ -138,5 +139,11 @@ public class PlayerController : MonoBehaviour
         sliceSprite.SetActive(false);
         // anim.SetBool("SliceAttack", inputSlice);
         yield break;
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawLine(transform.position, transform.position + Vector3.down * jumpRange);
     }
 }
