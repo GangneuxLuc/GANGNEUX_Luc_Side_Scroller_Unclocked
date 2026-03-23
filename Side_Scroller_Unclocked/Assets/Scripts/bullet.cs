@@ -30,9 +30,9 @@ public class bullet : MonoBehaviour
             }
             Destroy(gameObject); // Détruire la balle après l'impact
         }
-        else 
+        else //faire ignorer la collision entre les balles
         {
-            Destroy(gameObject); // Détruire la balle si elle touche un mur
+           // Destroy(gameObject); // Détruire la balle si elle touche un mur
         }
     }
     void GetSpeedBack()

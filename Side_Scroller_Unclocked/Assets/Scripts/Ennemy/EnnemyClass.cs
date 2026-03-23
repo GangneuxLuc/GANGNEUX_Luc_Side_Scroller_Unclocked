@@ -6,19 +6,14 @@ public class EnnemyClass : MonoBehaviour
     [Header("Statistiques de l'ennemi")]
     [SerializeField] public int HP;
     [SerializeField] protected string Name;
-    [SerializeField] protected float speed;
-    [SerializeField] protected int attackDmg;
-    [SerializeField] protected float attackSpeed = 2f;
-    [SerializeField] protected bool isAttacking = false;
-    [Range(0, 20f)] public float range;
 
     [Header("Références")]
     public Transform activeTimeline;
     public GameObject player;
-    protected Transform playerPos;
+    public Transform playerPos;
     public SpriteRenderer spriteRenderer;
     protected Rigidbody2D rb;
-    
+
     protected float dst;
     public bool bDebugCanMove = true;
     protected Color originalColor;
@@ -26,14 +21,14 @@ public class EnnemyClass : MonoBehaviour
 
     protected void Awake()
     {
-       // activeTimeline = 
+        // activeTimeline = 
         player = GameObject.FindGameObjectWithTag("Player");
         playerPos = player.GetComponent<Transform>();
         rb = GetComponent<Rigidbody2D>();
 
         originalColor = spriteRenderer.color;
-    }     
-    
+    }
+
 
     protected void OnTriggerEnter2D(Collider2D collision) // Détection des collisions avec le joueur
     {
@@ -66,7 +61,7 @@ public class EnnemyClass : MonoBehaviour
 
     protected virtual void OnDisable()
     {
-       // Debug.Log("Ennemi désactivé, arrêt de toutes les coroutines");
+        // Debug.Log("Ennemi désactivé, arrêt de toutes les coroutines");
         StopAllCoroutines();
         return;
     }

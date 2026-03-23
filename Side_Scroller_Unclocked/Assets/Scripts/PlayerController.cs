@@ -63,6 +63,7 @@ public class PlayerController : MonoBehaviour
 
         bool isGrounded = Physics2D.Raycast(transform.position, Vector2.down,jumpRange, groundLayer);
         if (Input.GetButton("Jump") && isGrounded) rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
+        if (Input.GetButton("Jump")) Debug.Log("Saut");
 
 
         if (inputSlice) StartCoroutine(SliceAttackCoroutine());

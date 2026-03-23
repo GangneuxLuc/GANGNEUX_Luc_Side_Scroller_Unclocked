@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 7126705634988053897}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.596, y: 0.073, z: 0}
+  m_LocalPosition: {x: 0.688, y: 0.058, z: 0}
   m_LocalScale: {x: 0.1877, y: 0.1694, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -226,7 +226,7 @@ Rigidbody2D:
   m_LinearDamping: 0
   m_AngularDamping: 0.05
   m_GravityScale: 1
-  m_Material: {fileID: 6200000, guid: 1a1702b3d6615184d8c3310670f29398, type: 2}
+  m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -354,8 +354,9 @@ MonoBehaviour:
   bDebugCanMove: 1
   bulletPrefab: {fileID: 3541597306249737933, guid: a3e39910d0688534bac312320f062b30, type: 3}
   bulletSpeed: 5
+  patrolRadius: 0
   burstsCooldown: 2
-  shootingSpeed: 0.05
+  shootingSpeed: 0.125
   bulletPerBurst: 5
   burst: 3
   magazineNumber: 5
