@@ -32,7 +32,7 @@ public class TimeTravel : MonoBehaviour
     {
         if (canTimeSwitch)
         {
-            if (Input.GetKeyDown(KeyCode.Q)) 
+            if (Input.GetButtonDown("TimelineSwap")) 
             {
                 StartCoroutine(SwitchCooldown());
                 pastIsVisible = !pastIsVisible;

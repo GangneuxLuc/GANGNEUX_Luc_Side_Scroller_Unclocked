@@ -58,7 +58,7 @@ public class PlayerController : MonoBehaviour
     void Update() 
     {
         inputX = Input.GetAxisRaw("Horizontal");
-        inputSlice = Input.GetKeyDown(KeyCode.E);
+        inputSlice = Input.GetButtonDown("Slice");
         
 
         bool isGrounded = Physics2D.Raycast(transform.position, Vector2.down,jumpRange, groundLayer);
@@ -132,7 +132,6 @@ public class PlayerController : MonoBehaviour
     IEnumerator SliceAttackCoroutine()
     {
         
-        Debug.Log("Slice Attack");
        // anim.SetBool("SliceAttack", inputSlice);
        sliceSprite.SetActive(true);
         yield return new WaitForSeconds(0.3f);
