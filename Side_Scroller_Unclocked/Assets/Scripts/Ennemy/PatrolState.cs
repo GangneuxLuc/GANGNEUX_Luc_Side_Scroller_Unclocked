@@ -21,14 +21,15 @@ public class PatrolState : State
 
  
     [Header("Detection Settings")]
-    [Range(0, 5f)] public float detectionDistance = 5f;       // How far the ray should check
+    [Range(-15f, 15f)] public float detectionDistance = 5f;       // How far the ray should check
     public LayerMask detectionLayers;          // Which layers to detect
     [Range(0, 30f)] public int rayCount = 5;                    // Number of rays for a "zone"
-    [Range(0, 180f)] public float spreadAngle = 45f;             // Spread of the detection zone in degrees
+    [Range(0f, 180f)] public float spreadAngle = 45f;             // Spread of the detection zone in degrees
      
 
     [Header("Debug")]
     public bool showDebugRays = true;           // Show rays in Scene view
+    public bool IsFacingLeft;
 
     int curTarget = 0;
     bool pWait;
@@ -52,20 +53,28 @@ public class PatrolState : State
    
     private bool PlayerDetection(bool isPlayerDetected= false) //Méthode pour détecter les objets dans une zone conique en utilisant plusieurs rayons
     {
-        dst = Vector2.Distance(transform.position, playerPos.position);
+        //dst = Vector2.Distance(transform.position, playerPos.position);
         Vector2 directionToTarget = playerPos.position - transform.position;
-        float dot = Vector2.Dot(directionToTarget,transform.right );
+       // float dot = Vector2.Dot(directionToTarget,transform.right );
         float startAngle = -spreadAngle / 2f; // Angle de départ pour les rayons
         float angleStep = spreadAngle / (rayCount - 1);// Espacement entre les rayons
         
         for (int i = 0; i < rayCount; i++) // Boucle pour lancer plusieurs rayons
         {
             float angle = startAngle + (angleStep * i); // Calcul de l'angle pour le rayon actuel
+
+          
             Vector2 direction = RotateVector(transform.right, angle); // Rotation du vecteur de direction de base (transform.right) pour obtenir la direction du rayon
-            
-            
-            if (dot < 0) direction = -direction; // Inverser la direction si le joueur est derrière l'ennemi
-            RaycastHit2D hit = Physics2D.Raycast(transform.position,direction, detectionDistance, detectionLayers); // Lancement du rayon et stockage des informations de collision dans "hit"
+
+
+
+
+            if (IsFacingLeft) direction = -direction;
+
+
+
+
+            RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, detectionDistance, detectionLayers); // Lancement du rayon et stockage des informations de collision dans "hit"
 
             if (showDebugRays)
             {
@@ -90,7 +99,7 @@ public class PatrolState : State
         return new Vector2(cos * v.x - sin * v.y, sin * v.x + cos * v.y); // Application de la rotation au vecteur d'origine pour obtenir le nouveau vecteur de direction
     }
   
-IEnumerator Wait()
+    IEnumerator Wait()
     {
         yield return new WaitForSeconds(waitDuration);
         pWait = false;
@@ -99,7 +108,6 @@ IEnumerator Wait()
     void GetDirection()
     {
         direction = Vector3.Normalize(myPatrolTarget[curTarget].position - t.position);
-        Debug.Log("On prend la direction");
     }
 
     private void SetFacing(int direction)
@@ -107,6 +115,7 @@ IEnumerator Wait()
         Vector2 s = t.localScale;
         s.x = Mathf.Abs(s.x) * direction;
         t.localScale = s;
+        
     }
 
     void Update()
@@ -114,12 +123,20 @@ IEnumerator Wait()
         if (!pWait)
         {
             t.position += new Vector3(direction.x * speed * Time.deltaTime, 0);
-            if (direction.x < 0) SetFacing(-1);
-            else SetFacing(1);
+            if (direction.x < 0)
+            {
+                SetFacing(-1);
+                IsFacingLeft = true;
+            }
+            else
+            {
+                SetFacing(1);
+                IsFacingLeft = false;
+            }
+          
 
             if (Vector3.Distance(myPatrolTarget[curTarget].position, t.position) <= 0.5)
             {
-
                 curTarget++;
                 pWait = true;
 
