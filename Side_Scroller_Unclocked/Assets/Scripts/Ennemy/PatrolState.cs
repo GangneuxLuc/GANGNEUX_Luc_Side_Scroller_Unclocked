@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Security.Cryptography;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PatrolState : State
@@ -17,53 +18,79 @@ public class PatrolState : State
 
     [Header("Player detection settings")]
     public float dst;
-    [Range(0, 10f)] public float range = 5f;
+
+ 
+    [Header("Detection Settings")]
+    [Range(0, 5f)] public float detectionDistance = 5f;       // How far the ray should check
+    public LayerMask detectionLayers;          // Which layers to detect
+    [Range(0, 30f)] public int rayCount = 5;                    // Number of rays for a "zone"
+    [Range(0, 180f)] public float spreadAngle = 45f;             // Spread of the detection zone in degrees
+     
+
+    [Header("Debug")]
+    public bool showDebugRays = true;           // Show rays in Scene view
 
     int curTarget = 0;
     bool pWait;
-  
-    
+
+
     public override State RunCurrentState()
     {
-        if (PlayerDetection())
-        {
-            Debug.Log("On run la state");
-            playerDetected = false;
-            return Attack;
-        }
-        else return this;
-    } 
+         if (PlayerDetection())
+         {
+             Debug.Log("On lance la state");
+             playerDetected = false;
+             return Attack;
+         }
+         else return this;
+        
+    }
     private void Start()
     {
-       
         GetDirection();
     }
-    private bool PlayerDetection(bool isPlayerDetected = false)
+   
+    private bool PlayerDetection(bool isPlayerDetected= false) //Méthode pour détecter les objets dans une zone conique en utilisant plusieurs rayons
     {
         dst = Vector2.Distance(transform.position, playerPos.position);
-        Vector3 directionToTarget = playerPos.position - transform.position;
-        float dot = Vector3.Dot(directionToTarget, transform.right);
-
-        if (dst < range)
+        Vector2 directionToTarget = playerPos.position - transform.position;
+        float dot = Vector2.Dot(directionToTarget,transform.right );
+        float startAngle = -spreadAngle / 2f; // Angle de départ pour les rayons
+        float angleStep = spreadAngle / (rayCount - 1);// Espacement entre les rayons
+        
+        for (int i = 0; i < rayCount; i++) // Boucle pour lancer plusieurs rayons
         {
-            if (dot > 0)
-            {
-                SetFacing(1);
-            }
-            else if (dot < 0)
-            {
-                SetFacing(-1);
-            }
-            isPlayerDetected = true;
+            float angle = startAngle + (angleStep * i); // Calcul de l'angle pour le rayon actuel
+            Vector2 direction = RotateVector(transform.right, angle); // Rotation du vecteur de direction de base (transform.right) pour obtenir la direction du rayon
+            
+            
+            if (dot < 0) direction = -direction; // Inverser la direction si le joueur est derrière l'ennemi
+            RaycastHit2D hit = Physics2D.Raycast(transform.position,direction, detectionDistance, detectionLayers); // Lancement du rayon et stockage des informations de collision dans "hit"
 
-        }
-        else
-        {
-            isPlayerDetected = false;
+            if (showDebugRays)
+            {
+                Color rayColor = hit.collider ? Color.red : Color.green;
+                Debug.DrawRay(transform.position, direction * detectionDistance, rayColor);
+            }
+
+            if (hit.collider != null)
+            {
+                
+            }
         }
         return isPlayerDetected;
     }
-    IEnumerator Wait()
+ 
+
+    private Vector2 RotateVector(Vector2 v, float degrees) // Méthode pour faire tourner un vecteur de direction d'un certain angle en degrés
+    {
+        float rad = degrees * Mathf.Deg2Rad; // Conversion de l'angle de degrés en radians
+        float sin = Mathf.Sin(rad); // Calcul du sinus de l'angle 
+        float cos = Mathf.Cos(rad); // Calcul du cosinus de l'angle
+        return new Vector2(cos * v.x - sin * v.y, sin * v.x + cos * v.y); // Application de la rotation au vecteur d'origine pour obtenir le nouveau vecteur de direction
+    }
+  
+IEnumerator Wait()
     {
         yield return new WaitForSeconds(waitDuration);
         pWait = false;
@@ -71,10 +98,10 @@ public class PatrolState : State
     }
     void GetDirection()
     {
-        direction = Vector3.Normalize (myPatrolTarget[curTarget].position - t.position);
-        Debug.Log(direction);
+        direction = Vector3.Normalize(myPatrolTarget[curTarget].position - t.position);
+        Debug.Log("On prend la direction");
     }
-   
+
     private void SetFacing(int direction)
     {
         Vector2 s = t.localScale;
@@ -100,11 +127,6 @@ public class PatrolState : State
                 StartCoroutine(Wait());
             }
         }
-    }
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, range);
     }
 }
 
