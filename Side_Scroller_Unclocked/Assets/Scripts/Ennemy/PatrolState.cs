@@ -14,7 +14,8 @@ public class PatrolState : State
     public Transform[] myPatrolTarget;
     [SerializeField] Vector3 direction;
     [Range(0, 5f)] public float waitDuration;
-    // [Range(0,5f)] public float speed = 1.5f;
+    [SerializeField] Rigidbody2D rb;
+
 
     [Header("Player detection settings")]
     public float dst;
@@ -37,26 +38,26 @@ public class PatrolState : State
 
     public override State RunCurrentState()
     {
-         if (PlayerDetection())
+         if (PlayerDetection() || playerDetected)
          {
-             Debug.Log("On lance la state");
              playerDetected = false;
              return Attack;
          }
          else return this;
         
     }
+  
     private void Start()
     {
         GetDirection();
     }
    
-    private bool PlayerDetection(bool isPlayerDetected= false) //Méthode pour détecter les objets dans une zone conique en utilisant plusieurs rayons
+    private bool PlayerDetection(bool isPlayerDetected= false) //Mï¿½thode pour dï¿½tecter les objets dans une zone conique en utilisant plusieurs rayons
     {
         //dst = Vector2.Distance(transform.position, playerPos.position);
         Vector2 directionToTarget = playerPos.position - transform.position;
        // float dot = Vector2.Dot(directionToTarget,transform.right );
-        float startAngle = -spreadAngle / 2f; // Angle de départ pour les rayons
+        float startAngle = -spreadAngle / 2f; // Angle de dï¿½part pour les rayons
         float angleStep = spreadAngle / (rayCount - 1);// Espacement entre les rayons
         
         for (int i = 0; i < rayCount; i++) // Boucle pour lancer plusieurs rayons
@@ -82,18 +83,19 @@ public class PatrolState : State
                 Debug.DrawRay(transform.position, direction * detectionDistance, rayColor);
             }
 
-            if (hit.collider != null)
+            if (hit.collider != null && hit.collider.CompareTag("Player")) // Si le rayon touche un objet avec le tag "Player", on considÃ¨re que le joueur est dÃ©tectÃ©
             {
-                
+                isPlayerDetected = true;
+                break; // Sort de la boucle dÃ¨s qu'un joueur est dÃ©tectÃ©
             }
         }
         return isPlayerDetected;
     }
  
 
-    private Vector2 RotateVector(Vector2 v, float degrees) // Méthode pour faire tourner un vecteur de direction d'un certain angle en degrés
+    private Vector2 RotateVector(Vector2 v, float degrees) // Mï¿½thode pour faire tourner un vecteur de direction d'un certain angle en degrï¿½s
     {
-        float rad = degrees * Mathf.Deg2Rad; // Conversion de l'angle de degrés en radians
+        float rad = degrees * Mathf.Deg2Rad; // Conversion de l'angle de degrï¿½s en radians
         float sin = Mathf.Sin(rad); // Calcul du sinus de l'angle 
         float cos = Mathf.Cos(rad); // Calcul du cosinus de l'angle
         return new Vector2(cos * v.x - sin * v.y, sin * v.x + cos * v.y); // Application de la rotation au vecteur d'origine pour obtenir le nouveau vecteur de direction
@@ -105,12 +107,12 @@ public class PatrolState : State
         pWait = false;
         GetDirection();
     }
-    void GetDirection()
+    void GetDirection() // Mï¿½thode pour calculer la direction vers la cible de patrouille actuelle
     {
         direction = Vector3.Normalize(myPatrolTarget[curTarget].position - t.position);
     }
 
-    private void SetFacing(int direction)
+    private void SetFacing(int direction)// Mï¿½thode pour faire face ï¿½ la direction de dï¿½placement en ajustant l'ï¿½chelle locale de l'objet
     {
         Vector2 s = t.localScale;
         s.x = Mathf.Abs(s.x) * direction;
@@ -118,11 +120,22 @@ public class PatrolState : State
         
     }
 
+    private void OnTriggerEnter2D(Collider2D collision) // MÃ©thode pour dÃ©tÃ©dcter la prÃ©sence du joueur si il est trop prÃ¨s de l'ennemi
+    {
+        if (collision.CompareTag("Player"))
+        {
+            Debug.Log("Player detected by trigger");
+            playerDetected = true;
+        }
+    } 
+
+
     void Update()
     {
         if (!pWait)
         {
-            t.position += new Vector3(direction.x * speed * Time.deltaTime, 0);
+            rb.linearVelocity = new Vector2(direction.x * speed, rb.linearVelocity.y);
+           // t.position += new Vector3(direction.x * speed * Time.deltaTime, 0);
             if (direction.x < 0)
             {
                 SetFacing(-1);

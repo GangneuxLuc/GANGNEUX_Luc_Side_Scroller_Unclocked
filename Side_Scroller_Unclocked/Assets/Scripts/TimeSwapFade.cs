@@ -26,7 +26,6 @@ public class ScreenFade : MonoBehaviour
     {        
         if (borderTrigger.playerInTrigger)
         {
-            Debug.Log("Player is in trigger, fading in");
             image.CrossFadeAlpha(1.0f, 0.05f, false); // Fade to 100% alpha over 1 second
         }
         else

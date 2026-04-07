@@ -37,6 +37,10 @@ public class PlayerController : MonoBehaviour
     private bool isFacingLeft = true;
     [SerializeField] private SpriteRenderer spriteRenderer;
 
+
+    [Header("Debug")]
+    public bool GodModeIsOn = false;
+
     //[Header("Timeline Switch")]
 
     //On récupère les composants nécessaires et on s'assure que le joueur ne soit pas détruit lors du changement de scène dans l'Awake
@@ -63,11 +67,15 @@ public class PlayerController : MonoBehaviour
 
         bool isGrounded = Physics2D.Raycast(transform.position, Vector2.down,jumpRange, groundLayer);
         if (Input.GetButton("Jump") && isGrounded) rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
-        if (Input.GetButton("Jump")) Debug.Log("Saut");
 
 
         if (inputSlice) StartCoroutine(SliceAttackCoroutine());
         
+      if (GodModeIsOn)
+        {
+            HP = maxHP;
+        }
+
     }
 
     // Appel du Mouvement et Appel changement de direction
@@ -75,7 +83,7 @@ public class PlayerController : MonoBehaviour
     {
         Movement();
        
-       if (inputX > deadzone) SetFacing(1);
+        if (inputX > deadzone) SetFacing(1);
         else if (inputX < -deadzone) SetFacing(-1);
 
         
@@ -108,18 +116,9 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Bullet"))
-        {
-            StartCoroutine(Feedback()); 
-        }
-
-        if (HP <= 0) Die();
+       if (collision.CompareTag("Bullet")) StartCoroutine(Feedback());
     }
 
-    void Die() // Mort du joueur
-    {
-       ;
-    }
     /*
     private void SetFacingg(int direction)
     {

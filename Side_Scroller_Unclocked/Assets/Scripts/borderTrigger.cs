@@ -8,7 +8,11 @@ public class borderTrigger : MonoBehaviour
     Transform player;
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Player")) StartCoroutine(ScreenFade());
+        if (other.CompareTag("Player"))
+        {
+            StartCoroutine(ScreenFade());
+        }
+        else Destroy(other.gameObject);
     }
 
     IEnumerator ScreenFade()
