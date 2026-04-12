@@ -268,8 +268,9 @@ GameObject:
   - component: {fileID: 108331406}
   - component: {fileID: 108331405}
   - component: {fileID: 108331404}
+  - component: {fileID: 108331407}
   m_Layer: 5
-  m_Name: Button (1)
+  m_Name: Quit Game
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -338,7 +339,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 108331405}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 108331407}
+        m_TargetAssemblyTypeName: QuitGame, Assembly-CSharp
+        m_MethodName: Quit
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &108331405
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -377,6 +390,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 108331402}
   m_CullTransparentMesh: 1
+--- !u!114 &108331407
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 108331402}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04e36f42a34902641b87393f34d762e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::QuitGame
 --- !u!1 &291336016
 GameObject:
   m_ObjectHideFlags: 0
@@ -637,8 +662,9 @@ GameObject:
   - component: {fileID: 403764266}
   - component: {fileID: 403764265}
   - component: {fileID: 403764264}
+  - component: {fileID: 403764267}
   m_Layer: 5
-  m_Name: Button
+  m_Name: Start Game
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -707,7 +733,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 403764265}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 403764267}
+        m_TargetAssemblyTypeName: StartGame, Assembly-CSharp
+        m_MethodName: StartNewGame
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &403764265
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -746,6 +784,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 403764262}
   m_CullTransparentMesh: 1
+--- !u!114 &403764267
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 403764262}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4454086eed8e204fb58b79cfe63d5a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StartGame
+  sceneName: Light test
 --- !u!1 &408318293
 GameObject:
   m_ObjectHideFlags: 0
@@ -998,6 +1049,7 @@ GameObject:
   - component: {fileID: 552671389}
   - component: {fileID: 552671388}
   - component: {fileID: 552671387}
+  - component: {fileID: 552671390}
   m_Layer: 5
   m_Name: return
   m_TagString: Untagged
@@ -1068,7 +1120,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 552671388}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 552671390}
+        m_TargetAssemblyTypeName: Options, Assembly-CSharp
+        m_MethodName: DeactivateOptions
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &552671388
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1107,6 +1171,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 552671385}
   m_CullTransparentMesh: 1
+--- !u!114 &552671390
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 552671385}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30b4d294d41b065489b3cc8bcfcbb538, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Options
+  optionsMenu: {fileID: 604308088}
 --- !u!1 &575504846
 GameObject:
   m_ObjectHideFlags: 0
@@ -1197,7 +1274,7 @@ GameObject:
   - component: {fileID: 604308091}
   - component: {fileID: 604308090}
   m_Layer: 5
-  m_Name: Settings Panel
+  m_Name: Options Menu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2473,8 +2550,9 @@ GameObject:
   - component: {fileID: 1890718408}
   - component: {fileID: 1890718407}
   - component: {fileID: 1890718406}
+  - component: {fileID: 1890718409}
   m_Layer: 5
-  m_Name: Button (2)
+  m_Name: Options
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2543,7 +2621,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1890718407}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1890718409}
+        m_TargetAssemblyTypeName: Options, Assembly-CSharp
+        m_MethodName: ActivateOptions
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1890718407
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2582,6 +2672,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1890718404}
   m_CullTransparentMesh: 1
+--- !u!114 &1890718409
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1890718404}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30b4d294d41b065489b3cc8bcfcbb538, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Options
+  optionsMenu: {fileID: 604308088}
 --- !u!1 &1930031197
 GameObject:
   m_ObjectHideFlags: 0

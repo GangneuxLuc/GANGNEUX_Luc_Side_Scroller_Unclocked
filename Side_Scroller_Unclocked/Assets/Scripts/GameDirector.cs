@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameDirector : MonoBehaviour
 {
@@ -15,6 +16,7 @@ public class GameDirector : MonoBehaviour
 
     private void Awake()
     {
+        Time.timeScale = 1f; // Assurez-vous que le temps du jeu est à l'échelle normale au démarrage
         RespawnFadeImage.enabled = true; // Assurez-vous que l'image est activ
         player = GameObject.FindGameObjectWithTag("Player");
         playerController = player.GetComponent<PlayerController>();
@@ -33,6 +35,7 @@ public class GameDirector : MonoBehaviour
         }
     }
 
+ 
     private void Start()
     {
         // Assurez-vous que l'image est active
@@ -54,11 +57,13 @@ public class GameDirector : MonoBehaviour
         {
             TogglePause();
         }
+
+        
     }
 
     //Gérer la pause
    
-    void TogglePause()
+    public void TogglePause()
     {
         isGamePaused = !isGamePaused; // Inverse l'état de pause
         Time.timeScale = isGamePaused ? 0f : 1f; // Met le temps à 0 pour pauser, ou à 1 pour reprendre
@@ -107,7 +112,7 @@ public class GameDirector : MonoBehaviour
 
     void OnApplicationQuit() //Méthode pour effacer les données de PlayerPrefs lorsque l'application est quittée, afin d'éviter de charger une position obsolète lors du prochain lancement du jeu.
     {
-       // PlayerPrefs.DeleteAll();
+        PlayerPrefs.DeleteAll();
     }
 
     public void ErasePosition()

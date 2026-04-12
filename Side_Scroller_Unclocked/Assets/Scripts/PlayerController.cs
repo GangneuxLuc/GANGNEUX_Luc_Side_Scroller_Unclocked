@@ -47,7 +47,7 @@ public class PlayerController : MonoBehaviour
     private void Awake() 
     {
         originalColor = spriteRenderer.color;
-        DontDestroyOnLoad(gameObject);
+       // DontDestroyOnLoad(gameObject);
         sliceSprite = transform.GetChild(0).gameObject;
         rb = GetComponent<Rigidbody2D>();
         if (rb == null)
