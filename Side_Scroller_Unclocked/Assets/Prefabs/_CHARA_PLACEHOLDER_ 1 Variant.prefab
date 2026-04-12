@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7885980286934474924}
   - component: {fileID: 4386945176380605985}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 7866945982896999795, guid: 0000000000000000d000000000000000, type: 0}
@@ -81,7 +81,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: -9062649555844970079, guid: ef83bf0784b65124ea14188c98425f5f, type: 3}
+  m_Sprite: {fileID: -1516498331858923892, guid: 0592b0fd4f5f7bf4eb56ebd838cb629a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -115,13 +115,17 @@ PrefabInstance:
       propertyPath: m_Offset.y
       value: 0.0041949153
       objectReference: {fileID: 0}
+    - target: {fileID: 5416410246644857622, guid: d3f1a999f368b8a40aa0f4a835d4ef85, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 6978429766918696576, guid: d3f1a999f368b8a40aa0f4a835d4ef85, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -4.1647196
+      value: -11.97
       objectReference: {fileID: 0}
     - target: {fileID: 6978429766918696576, guid: d3f1a999f368b8a40aa0f4a835d4ef85, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.13
+      value: 0.06
       objectReference: {fileID: 0}
     - target: {fileID: 6978429766918696576, guid: d3f1a999f368b8a40aa0f4a835d4ef85, type: 3}
       propertyPath: m_LocalPosition.z
@@ -159,9 +163,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: _CHARA_PLACEHOLDER_ 1 Variant
       objectReference: {fileID: 0}
+    - target: {fileID: 8932728291161652836, guid: d3f1a999f368b8a40aa0f4a835d4ef85, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 9077019966641164076, guid: d3f1a999f368b8a40aa0f4a835d4ef85, type: 3}
+      propertyPath: jumpForce
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 9077019966641164076, guid: d3f1a999f368b8a40aa0f4a835d4ef85, type: 3}
       propertyPath: jumpRange
       value: 0.974
+      objectReference: {fileID: 0}
+    - target: {fileID: 9077019966641164076, guid: d3f1a999f368b8a40aa0f4a835d4ef85, type: 3}
+      propertyPath: attackDamage
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 9077019966641164076, guid: d3f1a999f368b8a40aa0f4a835d4ef85, type: 3}
       propertyPath: spriteRenderer
