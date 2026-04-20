@@ -17,5 +17,6 @@ public class Checkpoint : MonoBehaviour
             gameDirector.SavePosition(); // Appelle la méthode SavePosition du GameDirector pour sauvegarder la position du joueur
         }
     }
+   
 }
 

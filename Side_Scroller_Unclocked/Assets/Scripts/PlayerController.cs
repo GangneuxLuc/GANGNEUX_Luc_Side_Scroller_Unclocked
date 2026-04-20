@@ -40,10 +40,17 @@ public class PlayerController : MonoBehaviour
 
     [Header("Debug")]
     public bool GodModeIsOn = false;
+    private Vector2 force;
+    public bool isHit = false;
+
 
     //[Header("Timeline Switch")]
 
     //On récupère les composants nécessaires et on s'assure que le joueur ne soit pas détruit lors du changement de scène dans l'Awake
+    private void Start()
+    {
+        
+    }
     private void Awake() 
     {
         originalColor = spriteRenderer.color;
@@ -76,13 +83,20 @@ public class PlayerController : MonoBehaviour
             HP = maxHP;
         }
 
+
+        if (Input.GetKey(KeyCode.N)) rb.AddForce(Vector2.left * 5f, ForceMode2D.Impulse);
+        
+        //rb.AddForce(Vector2.left * 500f, ForceMode2D.Impulse);
+
     }
 
     // Appel du Mouvement et Appel changement de direction
     private void FixedUpdate() 
     {
+
         Movement();
-       
+        
+
         if (inputX > deadzone) SetFacing(1);
         else if (inputX < -deadzone) SetFacing(-1);
 
@@ -91,12 +105,16 @@ public class PlayerController : MonoBehaviour
 
     //Mouvement vertical + animation
     private void Movement() 
-    {   
-        var v = rb.linearVelocity;
-        v.x = inputX * movementSpeed;
-        rb.linearVelocity = v;
-        bool isWalking = Mathf.Abs(inputX) > deadzone;
-        anim.SetBool("IsWalking", isWalking);
+    {   if (!isHit)
+        {
+            var v = rb.linearVelocity;
+            v.x = inputX * movementSpeed;
+            rb.linearVelocity = new Vector2(v.x, rb.linearVelocity.y);
+            bool isWalking = Mathf.Abs(inputX) > deadzone;
+            anim.SetBool("IsWalking", isWalking);
+        }
+  
+
     }
 
     // On change l'orientation du joueur en fonction de la direction dans laquelle il se déplace
@@ -107,16 +125,37 @@ public class PlayerController : MonoBehaviour
         transform.localScale = s;
     }
 
-    private IEnumerator Feedback() // Feedback visuel lorsque l'ennemi est touchéµ
+    private IEnumerator Feedback(bool bullet, bool slice) // Feedback visuel lorsque l'ennemi est touchéµ
     { 
-        spriteRenderer.color = Color.red;
-        yield return new WaitForSeconds(0.05f);
-        spriteRenderer.color = originalColor;
+        if(bullet)
+        {
+            isHit = true;
+            spriteRenderer.color = Color.red;
+            yield return new WaitForSeconds(0.05f);
+            spriteRenderer.color = originalColor;
+            isHit = false;
+            //knockback sur le coté  opposé à la direction du tir
+
+        }
+        if (slice)
+        {
+            spriteRenderer.color = Color.red;
+            yield return new WaitForSeconds(0.05f);
+            spriteRenderer.color = originalColor;
+        }
+
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-       if (collision.CompareTag("Bullet")) StartCoroutine(Feedback());
+        if (collision.CompareTag("Bullet"))
+        {
+            StartCoroutine(Feedback(true, false));
+            Vector2 direction = (transform.position - collision.transform.position).normalized;
+            rb.AddForce(direction * 5f, ForceMode2D.Impulse);  
+        }
+        //knockbackforce = (transform.position - collision.transform.position).normalized * 5f;
+        // if (collision.CompareTag("Slice")) StartCoroutine(Feedback(false, true));
     }
 
     /*

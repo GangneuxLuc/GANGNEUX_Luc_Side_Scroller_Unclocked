@@ -187,7 +187,7 @@ MonoBehaviour:
     m_Bits: 256
   rayCount: 5
   spreadAngle: 45
-  showDebugRays: 0
+  showDebugRays: 1
   IsFacingLeft: 0
 --- !u!61 &1094351585443891047
 BoxCollider2D:
@@ -283,8 +283,9 @@ MonoBehaviour:
   speed: 0
   Patrol: {fileID: 1747016469968156033}
   firePoint: {fileID: 8088049624811387343}
-  armPivot: {fileID: 0}
+  armPivot: {fileID: 1362960561105606606}
   t: {fileID: 5643947297085056449}
+  sprite: {fileID: 4652210196836969476}
   bulletSpeed: 5
   bulletPrefab: {fileID: 3541597306249737933, guid: a3e39910d0688534bac312320f062b30, type: 3}
   burstsCooldown: 1.06
@@ -295,8 +296,10 @@ MonoBehaviour:
   sightRange: 5.32
   sightRadius: 7.32
   dst: 0
-  showDebugRays: 0
+  showDebugRays: 1
+  cooldown: 0.412
   playerOutOfSight: 0
+  isShooting: 0
 --- !u!1 &5222186297553164467
 GameObject:
   m_ObjectHideFlags: 0

@@ -31,17 +31,18 @@ public class AttackState : State
 
     [Header("Debug")]
     public bool showDebugRays = false;
+    [Range(0f, 2f)] public float cooldown;
 
     public bool playerOutOfSight;
     Coroutine shootCoroutine;
     private bool isActivated;
     private Vector2 direction;
+
+    public bool isShooting;
     private void OnEnable()
     {
-        // Réinitialiser les variables d'état
-        playerOutOfSight = false;
-        shootCoroutine = null;
-        isActivated = true;
+        StartCoroutine(Cooldown());
+        
     }
     public override State RunCurrentState()
     {
@@ -78,14 +79,16 @@ public class AttackState : State
 
     private void OnDisable()
     {
-        // Nettoyage si l'état est désactivé
-        if (shootCoroutine != null)
-        {
-            StopCoroutine(shootCoroutine);
-            shootCoroutine = null;
-        }
-        StopAllCoroutines();
-        isActivated = false;
+        
+         // Nettoyage si l'état est désactivé
+         if (shootCoroutine != null)
+         {
+             StopCoroutine(shootCoroutine);
+             shootCoroutine = null;
+         }
+         StopAllCoroutines();
+         isActivated = false;
+        
     }
     private void SetFacing(int direction)// M?thode pour faire face ? la direction de d?placement en ajustant l'?chelle locale de l'objet
     {
@@ -161,10 +164,20 @@ public class AttackState : State
         // Coroutine terminée : remettre la référence à null pour pouvoir relancer proprement si nécessaire
         shootCoroutine = null;
     }
-
+  
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, sightRange);
+    }
+
+    private IEnumerator Cooldown()
+    {
+        yield return new WaitForSeconds(cooldown);
+        // Permet de relancer le tir après le cooldown
+        // Réinitialiser les variables d'état
+        playerOutOfSight = false;
+        shootCoroutine = null;
+        isActivated = true;
     }
 }
