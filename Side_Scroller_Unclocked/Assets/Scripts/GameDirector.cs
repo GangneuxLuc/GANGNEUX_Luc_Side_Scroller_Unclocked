@@ -9,6 +9,7 @@ public class GameDirector : MonoBehaviour
     public Image RespawnFadeImage;
     public borderTrigger borderTrigger; // référence au script borderTrigger pour vérifier si le joueur est dans le trigger
     public GameObject debugPanel;
+    public Transform spawn;
 
     [Header("Pause Management")]
     public bool isGamePaused = false; // Variable pour suivre l'état de pause du jeu
@@ -20,6 +21,8 @@ public class GameDirector : MonoBehaviour
         RespawnFadeImage.enabled = true; // Assurez-vous que l'image est activ
         player = GameObject.FindGameObjectWithTag("Player");
         playerController = player.GetComponent<PlayerController>();
+        player.transform.position = spawn.position;
+        SavePosition();
             
         borderTrigger = FindAnyObjectByType<borderTrigger>(); // Trouve une instance de borderTrigger dans la scène
     }
@@ -34,7 +37,6 @@ public class GameDirector : MonoBehaviour
             }
         }
     }
-
  
     private void Start()
     {
