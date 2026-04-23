@@ -7,7 +7,9 @@ public class AttackState : State
     public PatrolState Patrol;
     [Header("References")]
     [SerializeField] Transform firePoint;
+    [SerializeField] Transform armPivot;
     public Transform t;
+    [SerializeField] SpriteRenderer sprite;
 
     [Header("Bullets infos")]
     public int bulletSpeed = 5;
@@ -29,17 +31,18 @@ public class AttackState : State
 
     [Header("Debug")]
     public bool showDebugRays = false;
+    [Range(0f, 2f)] public float cooldown;
 
     public bool playerOutOfSight;
     Coroutine shootCoroutine;
     private bool isActivated;
+    private Vector2 direction;
 
+    public bool isShooting;
     private void OnEnable()
     {
-        // Réinitialiser les variables d'état
-        playerOutOfSight = false;
-        shootCoroutine = null;
-        isActivated = true;
+        StartCoroutine(Cooldown());
+        
     }
     public override State RunCurrentState()
     {
@@ -64,23 +67,36 @@ public class AttackState : State
         playerSighting();
         return this;
     }
+    private void Update()
+    {
+        if (playerPos != null)
+        {
+            direction = (playerPos.position - firePoint.position).normalized;
+            armPivot.rotation = Quaternion.Euler(0, 0, Mathf.Atan2(-direction.y, -direction.x) * Mathf.Rad2Deg);
+        }
+    }
+
 
     private void OnDisable()
     {
-        // Nettoyage si l'état est désactivé
-        if (shootCoroutine != null)
-        {
-            StopCoroutine(shootCoroutine);
-            shootCoroutine = null;
-        }
-        StopAllCoroutines();
-        isActivated = false;
+        
+         // Nettoyage si l'état est désactivé
+         if (shootCoroutine != null)
+         {
+             StopCoroutine(shootCoroutine);
+             shootCoroutine = null;
+         }
+         StopAllCoroutines();
+         isActivated = false;
+        
     }
     private void SetFacing(int direction)// M?thode pour faire face ? la direction de d?placement en ajustant l'?chelle locale de l'objet
     {
-        Vector2 s = t.localScale;
-        s.x = Mathf.Abs(s.x) * direction;
-        t.localScale = s;
+        //Vector2 s = t.localScale;
+        Vector2 s = sprite.transform.localScale;
+        s.x = Mathf.Abs(s.x) * -direction;
+       // t.localScale = s;
+        sprite.transform.localScale = s;
 
     }
     private void playerSighting()
@@ -102,7 +118,7 @@ public class AttackState : State
             {
                 for (int j = 0; j < bulletPerBurst; j++)
                 {
-                    GameObject bullet = Instantiate(bulletPrefab, firePoint.position, Quaternion.Euler(0, 0, -90));
+                    GameObject bullet = Instantiate(bulletPrefab, firePoint.position, Quaternion.Euler(0, 0, -90)); // Instancie une abble depuis le firepoint avec une rotaiton de -90°
 
                     GameObject activeChild = null;
                     foreach (Transform child in activeTimeline)
@@ -111,17 +127,18 @@ public class AttackState : State
                         {
                             activeChild = child.gameObject;
                             bullet.transform.SetParent(child, true);
-                            break; // stop aprèes avoir trouvé le premier enfant actif
+                            break; // stop après avoir trouvé le premier enfant actif
                         }
                     }
 
                     // Calcul de la direction
-                    Vector2 direction;
+                    
                     Vector2 rotation;
                     if (playerPos != null)
                     {
                         // Vers une cible
-                        direction = (playerPos.position - firePoint.position).normalized;
+                       
+                      
                         rotation = new Vector2(direction.x, direction.y);
                         bullet.transform.rotation = Quaternion.LookRotation(Vector3.forward, rotation);
                     }
@@ -131,7 +148,7 @@ public class AttackState : State
                         direction = firePoint.forward;
                     }
 
-                    // Ajouter une vitesse (si Rigidbody)
+                    // Ajoute d'une vitesse 
                     rb = bullet.GetComponent<Rigidbody2D>();
                     if (rb != null)
                     {
@@ -147,10 +164,20 @@ public class AttackState : State
         // Coroutine terminée : remettre la référence à null pour pouvoir relancer proprement si nécessaire
         shootCoroutine = null;
     }
-
+  
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, sightRange);
+    }
+
+    private IEnumerator Cooldown()
+    {
+        yield return new WaitForSeconds(cooldown);
+        // Permet de relancer le tir après le cooldown
+        // Réinitialiser les variables d'état
+        playerOutOfSight = false;
+        shootCoroutine = null;
+        isActivated = true;
     }
 }
