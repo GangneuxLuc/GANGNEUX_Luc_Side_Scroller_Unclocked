@@ -796,7 +796,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4454086eed8e204fb58b79cfe63d5a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StartGame
-  sceneName: Light test
+  sceneName: Level design test
 --- !u!1 &408318293
 GameObject:
   m_ObjectHideFlags: 0
