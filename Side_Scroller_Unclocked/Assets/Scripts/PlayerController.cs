@@ -40,13 +40,14 @@ public class PlayerController : MonoBehaviour
 
     [Header("Debug")]
     public bool GodModeIsOn = false;
+    public bool ignoreForce = false;
     private Vector2 force;
     public bool isHit = false;
 
 
     //[Header("Timeline Switch")]
 
-    //On récupère les composants nécessaires et on s'assure que le joueur ne soit pas détruit lors du changement de scène dans l'Awake
+    //On rï¿½cupï¿½re les composants nï¿½cessaires et on s'assure que le joueur ne soit pas dï¿½truit lors du changement de scï¿½ne dans l'Awake
     private void Start()
     {
         
@@ -65,7 +66,7 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    // On récupère les inputs du joueur et on vérifie s'il est au sol pour lui permettre de sauter
+    // On rï¿½cupï¿½re les inputs du joueur et on vï¿½rifie s'il est au sol pour lui permettre de sauter
     void Update() 
     {
         inputX = Input.GetAxisRaw("Horizontal");
@@ -117,7 +118,7 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    // On change l'orientation du joueur en fonction de la direction dans laquelle il se déplace
+    // On change l'orientation du joueur en fonction de la direction dans laquelle il se dï¿½place
     private void SetFacing(int direction)
     {
         Vector2 s = transform.localScale;
@@ -125,16 +126,18 @@ public class PlayerController : MonoBehaviour
         transform.localScale = s;
     }
 
-    private IEnumerator Feedback(bool bullet, bool slice) // Feedback visuel lorsque l'ennemi est touchéµ
+    private IEnumerator Feedback(bool bullet, bool slice) // Feedback visuel lorsque l'ennemi est touchï¿½
     { 
         if(bullet)
         {
+            if (ignoreForce) yield break; // Si le God Mode est activÃ©, on ne subit pas les effets du tir
             isHit = true;
             spriteRenderer.color = Color.red;
             yield return new WaitForSeconds(0.05f);
             spriteRenderer.color = originalColor;
+            yield return new WaitForSeconds(0.3f); //durÃ©e du knockback + animation de hit et ne pas pouvoir bouger pendant ce temps
             isHit = false;
-            //knockback sur le coté  opposé à la direction du tir
+            //knockback sur le cotï¿½  opposï¿½ ï¿½ la direction du tir
 
         }
         if (slice)
@@ -150,22 +153,13 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.CompareTag("Bullet"))
         {
+            float knockbackForce = collision.GetComponent<bullet>().knockbackForce;
             StartCoroutine(Feedback(true, false));
-            Vector2 direction = (transform.position - collision.transform.position).normalized;
-            rb.AddForce(direction * 5f, ForceMode2D.Impulse);  
+            Vector2 direction = new Vector2((transform.position.x - collision.transform.position.x), (0)).normalized;
+            rb.AddForce(direction * knockbackForce, ForceMode2D.Impulse);
         }
-        //knockbackforce = (transform.position - collision.transform.position).normalized * 5f;
-        // if (collision.CompareTag("Slice")) StartCoroutine(Feedback(false, true));
-    }
 
-    /*
-    private void SetFacingg(int direction)
-    {
-        Quaternion r = transform.localRotation;
-        r.y = Mathf.Abs(r.y) * direction;
-        transform.localRotation = r;
     }
-    */
 
     IEnumerator SliceAttackCoroutine()
     {

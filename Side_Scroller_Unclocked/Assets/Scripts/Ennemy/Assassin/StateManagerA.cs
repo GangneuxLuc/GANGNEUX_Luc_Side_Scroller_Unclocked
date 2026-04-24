@@ -1,20 +1,19 @@
 using UnityEngine;
 
-public class StateManager : MonoBehaviour
+public class StateManagerA : MonoBehaviour
 {
-    [SerializeField] GameDirector gameDirector;
-    public State currentState;
+    public StateA currentState;
 
     private void RunStateMachine()
     {
-        State nextState = currentState?.RunCurrentState();
+        StateA nextState = currentState?.RunCurrentState();
         // ne switcher que si nextState est différent pour éviter de réactiver inutilement
         if (nextState != null && nextState != currentState)
         {
             SwitchToNextState(nextState);
         }
     }
-    private void SwitchToNextState(State nextState)
+    private void SwitchToNextState(StateA nextState)
     {
         // désactive l'ancien état s'il existe
         if (currentState != null)

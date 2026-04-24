@@ -2,8 +2,9 @@ using UnityEngine;
 using System.Collections;
 using UnityEditor;
 
-public abstract class State : MonoBehaviour
+public abstract class State : MonoBehaviour // State pour les soldats
 {
+    
     public SoldierScript soldierScript;
     [Range(0,5f)] public float speed;
     protected Transform activeTimeline;
@@ -18,5 +19,6 @@ public abstract class State : MonoBehaviour
        activeTimeline = soldierScript.activeTimeline;
         playerPos = soldierScript.playerPos;
     }
+    
 }
 

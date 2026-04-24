@@ -183,3 +183,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e98e4e473c19cf4498ed2d1d9d48c2c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::bullet
+  knockbackForce: 8

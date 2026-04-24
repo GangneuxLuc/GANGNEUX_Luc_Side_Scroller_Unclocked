@@ -38,6 +38,7 @@ public class EnnemyClass : MonoBehaviour
             HP -= player.GetComponent<PlayerController>().attackDamage; // Réduction des HP de l'ennemi
 
             StartCoroutine(Feedback());
+            rb.AddForce((transform.position - playerPos.position).normalized * 5f, ForceMode2D.Impulse); // Knockback de l'ennemi
             if (HP <= 0) // Mort de l'ennemi
             {
                 Die();

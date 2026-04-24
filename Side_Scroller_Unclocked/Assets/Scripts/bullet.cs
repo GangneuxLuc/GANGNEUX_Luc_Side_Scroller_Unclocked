@@ -5,6 +5,7 @@ public class bullet : MonoBehaviour
 {
     Vector2 baseSpeed;
     Rigidbody2D rb;
+    public float knockbackForce;
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
