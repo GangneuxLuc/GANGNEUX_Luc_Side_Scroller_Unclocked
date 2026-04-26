@@ -7,7 +7,7 @@ public class PlayerController : MonoBehaviour
 {
     [Header("Movement")]
     [SerializeField] float movementSpeed = 5f;
-    [SerializeField] float acceleration = 10f;
+    [SerializeField] float acceleration = 1.5f;
     [SerializeField] float deadzone = 0.01f;
 
     [Header("Gravity/jump")]
@@ -20,6 +20,12 @@ public class PlayerController : MonoBehaviour
     [SerializeField] public int maxHP = 100;
     [SerializeField] public int min = 0;
     [SerializeField] public int attackDamage = 10;
+    [SerializeField] public int attackRange = 1;
+    [SerializeField] public int attackCooldown = 1;
+    [SerializeField] public float attackKnockback = 5f;
+
+    [SerializeField] public float speed;
+    [SerializeField] public float speedMax = 5f;
 
     [Header("Sprite infos")]
     [SerializeField] Color originalColor;
@@ -47,7 +53,7 @@ public class PlayerController : MonoBehaviour
 
     //[Header("Timeline Switch")]
 
-    //On r�cup�re les composants n�cessaires et on s'assure que le joueur ne soit pas d�truit lors du changement de sc�ne dans l'Awake
+    //On récupère les composants nécessaires et on s'assure que le joueur ne soit pas détruit lors du changement de scène dans l'Awake
     private void Start()
     {
         
@@ -66,7 +72,7 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    // On r�cup�re les inputs du joueur et on v�rifie s'il est au sol pour lui permettre de sauter
+    // On récupère les inputs du joueur et on vérifie s'il est au sol pour lui permettre de sauter
     void Update() 
     {
         inputX = Input.GetAxisRaw("Horizontal");
@@ -96,6 +102,7 @@ public class PlayerController : MonoBehaviour
     {
 
         Movement();
+       
         
 
         if (inputX > deadzone) SetFacing(1);
@@ -106,19 +113,36 @@ public class PlayerController : MonoBehaviour
 
     //Mouvement vertical + animation
     private void Movement() 
-    {   if (!isHit)
+    {   
+        if (!isHit)
         {
-            var v = rb.linearVelocity;
-            v.x = inputX * movementSpeed;
-            rb.linearVelocity = new Vector2(v.x, rb.linearVelocity.y);
-            bool isWalking = Mathf.Abs(inputX) > deadzone;
+            // target horizontal speed basé sur l'input et speedMax
+            float targetSpeed = inputX * speedMax;
+
+            // Si l'input est relâché (dans la deadzone) : arrêt net
+            if (Mathf.Abs(inputX) <= deadzone)
+            {
+                speed = 0f;
+                rb.linearVelocity = new Vector2(0f, rb.linearVelocity.y); // arrêt immédiat
+            }
+            else
+            {
+                // Interpoler la vitesse actuelle vers la vitesse cible en utilisant 'acceleration'
+                speed = Mathf.MoveTowards(speed, targetSpeed, acceleration * Time.fixedDeltaTime);
+
+                // Appliquer la vitesse calculée au Rigidbody2D
+                var v = rb.linearVelocity;
+                rb.linearVelocity = new Vector2(speed, v.y);
+            }
+
+            // Animation : on considère le joueur en marche si la vitesse absolue dépasse le deadzone
+            bool isWalking = Mathf.Abs(speed) > deadzone;
             anim.SetBool("IsWalking", isWalking);
         }
-  
 
     }
 
-    // On change l'orientation du joueur en fonction de la direction dans laquelle il se d�place
+    // On change l'orientation du joueur en fonction de la direction dans laquelle il se déplace
     private void SetFacing(int direction)
     {
         Vector2 s = transform.localScale;
@@ -126,7 +150,7 @@ public class PlayerController : MonoBehaviour
         transform.localScale = s;
     }
 
-    private IEnumerator Feedback(bool bullet, bool slice) // Feedback visuel lorsque l'ennemi est touch�
+    private IEnumerator Feedback(bool bullet, bool slice) // Feedback visuel lorsque l'ennemi est touché
     { 
         if(bullet)
         {
@@ -137,7 +161,7 @@ public class PlayerController : MonoBehaviour
             spriteRenderer.color = originalColor;
             yield return new WaitForSeconds(0.3f); //durée du knockback + animation de hit et ne pas pouvoir bouger pendant ce temps
             isHit = false;
-            //knockback sur le cot�  oppos� � la direction du tir
+            //knockback sur le côté  opposé à la direction du tir
 
         }
         if (slice)

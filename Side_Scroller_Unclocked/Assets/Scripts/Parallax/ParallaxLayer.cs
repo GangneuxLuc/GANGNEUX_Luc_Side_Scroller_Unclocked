@@ -29,7 +29,6 @@ public class ParallaxLayer
         var settings = t.GetComponent<ParallaxLayerSettings>();
         if (settings != null)
         {
-            Debug.Log("On assigne settings");
             speedX = settings.speedX;
             speedY = settings.speedY;
         }

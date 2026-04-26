@@ -3,10 +3,9 @@ using UnityEngine;
 public class Resume : MonoBehaviour
 {
    public GameObject pauseMenu; // Référence au menu de pause
+    [SerializeField] private GameDirector GameDirector; // Référence au GameDirector
     public void ResumeGame()
     {
-        // Désactive le menu de pause
-        pauseMenu.SetActive(false);
-        // Réactive le temps du jeu
+        GameDirector.TogglePause();
     }
 }

@@ -15,6 +15,7 @@ public class GameDirector : MonoBehaviour
     public bool isGamePaused = false; // Variable pour suivre l'état de pause du jeu
     public GameObject pauseMenuUI; // Référence à l'UI du menu de pause
 
+
     private void Awake()
     {
         Time.timeScale = 1f; // Assurez-vous que le temps du jeu est à l'échelle normale au démarrage
@@ -63,8 +64,9 @@ public class GameDirector : MonoBehaviour
         
     }
 
+
     //Gérer la pause
-   
+
     public void TogglePause()
     {
         isGamePaused = !isGamePaused; // Inverse l'état de pause
