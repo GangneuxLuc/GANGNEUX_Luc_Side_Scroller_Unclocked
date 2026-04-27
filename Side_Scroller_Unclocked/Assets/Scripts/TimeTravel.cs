@@ -30,9 +30,9 @@ public class TimeTravel : MonoBehaviour
 
     void TimelineSwitch()
     {
-        if (canTimeSwitch)
+        if (canTimeSwitch )
         {
-            if (Input.GetButtonDown("TimelineSwap")) 
+            if (Input.GetButtonDown("TimelineSwap") && PlayerPrefs.HasKey("FixTimeSwap")) 
             {
                 StartCoroutine(SwitchCooldown());
                 pastIsVisible = !pastIsVisible;

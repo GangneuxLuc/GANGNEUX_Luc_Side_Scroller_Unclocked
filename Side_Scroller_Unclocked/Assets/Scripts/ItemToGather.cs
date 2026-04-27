@@ -18,7 +18,7 @@ public class ItemToGather : MonoBehaviour
 
     private void Awake()
     {
-        itemSprite = GetComponent<SpriteRenderer>(); // Récupère le SpriteRenderer attaché au GameObject
+        itemSprite = GetComponentInChildren<SpriteRenderer>(); // Récupère le SpriteRenderer attaché au GameObject
         itemCanvas = GetComponentInChildren<Canvas>(); // Récupère le Canvas attaché au GameObject ou à ses enfants
         if (itemCanvas != null) itemCanvas.gameObject.SetActive(false); // Désactive le canvas au début pour ne pas afficher les interactions possibles
 
@@ -31,7 +31,7 @@ public class ItemToGather : MonoBehaviour
     private void OnTriggerStay2D(Collider2D collision)
     {
         if (itemCanvas != null) itemCanvas.gameObject.SetActive(true); // Affiche le canvas lorsque le joueur est dans la zone de l'item
-        if (collision.CompareTag("Player") && Input.GetKey(KeyCode.F))
+        if (collision.CompareTag("Player") && Input.GetButton("Interact"))
         {
             // Ajoutez ici le code pour ajouter l'item à l'inventaire du joueur ou pour déclencher une action spécifique
             Debug.Log("Item collected: " + gameObject.name);

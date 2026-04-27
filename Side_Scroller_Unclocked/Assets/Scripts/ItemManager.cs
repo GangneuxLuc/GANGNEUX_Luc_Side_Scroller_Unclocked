@@ -21,7 +21,7 @@ public class ItemManager : MonoBehaviour
             if (list[i] == null) // Vérifie si l'emplacement actuel de la liste est null
             {
                 list[i] = item; // Ajoute l'item à la première position null trouvée
-                PlayerPrefs.SetString("CollectedItem" + i, item.name); // Sauvegarde le nom de l'item collecté dans PlayerPrefs pour la persistance
+                PlayerPrefs.SetString(item.name, item.name); // Sauvegarde le nom de l'item collecté dans PlayerPrefs pour la persistance
                 PlayerPrefs.Save(); // Sauvegarde les modifications dans PlayerPrefs
                 return; // Sort de la fonction après avoir ajouté l'item
             }

@@ -116,27 +116,11 @@ public class PlayerController : MonoBehaviour
     {   
         if (!isHit)
         {
-            // target horizontal speed basé sur l'input et speedMax
-            float targetSpeed = inputX * speedMax;
-
-            // Si l'input est relâché (dans la deadzone) : arrêt net
-            if (Mathf.Abs(inputX) <= deadzone)
-            {
-                speed = 0f;
-                rb.linearVelocity = new Vector2(0f, rb.linearVelocity.y); // arrêt immédiat
-            }
-            else
-            {
-                // Interpoler la vitesse actuelle vers la vitesse cible en utilisant 'acceleration'
-                speed = Mathf.MoveTowards(speed, targetSpeed, acceleration * Time.fixedDeltaTime);
-
-                // Appliquer la vitesse calculée au Rigidbody2D
-                var v = rb.linearVelocity;
-                rb.linearVelocity = new Vector2(speed, v.y);
-            }
-
+            var v = rb.linearVelocity;
+            v.x = inputX * movementSpeed;
+            rb.linearVelocity = new Vector2(v.x, rb.linearVelocity.y);
+            bool isWalking = Mathf.Abs(inputX) > deadzone;
             // Animation : on considère le joueur en marche si la vitesse absolue dépasse le deadzone
-            bool isWalking = Mathf.Abs(speed) > deadzone;
             anim.SetBool("IsWalking", isWalking);
         }
 

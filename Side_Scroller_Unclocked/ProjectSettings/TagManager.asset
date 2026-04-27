@@ -8,6 +8,7 @@ TagManager:
   - DaggerSlice
   - Bullet
   - PauseMenuUI
+  - Door
   layers:
   - Default
   - TransparentFX

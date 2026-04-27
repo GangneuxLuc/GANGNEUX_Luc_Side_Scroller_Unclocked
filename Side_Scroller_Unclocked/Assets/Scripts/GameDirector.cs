@@ -56,7 +56,7 @@ public class GameDirector : MonoBehaviour
             ErasePosition();
         }
 
-        if (Input.GetKeyDown(KeyCode.Escape)) // Appuyez sur la touche Échap pour basculer la pause du jeu
+        if (Input.GetButtonDown("Pause")) // Appuyez sur la touche Échap pour basculer la pause du jeu
         {
             TogglePause();
         }
