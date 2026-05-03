@@ -16,78 +16,76 @@ public class PatrolState : State
     [Range(0, 5f)] public float waitDuration;
     [SerializeField] Rigidbody2D rb;
 
-
     [Header("Player detection settings")]
     public float dst;
 
- 
     [Header("Detection Settings")]
-    [Range(-15f, 15f)] public float detectionDistance = 5f;       // How far the ray should check
-    public LayerMask detectionLayers;          // Which layers to detect
-    [Range(0, 30f)] public int rayCount = 5;                    // Number of rays for a "zone"
-    [Range(0f, 180f)] public float spreadAngle = 45f;             // Spread of the detection zone in degrees
-     
+    [Range(-15f, 15f)] public float detectionDistance = 5f;
+    public LayerMask detectionLayers;
+    [Range(0, 30f)] public int rayCount = 5;
+    [Range(0f, 180f)] public float spreadAngle = 45f;
 
     [Header("Debug")]
-    public bool showDebugRays = true;           // Show rays in Scene view
+    public bool showDebugRays = true;
     public bool IsFacingLeft;
 
     int curTarget = 0;
-    bool pWait;
+    public bool pWait;
 
+    [Header("Return to patrol")]
+    [SerializeField] float maxDisplacement = 6f;
+    [SerializeField] float returnSpeedMultiplier = 1.2f;
+    bool returningToPatrol = false;
+    Coroutine returnCoroutine;
 
-    public override State RunCurrentState()
+    [Header("Movement")]
+    [SerializeField] float arrivalThreshold = 0.5f; // seuil d'arrivée
+
+    private void Awake()
     {
-         if (PlayerDetection() || playerDetected)
-         {
-             playerDetected = false;
-             return Attack;
-         }
-         else return this;
-        
+        // Défauts sûrs pour éviter null refs
+        if (t == null) t = transform;
+        if (rb == null) rb = GetComponent<Rigidbody2D>();
+        if (myPatrolTarget == null || myPatrolTarget.Length == 0)
+        {
+            Debug.LogWarning($"{name} : myPatrolTarget non assigné ou vide.");
+        }
+        curTarget = Mathf.Clamp(curTarget, 0, (myPatrolTarget != null && myPatrolTarget.Length > 0) ? myPatrolTarget.Length - 1 : 0);
     }
 
-  
     private void Start()
     {
         GetDirection();
     }
-   
-    private bool PlayerDetection(bool isPlayerDetected= false) //M�thode pour d�tecter les objets dans une zone conique en utilisant plusieurs rayons
+
+    public override State RunCurrentState()
     {
-        //dst = Vector2.Distance(transform.position, playerPos.position);
-        Vector2 directionToTarget = playerPos.position - transform.position;
-       // float dot = Vector2.Dot(directionToTarget,transform.right );
-        float startAngle = -spreadAngle / 2f; // Angle de d�part pour les rayons
-        float angleStep = spreadAngle / (rayCount - 1);// Espacement entre les rayons
-        
-        for (int i = 0; i < rayCount; i++) // Boucle pour lancer plusieurs rayons
+        if (PlayerDetection() || playerDetected)
         {
-            float angle = startAngle + (angleStep * i); // Calcul de l'angle pour le rayon actuel
+            playerDetected = false;
+            return Attack;
+        }
+        return this;
+    }
 
-          
-            Vector2 direction = RotateVector(transform.right, angle); // Rotation du vecteur de direction de base (transform.right) pour obtenir la direction du rayon
+    private bool PlayerDetection(bool isPlayerDetected = false)
+    {
+        if (playerPos == null) return false;
+        float startAngle = -spreadAngle / 2f;
+        float angleStep = rayCount > 1 ? spreadAngle / (rayCount - 1) : 0f;
 
+        for (int i = 0; i < Mathf.Max(1, rayCount); i++)
+        {
+            float angle = startAngle + (angleStep * i);
+            Vector2 dir = RotateVector(transform.right, angle);
+            if (IsFacingLeft) dir = -dir;
 
-
-
-            if (IsFacingLeft) direction = -direction;
-
-
-
-
-            RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, detectionDistance, detectionLayers); // Lancement du rayon et stockage des informations de collision dans "hit"
-
-            if (showDebugRays)
-            {
-                Color rayColor = hit.collider ? Color.red : Color.green;
-                Debug.DrawRay(transform.position, direction * detectionDistance, rayColor);
-            }
-
-            if (hit.collider != null && hit.collider.CompareTag("Player")) // Si le rayon touche un objet avec le tag "Player", on considère que le joueur est détecté
+            RaycastHit2D hit = Physics2D.Raycast(transform.position, dir, detectionDistance, detectionLayers);
+            if (showDebugRays) Debug.DrawRay(transform.position, dir * detectionDistance, hit.collider ? Color.red : Color.green);
+            if (hit.collider != null && hit.collider.CompareTag("Player"))
             {
                 isPlayerDetected = true;
-                break; // Sort de la boucle dès qu'un joueur est détecté
+                break;
             }
         }
         return isPlayerDetected;
@@ -157,6 +155,8 @@ public class PatrolState : State
                 if (curTarget >= myPatrolTarget.Length) curTarget = 0;
                 StartCoroutine(Wait());
             }
+           //Si on sort de la zone de patrouille, on y retourne
+
         }
     }
 }

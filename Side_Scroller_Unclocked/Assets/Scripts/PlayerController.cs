@@ -7,12 +7,11 @@ public class PlayerController : MonoBehaviour
 {
     [Header("Movement")]
     [SerializeField] float movementSpeed = 5f;
-    [SerializeField] float acceleration = 1.5f;
     [SerializeField] float deadzone = 0.01f;
 
     [Header("Gravity/jump")]
-    [SerializeField] float gravity = -10f;
     [SerializeField] float jumpForce = 5f;
+    [SerializeField] float jumpShortForce = 2f;
     [Range(0f,1f)] public float jumpRange;
 
     [Header("Stats")]
@@ -38,7 +37,7 @@ public class PlayerController : MonoBehaviour
     float inputX;
     public bool inputSlice;
     public LayerMask groundLayer;
-    private Animator anim;
+    [SerializeField] private Animator anim;
     private bool isFacingRight = true;
     private bool isFacingLeft = true;
     [SerializeField] private SpriteRenderer spriteRenderer;
@@ -68,7 +67,7 @@ public class PlayerController : MonoBehaviour
         {
             return;
         }
-        anim = GetComponent<Animator>();
+        anim = GetComponentInChildren<Animator>();
 
     }
 
@@ -77,13 +76,29 @@ public class PlayerController : MonoBehaviour
     {
         inputX = Input.GetAxisRaw("Horizontal");
         inputSlice = Input.GetButtonDown("Slice");
-        
+        bool jump = Input.GetButtonDown("Jump");
+        bool jumpCancel = Input.GetButtonUp("Jump");
 
         bool isGrounded = Physics2D.Raycast(transform.position, Vector2.down,jumpRange, groundLayer);
-        if (Input.GetButton("Jump") && isGrounded) rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
+        if (jump && isGrounded) // Si le joueur appuie sur le bouton de saut et qu'il est au sol, on applique une force de saut
+        {
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
+            jump = false;
+        }
+        if (jumpCancel && !isGrounded) // Si le joueur relâche le bouton de saut et qu'il n'est pas au sol, on réduit la force de saut pour permettre un saut plus court
+        {
+            if (rb.linearVelocity.y > jumpShortForce)
+            {
+                rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpShortForce);
+                jumpCancel = false;
+            }
+
+        }
+            
 
 
-        if (inputSlice) StartCoroutine(SliceAttackCoroutine());
+
+            if (inputSlice) StartCoroutine(SliceAttackCoroutine());
         
       if (GodModeIsOn)
         {
@@ -91,9 +106,8 @@ public class PlayerController : MonoBehaviour
         }
 
 
-        if (Input.GetKey(KeyCode.N)) rb.AddForce(Vector2.left * 5f, ForceMode2D.Impulse);
         
-        //rb.AddForce(Vector2.left * 500f, ForceMode2D.Impulse);
+        
 
     }
 
@@ -119,9 +133,14 @@ public class PlayerController : MonoBehaviour
             var v = rb.linearVelocity;
             v.x = inputX * movementSpeed;
             rb.linearVelocity = new Vector2(v.x, rb.linearVelocity.y);
-            bool isWalking = Mathf.Abs(inputX) > deadzone;
+            //float isWalking = Mathf.Abs(inputX) > deadzone;
+            float xValue = Mathf.Abs(rb.linearVelocity.x) > deadzone ? 1 : 0;
             // Animation : on considère le joueur en marche si la vitesse absolue dépasse le deadzone
-            anim.SetBool("IsWalking", isWalking);
+            // on joue la vitesse de déplacement dans l'animation pour faire varier la vitesse de marche en fonction de la vitesse réelle du joueur
+            anim.SetFloat("XValue", xValue);
+            //mettre la vitesse de l'animation egale à xValue
+
+
         }
 
     }
@@ -143,7 +162,11 @@ public class PlayerController : MonoBehaviour
             spriteRenderer.color = Color.red;
             yield return new WaitForSeconds(0.05f);
             spriteRenderer.color = originalColor;
-            yield return new WaitForSeconds(0.3f); //durée du knockback + animation de hit et ne pas pouvoir bouger pendant ce temps
+            yield return new WaitForSeconds(0.3f);
+            spriteRenderer.color = Color.red;
+            yield return new WaitForSeconds(0.05f);
+            spriteRenderer.color = originalColor;
+            yield return new WaitForSeconds(0.3f);//durée du knockback + animation de hit et ne pas pouvoir bouger pendant ce temps
             isHit = false;
             //knockback sur le côté  opposé à la direction du tir
 

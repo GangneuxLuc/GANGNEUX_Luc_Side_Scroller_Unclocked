@@ -118,7 +118,7 @@ public class AttackState : State
             {
                 for (int j = 0; j < bulletPerBurst; j++)
                 {
-                    GameObject bullet = Instantiate(bulletPrefab, firePoint.position, Quaternion.Euler(0, 0, -90)); // Instancie une abble depuis le firepoint avec une rotaiton de -90°
+                    GameObject bullet = Instantiate(bulletPrefab, firePoint.position, Quaternion.identity); // Instancie une abble depuis le firepoint avec une rotaiton de -90°
 
                     GameObject activeChild = null;
                     foreach (Transform child in activeTimeline)
@@ -132,20 +132,21 @@ public class AttackState : State
                     }
 
                     // Calcul de la direction
-                    
-                    Vector2 rotation;
                     if (playerPos != null)
                     {
-                        // Vers une cible
-                       
-                      
-                        rotation = new Vector2(direction.x, direction.y);
-                        bullet.transform.rotation = Quaternion.LookRotation(Vector3.forward, rotation);
+                        // Tir dirigé vers le joueur
+                        direction = (playerPos.position - firePoint.position).normalized;
+
+                        // Orienter la rotation de la balle pour qu'elle pointe vers la cible (2D)
+                        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+                        bullet.transform.rotation = Quaternion.Euler(0f, 0f, angle);
                     }
                     else
                     {
-                        // Vers l'avant du FirePoint
-                        direction = firePoint.forward;
+                        // Vers l'avant du FirePoint (utiliser right pour 2D)
+                        direction = firePoint.right;
+                        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+                        bullet.transform.rotation = Quaternion.Euler(0f, 0f, angle);
                     }
 
                     // Ajoute d'une vitesse 

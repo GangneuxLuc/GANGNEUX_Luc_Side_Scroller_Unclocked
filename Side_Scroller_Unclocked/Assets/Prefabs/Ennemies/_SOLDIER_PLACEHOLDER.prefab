@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 2473555478916653144}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2.8199997, y: -0.62, z: 0}
+  m_LocalPosition: {x: 2.88, y: -0.68, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -135,6 +135,7 @@ GameObject:
   - component: {fileID: 3195277781702601714}
   - component: {fileID: 1747016469968156033}
   - component: {fileID: 1094351585443891047}
+  - component: {fileID: 4650710938536384654}
   m_Layer: 7
   m_Name: PatrolState
   m_TagString: Untagged
@@ -179,7 +180,7 @@ MonoBehaviour:
   - {fileID: 0}
   direction: {x: 0, y: 0, z: 0}
   waitDuration: 1.01
-  rb: {fileID: 7785374798626604693}
+  rb: {fileID: 7293500794794146568}
   dst: 0
   detectionDistance: 5
   detectionLayers:
@@ -187,9 +188,55 @@ MonoBehaviour:
     m_Bits: 256
   rayCount: 5
   spreadAngle: 45
-  showDebugRays: 1
+  showDebugRays: 0
   IsFacingLeft: 0
 --- !u!61 &1094351585443891047
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4001400534484940481}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0.032761574, y: -0.7316762}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 2.375988, y: 2.4633517}
+  m_EdgeRadius: 0
+--- !u!61 &4650710938536384654
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -296,7 +343,7 @@ MonoBehaviour:
   sightRange: 5.32
   sightRadius: 7.32
   dst: 0
-  showDebugRays: 1
+  showDebugRays: 0
   cooldown: 0.412
   playerOutOfSight: 0
   isShooting: 0
@@ -313,7 +360,7 @@ GameObject:
   - component: {fileID: 5388712468890746885}
   - component: {fileID: 5414794362399942020}
   - component: {fileID: 2886630535947882881}
-  - component: {fileID: 7785374798626604693}
+  - component: {fileID: 7293500794794146568}
   m_Layer: 7
   m_Name: _SOLDIER_PLACEHOLDER
   m_TagString: Untagged
@@ -351,7 +398,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 284c8d2b62663374f8db878619a9a312, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StateManager
-  gameDirector: {fileID: 0}
   currentState: {fileID: 1747016469968156033}
 --- !u!61 &5388712468890746885
 BoxCollider2D:
@@ -464,7 +510,7 @@ MonoBehaviour:
   playerPos: {fileID: 0}
   spriteRenderer: {fileID: 4652210196836969476}
   bDebugCanMove: 1
---- !u!50 &7785374798626604693
+--- !u!50 &7293500794794146568
 Rigidbody2D:
   serializedVersion: 5
   m_ObjectHideFlags: 0
