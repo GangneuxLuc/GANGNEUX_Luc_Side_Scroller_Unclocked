@@ -80,10 +80,17 @@ public class PlayerController : MonoBehaviour
         bool jumpCancel = Input.GetButtonUp("Jump");
 
         bool isGrounded = Physics2D.Raycast(transform.position, Vector2.down,jumpRange, groundLayer);
+      
         if (jump && isGrounded) // Si le joueur appuie sur le bouton de saut et qu'il est au sol, on applique une force de saut
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
+            float ySpeed = Mathf.Abs(rb.linearVelocity.y);
+            anim.SetTrigger("JumpMontée");
+           
+
             jump = false;
+           
+
         }
         if (jumpCancel && !isGrounded) // Si le joueur relâche le bouton de saut et qu'il n'est pas au sol, on réduit la force de saut pour permettre un saut plus court
         {
@@ -94,11 +101,20 @@ public class PlayerController : MonoBehaviour
             }
 
         }
-            
+        float yVelocity = (rb.linearVelocity.y);
+        anim.SetFloat("yVel", yVelocity);
+        // Animation : on joue la vitesse verticale dans l'animation pour faire varier les animations de saut en fonction de la vitesse verticale du joueur
+        if (isGrounded)
+        {
+            anim.SetBool("isGrounded", true);
+        }
+        else
+        {
+            anim.SetBool("isGrounded", false);
+        }
 
 
-
-            if (inputSlice) StartCoroutine(SliceAttackCoroutine());
+        if (inputSlice) StartCoroutine(SliceAttackCoroutine());
         
       if (GodModeIsOn)
         {
