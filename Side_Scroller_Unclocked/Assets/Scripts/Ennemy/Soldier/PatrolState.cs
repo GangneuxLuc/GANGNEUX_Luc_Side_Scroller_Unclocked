@@ -1,6 +1,4 @@
 using System.Collections;
-using System.Security.Cryptography;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class PatrolState : State
@@ -31,27 +29,6 @@ public class PatrolState : State
 
     int curTarget = 0;
     public bool pWait;
-
-    [Header("Return to patrol")]
-    [SerializeField] float maxDisplacement = 6f;
-    [SerializeField] float returnSpeedMultiplier = 1.2f;
-    bool returningToPatrol = false;
-    Coroutine returnCoroutine;
-
-    [Header("Movement")]
-    [SerializeField] float arrivalThreshold = 0.5f; // seuil d'arrivée
-
-    private void Awake()
-    {
-        // Défauts sûrs pour éviter null refs
-        if (t == null) t = transform;
-        if (rb == null) rb = GetComponent<Rigidbody2D>();
-        if (myPatrolTarget == null || myPatrolTarget.Length == 0)
-        {
-            Debug.LogWarning($"{name} : myPatrolTarget non assigné ou vide.");
-        }
-        curTarget = Mathf.Clamp(curTarget, 0, (myPatrolTarget != null && myPatrolTarget.Length > 0) ? myPatrolTarget.Length - 1 : 0);
-    }
 
     private void Start()
     {
@@ -134,7 +111,7 @@ public class PatrolState : State
         if (!pWait)
         {
             rb.linearVelocity = new Vector2(direction.x * speed, rb.linearVelocity.y);
-           // t.position += new Vector3(direction.x * speed * Time.deltaTime, 0);
+        
             if (direction.x < 0)
             {
                 SetFacing(-1);

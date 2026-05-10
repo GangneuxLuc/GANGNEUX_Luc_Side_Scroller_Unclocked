@@ -1,8 +1,9 @@
 using System.Collections;
 using UnityEngine;
-using static UnityEngine.ParticleSystem;
 
-public class AttackState : State
+public class AttackState : State 
+    
+    //Régler arm Pivot
 {
     public PatrolState Patrol;
     [Header("References")]
@@ -92,19 +93,18 @@ public class AttackState : State
     }
     private void SetFacing(int direction)// M?thode pour faire face ? la direction de d?placement en ajustant l'?chelle locale de l'objet
     {
-        //Vector2 s = t.localScale;
-        Vector2 s = sprite.transform.localScale;
+        Vector2 s = t.localScale;
         s.x = Mathf.Abs(s.x) * -direction;
-       // t.localScale = s;
-        sprite.transform.localScale = s;
+        t.localScale = s;
+       
 
     }
     private void playerSighting()
     {
         dst = Vector2.Distance(transform.position, playerPos.position);
         //Savoir si le joueur est à gauche ou à droite de l'ennemi pour faire face à la bonne direction
-            if (playerPos.position.x < transform.position.x) SetFacing(-1);
-            else SetFacing(1);
+            if (playerPos.position.x < transform.position.x) SetFacing(1);
+            else SetFacing(-1);
 
         if (dst < sightRange) playerOutOfSight = false;
         else playerOutOfSight = true;
@@ -118,42 +118,47 @@ public class AttackState : State
             {
                 for (int j = 0; j < bulletPerBurst; j++)
                 {
-                    GameObject bullet = Instantiate(bulletPrefab, firePoint.position, Quaternion.identity); // Instancie une abble depuis le firepoint avec une rotaiton de -90°
+                    // Instancier la balle sans parent, rotation neutre ; on gère rotation/vitesse avant de la parenter
+                    GameObject bullet = Instantiate(bulletPrefab, firePoint.position, Quaternion.identity);
 
+                    // trouver le parent actif (mais ne pas parenter maintenant)
                     GameObject activeChild = null;
                     foreach (Transform child in activeTimeline)
                     {
                         if (child.gameObject.activeSelf)
                         {
                             activeChild = child.gameObject;
-                            bullet.transform.SetParent(child, true);
                             break; // stop après avoir trouvé le premier enfant actif
                         }
                     }
 
-                    // Calcul de la direction
+                    // Calcul de la direction (toujours recalculée pour chaque itération)
                     if (playerPos != null)
                     {
                         // Tir dirigé vers le joueur
                         direction = (playerPos.position - firePoint.position).normalized;
-
-                        // Orienter la rotation de la balle pour qu'elle pointe vers la cible (2D)
-                        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-                        bullet.transform.rotation = Quaternion.Euler(0f, 0f, angle);
                     }
                     else
                     {
                         // Vers l'avant du FirePoint (utiliser right pour 2D)
                         direction = firePoint.right;
-                        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-                        bullet.transform.rotation = Quaternion.Euler(0f, 0f, angle);
                     }
+
+                    // Orienter la rotation de la balle pour qu'elle pointe vers la cible (2D) + offset si nécessaire
+                    float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg ;
+                    bullet.transform.rotation = Quaternion.Euler(0f, 0f, angle);
 
                     // Ajoute d'une vitesse 
                     rb = bullet.GetComponent<Rigidbody2D>();
                     if (rb != null)
                     {
                         rb.linearVelocity = direction * bulletSpeed;
+                    }
+
+                    // Parent après avoir défini rotation et vitesse pour éviter inversion (scale négatif du parent)
+                    if (activeChild != null)
+                    {
+                        bullet.transform.SetParent(activeChild.transform, true);
                     }
 
                     yield return new WaitForSeconds(shootingSpeed);

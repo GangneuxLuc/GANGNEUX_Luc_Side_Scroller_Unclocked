@@ -1,87 +1,57 @@
-using System.Collections;
+Ôªøusing System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class ChunkManager : MonoBehaviour
+public class ChunkManager : MonoBehaviour // Script pour g√©rer le chargement et le d√©chargement des chunks quand on passe dans une triggerZone
 {
-    [SerializeField] private GameObject[] Chunks1755; // Prefab du chunk ‡ instancier
-    [SerializeField] private GameObject[] Chunks2055; // Prefab du chunk ‡ instancier
-    [SerializeField] private GameObject[] ChunksTriggers; // Triggers pour dÈtecter la sortie du chunk
+    public GameObject[] Chunks1755; // Tableau de chunks √† activer/d√©sactiver
+    public GameObject[] Chunks2055; 
 
     // Si vous voulez filtrer par joueur, mettez ici le tag du joueur
     [SerializeField] private string playerTag = "Player";
 
-    private void Awake()
+    [SerializeField] private Image TransitionImage; // Image utilis√©e pour la transition de fade]
+
+    private int currentChunkIndex; // Index du chunk actuel
+    private int nextChunkIndex; // Index du prochain chunk 
+    private int previousChunkIndex; // Index du chunk pr√©c√©dent
+
+    private int nextNextChunkIndex; // Index du chunk apr√®s le prochain chunk
+    private int previousPreviousChunkIndex; // Index du chunk avant le chunk pr√©c√©dent
+
+    public void Start()
     {
-        foreach (GameObject triggerObj in ChunksTriggers)
-        {
-            if (triggerObj == null) continue;
-
-            // S'assurer qu'il y a un Collider2D et qu'il est en mode trigger
-            Collider2D col = triggerObj.GetComponent<Collider2D>();
-            if (col != null)
-            {
-                col.isTrigger = true;
-            }
-            else
-            {
-                Debug.LogWarning($"ChunkManager: {triggerObj.name} n'a pas de Collider2D.");
-            }
-
-            // Ajouter ou rÈcupÈrer le forwarder qui relaie les ÈvÈnements de trigger vers ce manager
-            var forwarder = triggerObj.GetComponent<TriggerForwarder>();
-            if (forwarder == null)
-            {
-                forwarder = triggerObj.AddComponent<TriggerForwarder>();
-            }
-
-            forwarder.Manager = this;
-        }
+        // currentCunkIndex est √©gal au premier √©l√©ment du tableau de chunks, je veux donc √©crire √ßa dans le code
+        currentChunkIndex = 0;
+        nextChunkIndex = 1;
+        previousChunkIndex = -1;
+        nextNextChunkIndex = 2;
+        previousPreviousChunkIndex = -2;
     }
 
-    // MÈthode appelÈe par les TriggerForwarder quand un objet entre dans un trigger enfant
-    public void OnChildTriggerEnter(GameObject triggerObj, Collider2D other)
+    /*  public void LoadNextChunk()
+      {
+          Debug.Log("LoadNextChunk called");
+          if (previousChunkIndex >= 0)
+          {  // Chunks1755[previousPreviousChunkIndex].SetActive(false); // D√©sactive le chunk pr√©c√©dent
+              Chunks2055[previousPreviousChunkIndex].SetActive(false);
+          }
+
+
+          //Chunks1755[nextNextChunkIndex].SetActive(true); // Active le chunk suivant
+          Chunks2055[nextNextChunkIndex].SetActive(true);
+
+          previousPreviousChunkIndex = previousChunkIndex; // Met √† jour l'index du chunk avant le chunk pr√©c√©dent
+          previousChunkIndex = currentChunkIndex; // Met √† jour l'index du chunk pr√©c√©dent
+          currentChunkIndex = nextChunkIndex; // Met √† jour l'index du chunk actuel
+          nextChunkIndex = nextNextChunkIndex; // Met √† jour l'index du prochain chunk
+          nextNextChunkIndex++; // Incr√©mente l'index du chunk apr√®s le prochain chunk
+
+      } */
+
+
+    public void ChunkManagement()
     {
-        Debug.Log($"ChunkManager: Trigger {triggerObj.name} dÈtectÈ l'entrÈe de {other.name}.");
-        if (other == null || triggerObj == null) return;
-
-        // Exemple : ne rÈagir que si c'est le joueur qui entre
-        if (!other.CompareTag(playerTag)) return;
-        StartCoroutine(LoadNextChunk(Chunks1755));
-        StartCoroutine(LoadNextChunk(Chunks2055));
-        
-    }
-
-    // Optionnel : gestion de la sortie si nÈcessaire
-    public void OnChildTriggerExit(GameObject triggerObj, Collider2D other)
-    {
-        // ImplÈmenter si vous voulez une logique ‡ la sortie
-    }
-
-    IEnumerator LoadNextChunk(GameObject[] chunkArray)
-    {
-        yield return new WaitForSeconds(1f); // Attendre un peu avant de charger le prochain chunk
-
-        //Activer le Chunk suivant dans le tableau et dÈsactiver le prÈcÈdent 
-        // Exemple minimal :
-        if (chunkArray != null && chunkArray.Length > 0)
-        {
-            //Instantiate(chunkArray[0], transform.position, Quaternion.identity);
-        }
-    }
-}
-
-// Petit composant ‡ ajouter aux objets triggers pour relayer les ÈvÈnements 2D vers ChunkManager
-public class TriggerForwarder : MonoBehaviour
-{
-    public ChunkManager Manager;
-
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        Manager?.OnChildTriggerEnter(gameObject, other);
-    }
-
-    private void OnTriggerExit2D(Collider2D other)
-    {
-        Manager?.OnChildTriggerExit(gameObject, other);
+        //Selon la direction du joueur r√©cup√©r√© dans les triggerZones, on charge le chunk d'apr√®s ou pr√©c√©dent dans le tableau et on d√©charge le chunk d'avant ou d'apr√®s dans le tableau
     }
 }

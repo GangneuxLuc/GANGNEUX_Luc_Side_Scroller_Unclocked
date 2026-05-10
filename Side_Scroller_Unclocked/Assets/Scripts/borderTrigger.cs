@@ -4,23 +4,23 @@ using UnityEngine;
 public class borderTrigger : MonoBehaviour
 {
     public bool playerInTrigger = false;
-    bool canTp = false;
-    Transform player;
+    [SerializeField] private GameDirector gameDirector; // référence au script GameDirector pour vérifier si le joueur est dans le trigger
+
     void OnTriggerEnter2D(Collider2D other)
     {
+       
         if (other.CompareTag("Player"))
         {
-            StartCoroutine(ScreenFade());
+            playerInTrigger = true;
+            gameDirector.Respawn();
         }
-        else Destroy(other.gameObject);
     }
 
-    IEnumerator ScreenFade()
+    private void OnTriggerExit2D(Collider2D collision)
     {
-        playerInTrigger = true;
-        canTp = true;
-        yield return new WaitForSeconds(0.2f);
-        playerInTrigger = false;
-        yield return new WaitForSeconds(0.2f);
+        if (collision.CompareTag("Player"))
+        {
+            playerInTrigger = false;
+        }
     }
 }

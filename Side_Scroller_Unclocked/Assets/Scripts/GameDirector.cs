@@ -50,7 +50,6 @@ public class GameDirector : MonoBehaviour
     void Update()
     {
         ShowDebugOptions();
-        Respawn();
         if (Input.GetKeyDown(KeyCode.R)) // Appuyez sur la touche R pour effacer la position sauvegardée et réinitialiser le checkpoint
         {
             ErasePosition();
@@ -77,16 +76,10 @@ public class GameDirector : MonoBehaviour
     //Gérer les Checkpoints et le respawn du joueur
     public void Respawn() //Méthode qui gère le respawn de mon joueur au dernier checkpoint passé.
     {
-        if (borderTrigger.playerInTrigger)
-        {
-            Debug.Log("Player is in trigger, fading in");
-            RespawnFadeImage.CrossFadeAlpha(1.0f, 0.05f, false); // Fade to 100% alpha over 1 second
+        
             LoadPosition();
-        }
-        else
-        {
-            RespawnFadeImage.CrossFadeAlpha(0.0f, 0.2f, false); // Fade to 50% alpha over 1 second
-        }
+            RespawnFadeImage.CrossFadeAlpha(1.0f, 0.05f, false); // Fade to 100% alpha over 1 second
+       
         if (playerController != null)
         {
             if (playerController.HP <= 0)

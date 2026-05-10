@@ -15,18 +15,14 @@ public class Interactable_Props : MonoBehaviour
              {
                 if (PlayerPrefs.HasKey("FirstKey")) // Vérifie si le joueur a la clé nécessaire pour ouvrir la porte
                 {
-                    Debug.Log("Player has the key. Opening the door...");
                     OpenDoor();
                 }
-                // Code pour ouvrir la porte
-                Debug.Log("Door opened!");
             }
         }
     }
 
     private void OpenDoor()
     {
-        Debug.Log("Opening door: " + gameObject.name);
         Collider2D doorCollider = GetComponent<Collider2D>();
         SpriteRenderer doorSprite = GetComponentInChildren<SpriteRenderer>();
         if (doorCollider != null)
