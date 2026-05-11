@@ -30,7 +30,7 @@ public class ItemToGather : MonoBehaviour
     }
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (itemCanvas != null) itemCanvas.gameObject.SetActive(true); // Affiche le canvas lorsque le joueur est dans la zone de l'item
+        if (itemCanvas != null && collision.CompareTag("Player")) itemCanvas.gameObject.SetActive(true); // Affiche le canvas lorsque le joueur est dans la zone de l'item
         if (collision.CompareTag("Player") && Input.GetButton("Interact"))
         {
             // Ajoutez ici le code pour ajouter l'item à l'inventaire du joueur ou pour déclencher une action spécifique

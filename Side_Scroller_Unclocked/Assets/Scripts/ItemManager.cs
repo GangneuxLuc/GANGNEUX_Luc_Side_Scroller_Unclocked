@@ -7,7 +7,7 @@ public class ItemManager : MonoBehaviour
 
     private void Awake()
     {
-        for (int i = 0; i < 3; i++) // Ajoute trois éléments null à la liste itemList car il n'y aura que 3 items à collecter
+        for (int i = 0; i < 6; i++) // Ajoute six éléments null à la liste itemList car il n'y aura que 6 items à collecter
         {
             itemList.Add(null);
         }
