@@ -1,10 +1,10 @@
-using System.Collections;
 using UnityEngine;
+using System.Collections;
 
-public class AttackState : State // État d'attaque pour les soldats
+public class AttackState : State // Ã‰tat d'attaque pour les soldats
 
-//Régler arm Pivot 
-// Problème : animation de transition qui ne se lance pas, ou qui se lance mais ne joue pas l'animation de tir ensuite
+//RÃ©gler arm Pivot 
+// ProblÃ¨me : animation de transition qui ne se lance pas, ou qui se lance mais ne joue pas l'animation de tir ensuite
 {
     public PatrolState Patrol;
     [Header("References")]
@@ -12,9 +12,9 @@ public class AttackState : State // État d'attaque pour les soldats
     [SerializeField] Transform armPivot;
     public Transform t;
     [SerializeField] SpriteRenderer sprite;
-    [SerializeField] private AnimationClip shootTransition;
+
     [SerializeField] private Animator anim;
-    [SerializeField] private SpriteRenderer animSprite;
+    [SerializeField] private SpriteRenderer animSprite, legSprite, torsoSprite;
 
     [Header("Bullets infos")]
     public int bulletSpeed = 5;
@@ -27,7 +27,7 @@ public class AttackState : State // État d'attaque pour les soldats
     [Range(0f, 5f)] public int burst;
     [Range(0f, 5f)] public int magazineNumber;
 
-    [Header("Player Sighting")]// Variables pour la détection du joueur et le champ de vision de l'ennemi
+    [Header("Player Sighting")]// Variables pour la dÃ©tection du joueur et le champ de vision de l'ennemi
     [Range(0f, 10f)] public float sightRange;
     [Range(0f, 10f)] public float sightRadius;
     public float dst;
@@ -46,39 +46,24 @@ public class AttackState : State // État d'attaque pour les soldats
     public bool isShooting;
     private void OnEnable()
     {
-
-        anim.SetBool("onPatrol", false);
-
-        Debug.Log("AttackState");
-        if (shootCoroutine != null)
-        {
-            StopCoroutine(shootCoroutine);
-        }
-        shootCoroutine = StartCoroutine(ShootTransition());
         StartCoroutine(Cooldown());
-        
-    }
-    IEnumerator ShootTransition()
-
-    {
-        Debug.Log("ShootTransition");
-        yield return new WaitForSeconds(shootTransition.length + 1f);
-        animSprite.enabled = false;
+        anim.SetBool("Transition", true);
         anim.SetBool("isShooting", true);
+        anim.SetBool("StopShooting", false);
 
-        
 
     }
+
 
     public override State RunCurrentState()
     {
-        // Ne démarre le coroutine qu'une seule fois tant qu'il tourne
+        // Ne dÃ©marre le coroutine qu'une seule fois tant qu'il tourne
         if (shootCoroutine == null && isActivated)
         {
             shootCoroutine = StartCoroutine(Shoot());
         }
 
-        // Lorsque l'ennemi perd de vue le joueur, arrête le tir et revenir en patrol
+        // Lorsque l'ennemi perd de vue le joueur, arrÃªte le tir et revenir en patrol
         if (playerOutOfSight)
         {
             if (shootCoroutine != null)
@@ -98,38 +83,58 @@ public class AttackState : State // État d'attaque pour les soldats
         if (playerPos != null)
         {
             direction = (playerPos.position - firePoint.position).normalized;
-            armPivot.rotation = Quaternion.Euler(0, 0, Mathf.Atan2(-direction.y, -direction.x) * Mathf.Rad2Deg);
+            //armPivot.rotation = Quaternion.Euler(0, 0, Mathf.Atan2(-direction.y, -direction.x) * Mathf.Rad2Deg);
         }
     }
 
 
     private void OnDisable()
     {
-        
-         // Nettoyage si l'état est désactivé
-         if (shootCoroutine != null)
-         {
-             StopCoroutine(shootCoroutine);
-             shootCoroutine = null;
-         }
-         StopAllCoroutines();
-         isActivated = false;
-        
+
+        // Nettoyage si l'Ã©tat est dÃ©sactivÃ©
+        if (shootCoroutine != null)
+        {
+            StopCoroutine(shootCoroutine);
+            shootCoroutine = null;
+        }
+        StopAllCoroutines();
+        anim.SetBool("isShooting", false);
+        anim.SetBool("Transition", false);
+
+        isActivated = false;
+
     }
-    private void SetFacing(int direction)// Méthode pour faire face à la direction de déplacement en ajustant l'échelle locale de l'objet
+    //1 gauche, -1 pour droite
+    private void SetFacing(int direction)// MÃ©thode pour faire face Ã  la direction de dÃ©placement en ajustant l'Ã©chelle locale de l'objet
     {
         Vector2 s = t.localScale;
         s.x = Mathf.Abs(s.x) * -direction;
         t.localScale = s;
-       
+
 
     }
     private void playerSighting()
     {
         dst = Vector2.Distance(transform.position, playerPos.position);
-        //Savoir si le joueur est à gauche ou à droite de l'ennemi pour faire face à la bonne direction
-            if (playerPos.position.x < transform.position.x)  animSprite.flipX = false;
-            else animSprite.flipX = true;
+        //Savoir si le joueur est Ã  gauche ou Ã  droite de l'ennemi pour faire face Ã  la bonne direction
+        if (playerPos.position.x < transform.position.x)
+        {
+            SetFacing(1);
+            //legSprite.flipX = true; torsoSprite.flipX = true; 
+            armPivot.localScale = new Vector3(1, 1, 1);
+           armPivot.rotation = Quaternion.Euler(0, 0, Mathf.Atan2(-direction.y, -direction.x) * Mathf.Rad2Deg);
+        }
+        else
+        {
+            //legSprite.flipX = false; torsoSprite.flipX = false;
+            //armPivot.localScale = new Vector3(-1, 1, 1);
+            SetFacing(-1);
+
+            //flip le sprite et inverser la roation de l'armPivot pour que le tir soit dans la bonne direction
+            armPivot.localScale = new Vector3(1, 1, 1);
+            armPivot.localRotation = Quaternion.Euler(0, 0, Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg);
+
+        }
 
         if (dst < sightRange) playerOutOfSight = false;
         else playerOutOfSight = true;
@@ -143,7 +148,7 @@ public class AttackState : State // État d'attaque pour les soldats
             {
                 for (int j = 0; j < bulletPerBurst; j++)
                 {
-                    // Instancier la balle sans parent, rotation neutre ; on gère rotation/vitesse avant de la parenter
+                    // Instancier la balle sans parent, rotation neutre ; on gÃ¨re rotation/vitesse avant de la parenter
                     GameObject bullet = Instantiate(bulletPrefab, firePoint.position, Quaternion.identity);
 
                     // trouver le parent actif 
@@ -153,14 +158,14 @@ public class AttackState : State // État d'attaque pour les soldats
                         if (child.gameObject.activeSelf)
                         {
                             activeChild = child.gameObject;
-                            break; // stop après avoir trouvé le premier enfant actif
+                            break; // stop aprÃ¨s avoir trouvÃ© le premier enfant actif
                         }
                     }
 
                     // Calcul de la direction
                     if (playerPos != null)
                     {
-                        // Tir dirigé vers le joueur
+                        // Tir dirigÃ© vers le joueur
                         direction = (playerPos.position - firePoint.position).normalized;
                     }
                     else
@@ -170,7 +175,7 @@ public class AttackState : State // État d'attaque pour les soldats
                     }
 
                     // Orienter la rotation de la balle pour qu'elle pointe vers la cible 
-                    float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg ;
+                    float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
                     bullet.transform.rotation = Quaternion.Euler(0f, 0f, angle);
 
                     // Ajout d'une vitesse 
@@ -180,7 +185,7 @@ public class AttackState : State // État d'attaque pour les soldats
                         rb.linearVelocity = direction * bulletSpeed;
                     }
 
-                    // Parent après avoir défini rotation et vitesse pour éviter inversion (scale négatif du parent)
+                    // Parent aprÃ¨s avoir dÃ©fini rotation et vitesse pour Ã©viter inversion (scale nÃ©gatif du parent)
                     if (activeChild != null)
                     {
                         bullet.transform.SetParent(activeChild.transform, true);
@@ -192,10 +197,10 @@ public class AttackState : State // État d'attaque pour les soldats
             }
         }
 
-        // Coroutine terminée : remettre la référence à null pour pouvoir relancer proprement si nécessaire
+        // Coroutine terminÃ©e : remettre la rÃ©fÃ©rence Ã  null pour pouvoir relancer proprement si nÃ©cessaire
         shootCoroutine = null;
     }
-  
+
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
@@ -205,8 +210,8 @@ public class AttackState : State // État d'attaque pour les soldats
     private IEnumerator Cooldown()
     {
         yield return new WaitForSeconds(cooldown);
-        // Permet de relancer le tir après le cooldown
-        // Réinitialiser les variables d'état
+        // Permet de relancer le tir aprÃ¨s le cooldown
+        // RÃ©initialiser les variables d'Ã©tat
         playerOutOfSight = false;
         shootCoroutine = null;
         isActivated = true;

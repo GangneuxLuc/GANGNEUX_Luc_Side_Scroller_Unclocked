@@ -11,7 +11,7 @@ public class EnnemyClass : MonoBehaviour // Classe de base pour les ennemis, gèr
     public Transform activeTimeline;
     public GameObject player;
     public Transform playerPos;
-    public SpriteRenderer spriteRenderer;
+    public SpriteRenderer sprite, legSprite, torsoSprite;
     protected Rigidbody2D rb;
 
     protected float dst;
@@ -25,7 +25,7 @@ public class EnnemyClass : MonoBehaviour // Classe de base pour les ennemis, gèr
         playerPos = player.GetComponent<Transform>();
         rb = GetComponent<Rigidbody2D>();
 
-        originalColor = spriteRenderer.color;
+        originalColor = sprite.color;
     }
 
 
@@ -54,9 +54,13 @@ public class EnnemyClass : MonoBehaviour // Classe de base pour les ennemis, gèr
     }
     protected IEnumerator Feedback() // Feedback visuel lorsque l'ennemi est touché
     {
-        spriteRenderer.color = Color.red;
+        sprite.color = Color.red;
+        legSprite.color = Color.red;
+        torsoSprite.color = Color.red;
         yield return new WaitForSeconds(0.05f);
-        spriteRenderer.color = originalColor;
+        sprite.color = originalColor;
+        legSprite.color = originalColor;
+        torsoSprite.color = originalColor;
     }
 
     protected virtual void OnDisable()

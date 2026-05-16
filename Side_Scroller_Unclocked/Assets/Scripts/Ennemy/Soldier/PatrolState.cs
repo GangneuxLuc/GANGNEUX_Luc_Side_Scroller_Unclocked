@@ -8,13 +8,18 @@ public class PatrolState : State // Classe représentant l'état de patrouille d
     public AttackState Attack;
     [SerializeField] bool playerDetected = false;
     [SerializeField] private Animator anim;
-    [SerializeField] private SpriteRenderer animSprite;
+    [SerializeField] private SpriteRenderer animSprite, legSprite, torsoSprite;
+    [SerializeField] private AnimationClip shootTransition;
+    [SerializeField] private GameObject questionMark;
+    [SerializeField] private GameObject exclamationMark;
 
     [Header("Patrol settings")]
     public Transform[] myPatrolTarget;
     [SerializeField] Vector3 direction;
     [Range(0, 5f)] public float waitDuration;
     [SerializeField] Rigidbody2D rb;
+    bool onPatrol;
+    bool onInvestigation;
 
     [Header("Player detection settings")]
     public float dst;
@@ -25,13 +30,21 @@ public class PatrolState : State // Classe représentant l'état de patrouille d
     [Range(0, 30f)] public int rayCount = 5;
     [Range(0f, 180f)] public float spreadAngle = 45f;
 
+    [Header("Investigation Settings")]
+    [Range(-15f, 15f)] public float investigationDetectionDistance = 5f;
+    public LayerMask investigationLayers;
+    [Range(0, 30f)] public int investigationRayCount = 5;
+    [Range(0f, 180f)] public float investigationSpreadAngle = 45f;
+    Coroutine Investigation;
+    [SerializeField] private float investigationDuration = 5f;
+
     [Header("Debug")]
     public bool showDebugRays = true;
     public bool IsFacingLeft;
 
     int curTarget = 0;
     public bool pWait;
-
+    
     private void Start()
     {
         GetDirection();
@@ -39,22 +52,50 @@ public class PatrolState : State // Classe représentant l'état de patrouille d
 
     private void OnEnable()
     {
-        Debug.Log("PatrolState");
-        GetDirection();
-        animSprite.enabled = true;
-        Debug.Log("PatrolState");
-        anim.SetBool("isShooting", false);
-        anim.SetBool("onPatrol", true);
-
-        
-
        
+        onPatrol = true;
+        // animSprite.enabled = true;
+        anim.SetBool("Transition", false);
+        anim.SetBool("StopShooting", false);
+        // StartCoroutine(WaitForTransition());
+        anim.SetBool("StopShooting", true);
+        anim.SetBool("onPatrol", true);
+        GetDirection();
+       
+
+
+    }
+    IEnumerator WaitForTransition()
+    {
+        anim.SetBool("StopShooting", true);
+        yield return new WaitForSeconds(shootTransition.length);
+        Debug.Log("Transition finished");
+        GetDirection();
+        anim.SetBool("onPatrol", true);
+    }
+    private void OnDisable()
+    {
+        anim.SetBool("onPatrol", false);
+        anim.SetBool("StopShooting", false);
+
+
+
     }
     public override State RunCurrentState()
     {
+        if (PlayerInvestigation() && !playerDetected)
+        {
+            if (Investigation == null) Investigation = StartCoroutine(Investigate());
+        }
+
         if (PlayerDetection() || playerDetected)
         {
             playerDetected = false;
+            if (Investigation != null)
+            {
+                StopCoroutine(Investigation);
+                Investigation = null;
+            }
             return Attack;
         }
         return this;
@@ -82,7 +123,29 @@ public class PatrolState : State // Classe représentant l'état de patrouille d
         }
         return isPlayerDetected;
     }
- 
+ private bool PlayerInvestigation(bool isPlayerInRange = false)
+    {
+       
+        if (playerPos == null) return false;
+        float startAngle = -investigationSpreadAngle / 2f;
+        float angleStep = investigationRayCount > 1 ? investigationSpreadAngle / (investigationRayCount - 1) : 0f;
+
+        for (int i = 0; i < Mathf.Max(1, investigationRayCount); i++)
+        {
+            float angle = startAngle + (angleStep * i);
+            Vector2 dir = RotateVector(transform.right, angle);
+            if (IsFacingLeft) dir = -dir;
+
+            RaycastHit2D hit = Physics2D.Raycast(transform.position, dir, investigationDetectionDistance, investigationLayers);
+            if (showDebugRays) Debug.DrawRay(transform.position, dir * investigationDetectionDistance, hit.collider ? Color.red : Color.blue);
+            if (hit.collider != null && hit.collider.CompareTag("Player"))
+            {
+                isPlayerInRange = true;
+                break;
+            }
+        }
+        return isPlayerInRange;
+    }
 
     private Vector2 RotateVector(Vector2 v, float degrees) // Méthode pour faire tourner un vecteur de direction d'un certain angle en degrés
     {
@@ -123,30 +186,27 @@ public class PatrolState : State // Classe représentant l'état de patrouille d
 
     void Update()
     {
-        if (!pWait)
+        anim.SetBool("wait", pWait);
+        if (!pWait && onPatrol)
         {
             rb.linearVelocity = new Vector2(direction.x * speed, rb.linearVelocity.y);
-        
+            
+
             if (direction.x < 0)
             {
-               // SetFacing(-1);
-                animSprite.flipX = true;
+                
+                 SetFacing(-1);
+                //animSprite.flipX = true;
                 IsFacingLeft = true;
             }
             else
             {
-                //SetFacing(1);
-                animSprite.flipX = false;
+                SetFacing(1);
+                //animSprite.flipX = false;
                 IsFacingLeft = false;
             }
-            if (rb.linearVelocity == Vector2.zero)
-            {
-                anim.SetBool("wait", true);
-            }
-            else
-            {
-                anim.SetBool("wait", false);
-            }
+           
+           
 
             if (Vector3.Distance(myPatrolTarget[curTarget].position, t.position) <= 0.5)
             {
@@ -157,8 +217,60 @@ public class PatrolState : State // Classe représentant l'état de patrouille d
                 StartCoroutine(Wait());
             }
            //Si on sort de la zone de patrouille, on y retourne
-
         }
+    }
+
+    IEnumerator Investigate()
+    {
+        Debug.Log("Player detected for investigation");
+        onInvestigation = true;
+        onPatrol = false;
+        // Code pour faire enquêter l'ennemi vers la dernière position connue du joueur
+        //faire apapraitre le ?
+        //faire un fade in du ? pour indiquer que l'ennemi est en mode enquête
+
+        SpriteRenderer qSprite = questionMark.GetComponent<SpriteRenderer>();
+
+       // questionMark.transform.localScale =  // Ajuster la taille du point d'interrogation
+       if (t.localScale.x > 0)
+        {
+
+            questionMark.transform.localScale = new Vector3(1.274f, 1.274f, 1.274f);
+        }
+        else
+        {
+            questionMark.transform.localScale = new Vector3(1.274f, 1.274f, 1.274f);
+        }
+        questionMark.SetActive(true);
+        float duration = 0.5f; // Durée du fade-in en secondes
+        Color c = qSprite.color;
+        c.a = 0f;
+        qSprite.color = c;
+        float time = 0f;
+        while (time < duration) 
+        {
+            time += Time.deltaTime;
+            c.a = Mathf.Clamp01(time / duration);
+            qSprite.color = c;
+            yield return null;
+        }
+        c.a = 1f;
+        qSprite.color = c;
+        
+        
+        new WaitForSeconds(0.5f); // Attendre un moment avant de commencer à enquêter
+
+         Vector2 lastKnownPosition = playerPos.position; // Obtenir la dernière position connue du joueur
+        // Déplacer l'ennemi vers la dernière position connue du joueur
+        rb.linearVelocity = Vector2.zero; // Arrêter le mouvement actuel
+        Vector2 directionToLastKnown = (lastKnownPosition - (new Vector2(transform.position.x, transform.position.y))).normalized; // Calculer la direction vers la dernière position connue
+        rb.linearVelocity.x = directionToLastKnown * speed; // Déplacer l'ennemi vers la dernière position connue
+
+
+        yield return new WaitForSeconds(investigationDuration); // Attendre un moment avant de revenir à la patrouille
+        questionMark.SetActive(false); // Faire disparaître le ? après l'enquête
+        onInvestigation = false; // L'ennemi n'est plus en mode enquête
+        GetDirection(); // Recalculer la direction vers la cible de patrouille
     }
 }
 
