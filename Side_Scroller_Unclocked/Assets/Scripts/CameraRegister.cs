@@ -1,7 +1,7 @@
 using Cinemachine;
 using UnityEngine;
 
-public class CameraRegister : MonoBehaviour
+public class CameraRegister : MonoBehaviour 
 {
     private void OnEnable()
     {

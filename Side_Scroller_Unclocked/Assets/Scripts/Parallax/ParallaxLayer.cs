@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [System.Serializable] //Comme [SerializField] mais pour une classe
-public class ParallaxLayer 
+public class ParallaxLayer  // Classe pour gérer les couches de parallax, avec des vitesses de déplacement différentes pour créer un effet de profondeur
 {
     public float speedX = 0.5f;
     public float speedY = 0.2f;
@@ -14,7 +14,7 @@ public class ParallaxLayer
     private float _spriteWidth;
     private bool _infiniteX;
 
-    public ParallaxLayer(Transform t)
+    public ParallaxLayer(Transform t) 
     {
         _transform = t;
         _targetPosition = t.position;
@@ -48,7 +48,7 @@ public class ParallaxLayer
         }
     }
 
-    private void WrapHorizontal()
+    private void WrapHorizontal() // Fonction pour faire en sorte que les couches de parallaxe se répètent horizontalement lorsque la caméra se déplace
     {
         float camX = Camera.main.transform.position.x;
         float diffX = camX - _transform.position.x;

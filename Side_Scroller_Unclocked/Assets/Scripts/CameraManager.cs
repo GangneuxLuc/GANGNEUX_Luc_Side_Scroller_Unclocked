@@ -2,18 +2,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
 
-public class CameraManager : MonoBehaviour
+public class CameraManager : MonoBehaviour //Classe statique pour gérer les caméras virtuelles de Cinemachine ( Code récupérer grâce à un tuto)
 {
     static List<CinemachineVirtualCamera> cameras = new List<CinemachineVirtualCamera>();
 
     public static CinemachineVirtualCamera ActiveCamera = null;
 
-    public static bool IsActiveCamera(CinemachineVirtualCamera camera)
+    public static bool IsActiveCamera(CinemachineVirtualCamera camera) // Fonction pour vérifier si une caméra est la caméra active
     {
         return camera == ActiveCamera;
     }
 
-    public static void SwitchCamera(CinemachineVirtualCamera newCamera)
+    public static void SwitchCamera(CinemachineVirtualCamera newCamera) // Fonction pour changer la caméra active
     {
         newCamera.Priority = 10;
         ActiveCamera = newCamera;

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class ParallaxController : MonoBehaviour
+public class ParallaxController : MonoBehaviour // Contrôleur de parallaxe qui gère le mouvement des différentes couches de parallaxe en fonction du mouvement de la caméra
 {
     [Header("Camera Settings")]
     public Camera cam;
@@ -15,7 +15,7 @@ public class ParallaxController : MonoBehaviour
     public ParallaxLayer[] layers;
     private Vector3 previousCamPos;
 
-    private void Awake()
+    private void Awake() // Dans l'Awake j'attribue les valeurs
     {   
         if (cam == null)  cam = Camera.main;
         previousCamPos = cam.transform.position;
@@ -30,7 +30,7 @@ public class ParallaxController : MonoBehaviour
         }
     }
 
-    private void LateUpdate()
+    private void LateUpdate() // Dans le LateUpdate je gère le mouvement des couches de parallaxe en fonction du mouvement de la caméra
     {
         Vector3 camPos = cam.transform.position;
         Vector3 delta = camPos - previousCamPos;

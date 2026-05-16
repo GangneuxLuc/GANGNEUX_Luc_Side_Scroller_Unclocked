@@ -1,9 +1,10 @@
 using System.Collections;
 using UnityEngine;
 
-public class AttackState : State 
-    
-    //Régler arm Pivot
+public class AttackState : State // État d'attaque pour les soldats
+
+//Régler arm Pivot 
+// Problème : animation de transition qui ne se lance pas, ou qui se lance mais ne joue pas l'animation de tir ensuite
 {
     public PatrolState Patrol;
     [Header("References")]
@@ -11,6 +12,9 @@ public class AttackState : State
     [SerializeField] Transform armPivot;
     public Transform t;
     [SerializeField] SpriteRenderer sprite;
+    [SerializeField] private AnimationClip shootTransition;
+    [SerializeField] private Animator anim;
+    [SerializeField] private SpriteRenderer animSprite;
 
     [Header("Bullets infos")]
     public int bulletSpeed = 5;
@@ -23,7 +27,7 @@ public class AttackState : State
     [Range(0f, 5f)] public int burst;
     [Range(0f, 5f)] public int magazineNumber;
 
-    [Header("Player Sighting")]
+    [Header("Player Sighting")]// Variables pour la détection du joueur et le champ de vision de l'ennemi
     [Range(0f, 10f)] public float sightRange;
     [Range(0f, 10f)] public float sightRadius;
     public float dst;
@@ -42,9 +46,30 @@ public class AttackState : State
     public bool isShooting;
     private void OnEnable()
     {
+
+        anim.SetBool("onPatrol", false);
+
+        Debug.Log("AttackState");
+        if (shootCoroutine != null)
+        {
+            StopCoroutine(shootCoroutine);
+        }
+        shootCoroutine = StartCoroutine(ShootTransition());
         StartCoroutine(Cooldown());
         
     }
+    IEnumerator ShootTransition()
+
+    {
+        Debug.Log("ShootTransition");
+        yield return new WaitForSeconds(shootTransition.length + 1f);
+        animSprite.enabled = false;
+        anim.SetBool("isShooting", true);
+
+        
+
+    }
+
     public override State RunCurrentState()
     {
         // Ne démarre le coroutine qu'une seule fois tant qu'il tourne
@@ -53,7 +78,7 @@ public class AttackState : State
             shootCoroutine = StartCoroutine(Shoot());
         }
 
-        // Lorsque l'ennemi perd de vue le joueur, arrêter proprement le tir et revenir en patrol
+        // Lorsque l'ennemi perd de vue le joueur, arrête le tir et revenir en patrol
         if (playerOutOfSight)
         {
             if (shootCoroutine != null)
@@ -91,7 +116,7 @@ public class AttackState : State
          isActivated = false;
         
     }
-    private void SetFacing(int direction)// M?thode pour faire face ? la direction de d?placement en ajustant l'?chelle locale de l'objet
+    private void SetFacing(int direction)// Méthode pour faire face à la direction de déplacement en ajustant l'échelle locale de l'objet
     {
         Vector2 s = t.localScale;
         s.x = Mathf.Abs(s.x) * -direction;
@@ -103,8 +128,8 @@ public class AttackState : State
     {
         dst = Vector2.Distance(transform.position, playerPos.position);
         //Savoir si le joueur est à gauche ou à droite de l'ennemi pour faire face à la bonne direction
-            if (playerPos.position.x < transform.position.x) SetFacing(1);
-            else SetFacing(-1);
+            if (playerPos.position.x < transform.position.x)  animSprite.flipX = false;
+            else animSprite.flipX = true;
 
         if (dst < sightRange) playerOutOfSight = false;
         else playerOutOfSight = true;
@@ -121,7 +146,7 @@ public class AttackState : State
                     // Instancier la balle sans parent, rotation neutre ; on gère rotation/vitesse avant de la parenter
                     GameObject bullet = Instantiate(bulletPrefab, firePoint.position, Quaternion.identity);
 
-                    // trouver le parent actif (mais ne pas parenter maintenant)
+                    // trouver le parent actif 
                     GameObject activeChild = null;
                     foreach (Transform child in activeTimeline)
                     {
@@ -132,7 +157,7 @@ public class AttackState : State
                         }
                     }
 
-                    // Calcul de la direction (toujours recalculée pour chaque itération)
+                    // Calcul de la direction
                     if (playerPos != null)
                     {
                         // Tir dirigé vers le joueur
@@ -140,15 +165,15 @@ public class AttackState : State
                     }
                     else
                     {
-                        // Vers l'avant du FirePoint (utiliser right pour 2D)
+                        // Vers l'avant du FirePoint
                         direction = firePoint.right;
                     }
 
-                    // Orienter la rotation de la balle pour qu'elle pointe vers la cible (2D) + offset si nécessaire
+                    // Orienter la rotation de la balle pour qu'elle pointe vers la cible 
                     float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg ;
                     bullet.transform.rotation = Quaternion.Euler(0f, 0f, angle);
 
-                    // Ajoute d'une vitesse 
+                    // Ajout d'une vitesse 
                     rb = bullet.GetComponent<Rigidbody2D>();
                     if (rb != null)
                     {

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Interactable_Props : MonoBehaviour
+public class Interactable_Props : MonoBehaviour // Ce script gère les interactions avec les props dans le jeu, tels que les portes, les leviers, etc.
 {
     private void OnTriggerStay2D(Collider2D collision)
     {

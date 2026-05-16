@@ -1,15 +1,15 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GodMode : MonoBehaviour
+public class GodMode : MonoBehaviour // Script pour activer/désactiver le GODMODE du joueur en un clic depuis le panneau de debug
 {
-    private PlayerController playerController;
+    private PlayerController playerController; 
     private void Awake()
     {
         playerController = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
     }
 
-    public void ToggleGodMode()
+    public void ToggleGodMode() // Fonction pour basculer le God Mode du joueur et feedback visuel du bouton en fonction de l'état du God Mode
     {
         if (playerController != null)
         {

@@ -1,9 +1,10 @@
 using UnityEngine;
+using System.Collections;
 
 public class StateManager : MonoBehaviour
 {
     public State currentState;
-
+  
     private void RunStateMachine()
     {
         State nextState = currentState?.RunCurrentState();
@@ -12,7 +13,13 @@ public class StateManager : MonoBehaviour
         {
             SwitchToNextState(nextState);
         }
+
+      
+
     }
+
+    
+
     private void SwitchToNextState(State nextState)
     {
         // désactive l'ancien état s'il existe

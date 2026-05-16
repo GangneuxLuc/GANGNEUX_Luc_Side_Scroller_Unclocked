@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class ItemToGather : MonoBehaviour
+public class ItemToGather : MonoBehaviour //Script pour collecter les items avec un feedback
 {
     [Header("References")]
     [SerializeField] Canvas itemCanvas; // Canvas pour afficher les interactions possibles avec l'item
@@ -33,7 +33,7 @@ public class ItemToGather : MonoBehaviour
         if (itemCanvas != null && collision.CompareTag("Player")) itemCanvas.gameObject.SetActive(true); // Affiche le canvas lorsque le joueur est dans la zone de l'item
         if (collision.CompareTag("Player") && Input.GetButton("Interact"))
         {
-            // Ajoutez ici le code pour ajouter l'item à l'inventaire du joueur ou pour déclencher une action spécifique
+            
             Debug.Log("Item collected: " + gameObject.name);
 
             GetComponent<Collider2D>().enabled = false; // Désactive le collider pour éviter les interactions supplémentaires
@@ -49,7 +49,7 @@ public class ItemToGather : MonoBehaviour
 
     private IEnumerator CollectSequence(Transform player)
     {
-        // Petite attente pour éviter double-trigger
+        // Attente pour éviter double-trigger
         yield return new WaitForSeconds(waitBeforeCenter);
 
         Camera cam = Camera.main;
@@ -64,7 +64,7 @@ public class ItemToGather : MonoBehaviour
         int originalSorting = itemSprite.sortingOrder;
         itemSprite.sortingOrder = originalSorting + 50; // Mettre devant la plupart des sprites
 
-        // Calculer la position centre de l'écran en world space (conserver la même profondeur z)
+        // Calculde  la position du centre de l'écran en world space 
         Vector3 centerWorld = originalPos;
         if (cam != null)
         {
@@ -84,7 +84,7 @@ public class ItemToGather : MonoBehaviour
             yield return null;
         }
 
-        // Avant de repartir vers le joueur : ajouter à l'ItemManager une représentation persistante
+        // Avant de repartir vers le joueur : ajouter à ItemManager 
         if (itemManager != null)
         {
             // Créer un placeholder GameObject (non visible) stocké dans le manager pour représenter l'item collecté

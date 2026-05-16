@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class ItemManager : MonoBehaviour
+public class ItemManager : MonoBehaviour// Classe pour gérer les items à collecter dans le jeu
 {
     [SerializeField] private List<GameObject> itemList; // Liste pour stocker les objets ItemToGather
 
@@ -21,7 +21,7 @@ public class ItemManager : MonoBehaviour
             if (list[i] == null) // Vérifie si l'emplacement actuel de la liste est null
             {
                 list[i] = item; // Ajoute l'item à la première position null trouvée
-                PlayerPrefs.SetString(item.name, item.name); // Sauvegarde le nom de l'item collecté dans PlayerPrefs pour la persistance
+                PlayerPrefs.SetString(item.name, item.name); // Sauvegarde le nom de l'item collecté dans PlayerPrefs 
                 PlayerPrefs.Save(); // Sauvegarde les modifications dans PlayerPrefs
                 return; // Sort de la fonction après avoir ajouté l'item
             }

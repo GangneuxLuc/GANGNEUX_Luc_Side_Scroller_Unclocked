@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class borderTrigger : MonoBehaviour
+public class borderTrigger : MonoBehaviour //Script pour gérer le trigger de bordure qui tue le joueur
 {
     public bool playerInTrigger = false;
     [SerializeField] private GameDirector gameDirector; // référence au script GameDirector pour vérifier si le joueur est dans le trigger

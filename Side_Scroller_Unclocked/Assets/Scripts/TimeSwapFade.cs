@@ -14,7 +14,7 @@ public class ScreenFade : MonoBehaviour
     }
     void Start()
     {
-        image.CrossFadeAlpha(0.0f, 1.0f, false); // Fade to 50% alpha over 1 second
+        image.CrossFadeAlpha(0.0f, 1.0f, false);
     }
 
     void Update()
@@ -23,14 +23,14 @@ public class ScreenFade : MonoBehaviour
     }
 
     void BorderScreenFade()
-    {        
+    {
         if (borderTrigger.playerInTrigger)
         {
-            image.CrossFadeAlpha(1.0f, 0.05f, false); // Fade to 100% alpha over 1 second
+            image.CrossFadeAlpha(1.0f, 0.05f, false);
         }
         else
         {
-            image.CrossFadeAlpha(0.0f, 0.2f, false); // Fade to 50% alpha over 1 second
+            image.CrossFadeAlpha(0.0f, 0.2f, false);
         }
     }
 }

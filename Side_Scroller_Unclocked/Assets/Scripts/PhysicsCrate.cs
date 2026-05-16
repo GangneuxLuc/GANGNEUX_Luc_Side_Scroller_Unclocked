@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PhysicsCrate : MonoBehaviour
+public class PhysicsCrate : MonoBehaviour //Script à ajouter sur les caisses pour qu'elles soient affectées par l'attaque du joueur, en appliquant une force dans la direction opposée .
 {
     private void OnTriggerEnter2D(Collider2D collision)
     {

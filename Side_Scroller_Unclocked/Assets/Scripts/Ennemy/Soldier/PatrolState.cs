@@ -1,12 +1,14 @@
 using System.Collections;
 using UnityEngine;
 
-public class PatrolState : State
+public class PatrolState : State // Classe représentant l'état de patrouille d'un ennemi, gérant les déplacements et la détection du joueur
 {
     [Header("Patrol references")]
     public Transform t;
     public AttackState Attack;
     [SerializeField] bool playerDetected = false;
+    [SerializeField] private Animator anim;
+    [SerializeField] private SpriteRenderer animSprite;
 
     [Header("Patrol settings")]
     public Transform[] myPatrolTarget;
@@ -35,6 +37,19 @@ public class PatrolState : State
         GetDirection();
     }
 
+    private void OnEnable()
+    {
+        Debug.Log("PatrolState");
+        GetDirection();
+        animSprite.enabled = true;
+        Debug.Log("PatrolState");
+        anim.SetBool("isShooting", false);
+        anim.SetBool("onPatrol", true);
+
+        
+
+       
+    }
     public override State RunCurrentState()
     {
         if (PlayerDetection() || playerDetected)
@@ -69,9 +84,9 @@ public class PatrolState : State
     }
  
 
-    private Vector2 RotateVector(Vector2 v, float degrees) // M�thode pour faire tourner un vecteur de direction d'un certain angle en degr�s
+    private Vector2 RotateVector(Vector2 v, float degrees) // Méthode pour faire tourner un vecteur de direction d'un certain angle en degrés
     {
-        float rad = degrees * Mathf.Deg2Rad; // Conversion de l'angle de degr�s en radians
+        float rad = degrees * Mathf.Deg2Rad; // Conversion de l'angle de degrés en radians
         float sin = Mathf.Sin(rad); // Calcul du sinus de l'angle 
         float cos = Mathf.Cos(rad); // Calcul du cosinus de l'angle
         return new Vector2(cos * v.x - sin * v.y, sin * v.x + cos * v.y); // Application de la rotation au vecteur d'origine pour obtenir le nouveau vecteur de direction
@@ -83,12 +98,12 @@ public class PatrolState : State
         pWait = false;
         GetDirection();
     }
-    void GetDirection() // M�thode pour calculer la direction vers la cible de patrouille actuelle
+    void GetDirection() // Méthode pour calculer la direction vers la cible de patrouille actuelle
     {
         direction = Vector3.Normalize(myPatrolTarget[curTarget].position - t.position);
     }
 
-    private void SetFacing(int direction)// M�thode pour faire face � la direction de d�placement en ajustant l'�chelle locale de l'objet
+    private void SetFacing(int direction)// Méthode pour faire face à la direction de déplacement en ajustant l'échelle locale de l'objet
     {
         Vector2 s = t.localScale;
         s.x = Mathf.Abs(s.x) * direction;
@@ -114,15 +129,24 @@ public class PatrolState : State
         
             if (direction.x < 0)
             {
-                SetFacing(-1);
+               // SetFacing(-1);
+                animSprite.flipX = true;
                 IsFacingLeft = true;
             }
             else
             {
-                SetFacing(1);
+                //SetFacing(1);
+                animSprite.flipX = false;
                 IsFacingLeft = false;
             }
-          
+            if (rb.linearVelocity == Vector2.zero)
+            {
+                anim.SetBool("wait", true);
+            }
+            else
+            {
+                anim.SetBool("wait", false);
+            }
 
             if (Vector3.Distance(myPatrolTarget[curTarget].position, t.position) <= 0.5)
             {

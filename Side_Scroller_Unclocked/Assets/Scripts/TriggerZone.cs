@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-public class TriggerZone : MonoBehaviour
+public class TriggerZone : MonoBehaviour // Code réutilisable pour des triggerZone qui sont trigger par le collisionTag. Permet aussi de passer par des events Unity pour plus d'ergonomies dans l'inspecteur
 {
 
 
@@ -22,7 +22,7 @@ public class TriggerZone : MonoBehaviour
         if (!string.IsNullOrEmpty(collisionTag) && !collision.CompareTag(collisionTag))
             return;
 
-        onTriggerEnter?.Invoke();
+        onTriggerEnter?.Invoke(); //Appelle le code depuis les Unity Events
         
 
         if (oneShot)
@@ -43,9 +43,9 @@ public class TriggerZone : MonoBehaviour
             alreadyExited = true;
     }
 
-    private int DetermineDirection(Collider2D collision)
+    private int DetermineDirection(Collider2D collision) // Méthode qui renvoie un int (1 ou -1) pour indiquer quel côté du trigger le joueur a rencontré
     {
-        Debug.Log("Direction: " + (collision.transform.position.x > transform.position.x ? "Right" : "Left"));
+        //Debug.Log("Direction: " + (collision.transform.position.x > transform.position.x ? "Right" : "Left"));
         return collision.transform.position.x > transform.position.x ? 1 : -1;
        
     }

@@ -3,31 +3,32 @@ using Unity.VectorGraphics;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour // Script qui permet de contrôler l'avatar
 {
-    [Header("Movement")]
+    [Header("Movement")] //Variables relatives au mouvement
     [SerializeField] float movementSpeed = 5f;
     [SerializeField] float deadzone = 0.01f;
+    int previousFacingDirection = 1;
 
-    [Header("Gravity/jump")]
+    [Header("Jump")] //Variables qui me permettent de modifier le comportement du jump
     [SerializeField] float jumpForce = 5f;
     [SerializeField] float jumpShortForce = 2f;
     [Range(0f,1f)] public float jumpRange;
+    bool wasGrounded = false;
+    bool isGrounded = false;
 
-    [Header("Stats")]
+    [Header("Stats")] //Statistiques du joueur en public pour être accessible par d'autres scripts (notamment GameDirector)
     [SerializeField] public int HP = 100;
     [SerializeField] public int maxHP = 100;
-    [SerializeField] public int min = 0;
     [SerializeField] public int attackDamage = 10;
-    [SerializeField] public int attackRange = 1;
     [SerializeField] public int attackCooldown = 1;
     [SerializeField] public float attackKnockback = 5f;
-
     [SerializeField] public float speed;
     [SerializeField] public float speedMax = 5f;
 
-    [Header("Sprite infos")]
+    [Header("Sprite infos")] // Références relatives aux sprites
     [SerializeField] Color originalColor;
+    [SerializeField] private SpriteRenderer spriteRenderer;
 
     [Header("External References")]
     GameObject GameDirector;
@@ -38,7 +39,6 @@ public class PlayerController : MonoBehaviour
     public LayerMask groundLayer;
     [SerializeField] private Animator anim;
     private int facingDirection = 1; // 1 pour la droite, -1 pour la gauche
-    [SerializeField] private SpriteRenderer spriteRenderer;
     public ParticleSystem landDustFX;
     public ParticleSystem sideDustFX;
 
@@ -49,18 +49,9 @@ public class PlayerController : MonoBehaviour
     public bool isHit = false;
 
     // état pour détection d'atterrissage / changement de direction
-    bool wasGrounded = false;
-    int previousFacingDirection = 1;
-    bool isGrounded = false;
+  
 
-    //[Header("Timeline Switch")]
-
-    //On récupère les composants nécessaires et on s'assure que le joueur ne soit pas détruit lors du changement de scène dans l'Awake
-    private void Start()
-    {
-        
-    }
-    private void Awake() 
+    private void Awake() // Dans l'Awake j'attribue les valeurs
     {
         originalColor = spriteRenderer.color;
        // DontDestroyOnLoad(gameObject);
@@ -76,25 +67,27 @@ public class PlayerController : MonoBehaviour
         wasGrounded = false;
     }
 
-    // On récupère les inputs du joueur et on vérifie s'il est au sol pour lui permettre de sauter
+   
     void Update() 
     {
-        inputX = Input.GetAxisRaw("Horizontal");
+        inputX = Input.GetAxisRaw("Horizontal");//inputX renvoie 1 ou -1 lorsque le joueur presse la direction droite ou gauche
         if (inputX > deadzone) inputX = 1;
         else if (inputX < -deadzone) inputX = -1;
         else inputX = 0;
-        inputSlice = Input.GetButtonDown("Slice");
-        bool jump = Input.GetButtonDown("Jump");
+        inputSlice = Input.GetButtonDown("Slice"); // Renvoie true quand le joueur appuie sur le bouton "Slice"
+
+       
+        bool jump = Input.GetButtonDown("Jump");  // Renvoie True quand le joueur appuie sur le bouton de saut
         bool jumpCancel = Input.GetButtonUp("Jump");
 
         bool isGrounded1 = Physics2D.Raycast(transform.position + new Vector3(-0.5f, 0, 0), Vector2.down,jumpRange, groundLayer);
         bool isGrounded2 = Physics2D.Raycast(transform.position + new Vector3(0.5f, 0, 0), Vector2.down, jumpRange, groundLayer);
         isGrounded = isGrounded1 || isGrounded2;
 
-        // Détection d'atterrissage (transition air -> sol)
-        if (!wasGrounded && isGrounded)
+        
+        if (!wasGrounded && isGrounded) // Vérification qui permet de vérifier si le joueur atterit
         {
-            landDustFX.Play();
+            landDustFX.Play(); // On lance l'effet de particule de poussière
         }
         wasGrounded = isGrounded;
 
@@ -113,21 +106,20 @@ public class PlayerController : MonoBehaviour
                 jumpCancel = false;
             }
         }
-        float yVelocity = (rb.linearVelocity.y);
+        float yVelocity = (rb.linearVelocity.y); // Variable qui permet de passer de l'état de saut à la chute dans l'animation quand yVelocity < 0
         anim.SetFloat("yVel", yVelocity);
-        // Animation : on joue la vitesse verticale dans l'animation pour faire varier les animations de saut en fonction de la vitesse verticale du joueur
         anim.SetBool("isGrounded", isGrounded);
 
         if (inputSlice) StartCoroutine(SliceAttackCoroutine());
         
-        if (GodModeIsOn)
+        if (GodModeIsOn) //Permet d'utiliser le godMode dans le Debug
         {
             HP = maxHP;
         }
     }
 
-    // Appel du Mouvement et Appel changement de direction
-    private void FixedUpdate() 
+  
+    private void FixedUpdate()   // Appel du Mouvement et Appel changement de direction
     {
         if (inputX > deadzone) { SetFacing(1); }
         else if (inputX < -deadzone) { SetFacing(-1); }
@@ -137,7 +129,7 @@ public class PlayerController : MonoBehaviour
         // Détection de changement de direction (transition gauche <-> droite)
         if (facingDirection != previousFacingDirection)
         {
-            // ne jouer que si au sol
+            // Le particle système se joue que si au sol
             if (isGrounded)
             {
                 sideDustFX.Play();
@@ -148,20 +140,16 @@ public class PlayerController : MonoBehaviour
         Movement();
     }
 
-    //Mouvement vertical + animation
-    private void Movement() 
+  
+    private void Movement()   //Mouvement vertical + animation
     {   
         if (!isHit)
         {
             var v = rb.linearVelocity;
             v.x = inputX * movementSpeed;
             rb.linearVelocity = new Vector2(v.x, rb.linearVelocity.y);
-            //float isWalking = Mathf.Abs(inputX) > deadzone;
             float xValue = Mathf.Abs(rb.linearVelocity.x) > deadzone ? 1 : 0;
-            // Animation : on considère le joueur en marche si la vitesse absolue dépasse le deadzone
-            // on joue la vitesse de déplacement dans l'animation pour faire varier la vitesse de marche en fonction de la vitesse réelle du joueur
             anim.SetFloat("XValue", xValue);
-            //mettre la vitesse de l'animation egale à xValue
         }
     }
 
@@ -174,22 +162,20 @@ public class PlayerController : MonoBehaviour
     }
 
 
-    private IEnumerator Feedback(bool bullet, bool slice) // Feedback visuel lorsque l'ennemi est touché
+    private IEnumerator Feedback(bool bullet, bool slice) // Feedback visuel lorsque le joueur est touché
     { 
         if(bullet)
         {
             if (ignoreForce) yield break; // Si le God Mode est activé, on ne subit pas les effets du tir
             isHit = true;
+            //durée du knockback + animation de hit
             spriteRenderer.color = Color.red;
             yield return new WaitForSeconds(0.05f);
             spriteRenderer.color = originalColor;
             yield return new WaitForSeconds(0.3f);
-            spriteRenderer.color = Color.red;
-            yield return new WaitForSeconds(0.05f);
-            spriteRenderer.color = originalColor;
-            yield return new WaitForSeconds(0.3f);//durée du knockback + animation de hit et ne pas pouvoir bouger pendant ce temps
+
             isHit = false;
-            //knockback sur le côté  opposé à la direction du tir
+            
 
         }
         if (slice)
@@ -215,14 +201,14 @@ public class PlayerController : MonoBehaviour
     {
        // anim.SetBool("SliceAttack", inputSlice);
        sliceSprite.SetActive(true);
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(attackCooldown);
         inputSlice = false;
         sliceSprite.SetActive(false);
         // anim.SetBool("SliceAttack", inputSlice);
         yield break;
     }
 
-    private void OnDrawGizmos()
+    private void OnDrawGizmos() //Debug
     {
         Gizmos.color = Color.red;
         //Gizmos.DrawLine(transform.position, transform.position + Vector3.down * jumpRange);

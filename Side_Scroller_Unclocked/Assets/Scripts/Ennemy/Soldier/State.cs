@@ -13,8 +13,6 @@ public abstract class State : MonoBehaviour // State pour les soldats
     public abstract State RunCurrentState();
     public void Awake()
     {
-       //ennemyClass = MonoScript.FromMonoBehaviour(this);
-       //Debug.Log("State Awake : " + ennemyClass.name);
        soldierScript = GetComponentInParent<SoldierScript>();
        activeTimeline = soldierScript.activeTimeline;
         playerPos = soldierScript.playerPos;

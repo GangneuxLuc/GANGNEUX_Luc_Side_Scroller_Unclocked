@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class killPlayer : MonoBehaviour
+public class killPlayer : MonoBehaviour // Script pour tuer le joueur en un clic depuis le panneau de debug
 {
     private PlayerController playerController;
     private void Awake()

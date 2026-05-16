@@ -1,0 +1,445 @@
+fileFormatVersion: 2
+guid: 257c8b53421c74e44a2c5e296e1a216c
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 636987160659144148
+    second: Ennemi_Walk_0
+  - first:
+      213: -6830093350108430409
+    second: Ennemi_Walk_1
+  - first:
+      213: 3399982539035171645
+    second: Ennemi_Walk_2
+  - first:
+      213: -6285478173126605926
+    second: Ennemi_Walk_3
+  - first:
+      213: -4229047708754152594
+    second: Ennemi_Walk_4
+  - first:
+      213: -8511812641022186135
+    second: Ennemi_Walk_5
+  - first:
+      213: 6712413122643578511
+    second: Ennemi_Walk_6
+  - first:
+      213: -9161276480591274699
+    second: Ennemi_Walk_7
+  - first:
+      213: 7171492199585164732
+    second: Ennemi_Walk_8
+  - first:
+      213: 7257530509473565734
+    second: Ennemi_Walk_9
+  - first:
+      213: 8531152926774580722
+    second: Ennemi_Walk_10
+  - first:
+      213: 4059858359712482003
+    second: Ennemi_Walk_11
+  - first:
+      213: -7454289729012054794
+    second: Ennemi_Walk_12
+  - first:
+      213: -3690294816025498023
+    second: Ennemi_Walk_13
+  - first:
+      213: -8872705409896184853
+    second: Ennemi_Walk_14
+  - first:
+      213: -7711024238565720330
+    second: Ennemi_Walk_15
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 16384
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Ennemi_Walk_0
+      rect:
+        serializedVersion: 2
+        x: 430
+        y: 116
+        width: 351
+        height: 716
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4dda29d927807d800800000000000000
+      internalID: 636987160659144148
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ennemi_Walk_1
+      rect:
+        serializedVersion: 2
+        x: 2350
+        y: 113
+        width: 351
+        height: 710
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7bf77041942a631a0800000000000000
+      internalID: -6830093350108430409
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ennemi_Walk_2
+      rect:
+        serializedVersion: 2
+        x: 4270
+        y: 120
+        width: 351
+        height: 706
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d3bd8b9fa1a2f2f20800000000000000
+      internalID: 3399982539035171645
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ennemi_Walk_3
+      rect:
+        serializedVersion: 2
+        x: 6158
+        y: 115
+        width: 397
+        height: 693
+      alignment: 9
+      pivot: {x: 0.52, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a93415747ee75c8a0800000000000000
+      internalID: -6285478173126605926
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ennemi_Walk_4
+      rect:
+        serializedVersion: 2
+        x: 8096
+        y: 115
+        width: 365
+        height: 706
+      alignment: 9
+      pivot: {x: 0.51, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e63778de3876f45c0800000000000000
+      internalID: -4229047708754152594
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ennemi_Walk_5
+      rect:
+        serializedVersion: 2
+        x: 10030
+        y: 120
+        width: 351
+        height: 738
+      alignment: 9
+      pivot: {x: 0.495, y: 0.48}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 96d61312087ffd980800000000000000
+      internalID: -8511812641022186135
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ennemi_Walk_6
+      rect:
+        serializedVersion: 2
+        x: 11950
+        y: 121
+        width: 351
+        height: 712
+      alignment: 9
+      pivot: {x: 0.5, y: 0.495}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f8e47d0db28472d50800000000000000
+      internalID: 6712413122643578511
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ennemi_Walk_7
+      rect:
+        serializedVersion: 2
+        x: 13859
+        y: 110
+        width: 362
+        height: 715
+      alignment: 9
+      pivot: {x: 0.49, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 53d5735549b9cd080800000000000000
+      internalID: -9161276480591274699
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ennemi_Walk_10
+      rect:
+        serializedVersion: 2
+        x: 15766
+        y: 103
+        width: 393
+        height: 711
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2f5deec036eb46670800000000000000
+      internalID: 8531152926774580722
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ennemi_Walk_12
+      rect:
+        serializedVersion: 2
+        x: 17675
+        y: 99
+        width: 470
+        height: 707
+      alignment: 9
+      pivot: {x: 0.45, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6f4c4696cfa0d8890800000000000000
+      internalID: -7454289729012054794
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ennemi_Walk_13
+      rect:
+        serializedVersion: 2
+        x: 19550
+        y: 117
+        width: 431
+        height: 701
+      alignment: 9
+      pivot: {x: 0.56, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 95ea556ba6079ccc0800000000000000
+      internalID: -3690294816025498023
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ennemi_Walk_14
+      rect:
+        serializedVersion: 2
+        x: 21519
+        y: 113
+        width: 382
+        height: 712
+      alignment: 9
+      pivot: {x: 0.52, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: be383767071ddd480800000000000000
+      internalID: -8872705409896184853
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 3616ecf912971744eb97051d8f4d4375
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Ennemi_Walk_0: 636987160659144148
+      Ennemi_Walk_1: -6830093350108430409
+      Ennemi_Walk_10: 8531152926774580722
+      Ennemi_Walk_11: 4059858359712482003
+      Ennemi_Walk_12: -7454289729012054794
+      Ennemi_Walk_13: -3690294816025498023
+      Ennemi_Walk_14: -8872705409896184853
+      Ennemi_Walk_15: -7711024238565720330
+      Ennemi_Walk_2: 3399982539035171645
+      Ennemi_Walk_3: -6285478173126605926
+      Ennemi_Walk_4: -4229047708754152594
+      Ennemi_Walk_5: -8511812641022186135
+      Ennemi_Walk_6: 6712413122643578511
+      Ennemi_Walk_7: -9161276480591274699
+      Ennemi_Walk_8: 7171492199585164732
+      Ennemi_Walk_9: 7257530509473565734
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

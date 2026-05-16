@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class BreakableObjects : MonoBehaviour
+public class BreakableObjects : MonoBehaviour //Gère les objets destructibles
 {
     [SerializeField] private int hp = 3;
 

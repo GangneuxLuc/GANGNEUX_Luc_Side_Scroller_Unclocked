@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class EnnemyClass : MonoBehaviour
+public class EnnemyClass : MonoBehaviour // Classe de base pour les ennemis, gère les statistiques, les collisions et la mort
 {
     [Header("Statistiques de l'ennemi")]
     [SerializeField] public int HP;
@@ -21,7 +21,6 @@ public class EnnemyClass : MonoBehaviour
 
     protected void Awake()
     {
-        // activeTimeline = 
         player = GameObject.FindGameObjectWithTag("Player");
         playerPos = player.GetComponent<Transform>();
         rb = GetComponent<Rigidbody2D>();
