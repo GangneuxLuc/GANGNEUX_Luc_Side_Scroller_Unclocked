@@ -10,7 +10,7 @@ public class PhysicsCrate : MonoBehaviour //Script à ajouter sur les caisses pou
             if (rb != null)
             {
                 Vector2 forceDirection = (transform.position - collision.transform.position).normalized;
-                float forceMagnitude = 100f; // Adjust this value as needed
+                float forceMagnitude = 100f; 
                 rb.AddForce(forceDirection * forceMagnitude, ForceMode2D.Impulse);
             }
         }

@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
+
 public class ItemToGather : MonoBehaviour //Script pour collecter les items avec un feedback
 {
     [Header("References")]
@@ -28,6 +29,7 @@ public class ItemToGather : MonoBehaviour //Script pour collecter les items avec
             Debug.LogWarning("ItemManager introuvable dans la scène. Assurez-vous qu'un GameObject avec ItemManager est présent.");
         }
     }
+
     private void OnTriggerStay2D(Collider2D collision)
     {
         if (itemCanvas != null && collision.CompareTag("Player")) itemCanvas.gameObject.SetActive(true); // Affiche le canvas lorsque le joueur est dans la zone de l'item

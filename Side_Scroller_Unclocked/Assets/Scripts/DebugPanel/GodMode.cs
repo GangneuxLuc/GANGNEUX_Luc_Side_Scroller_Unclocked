@@ -13,7 +13,7 @@ public class GodMode : MonoBehaviour // Script pour activer/désactiver le GODMOD
     {
         if (playerController != null)
         {
-            playerController.GodModeIsOn = !playerController.GodModeIsOn; // Toggle God Mode on/off
+            playerController.GodModeIsOn = !playerController.GodModeIsOn; // Met God Mode en on/off
                 if (playerController.GodModeIsOn)
                 {
                     Button godModeButton = GetComponent<Button>();

@@ -2,6 +2,10 @@
 using UnityEngine;
 using UnityEngine.UI;
 
+// Code que je n'ai pas eu le temps de finaliser ni d'utiliser
+
+
+/*
 public class ChunkManager : MonoBehaviour // Script pour gérer le chargement et le déchargement des chunks quand on passe dans une triggerZone
 {
     public GameObject[] Chunks1755; // Tableau de chunks à activer/désactiver
@@ -45,9 +49,9 @@ public class ChunkManager : MonoBehaviour // Script pour gérer le chargement et
           previousChunkIndex = currentChunkIndex; // Met à jour l'index du chunk précédent
           currentChunkIndex = nextChunkIndex; // Met à jour l'index du chunk actuel
           nextChunkIndex = nextNextChunkIndex; // Met à jour l'index du prochain chunk
-          nextNextChunkIndex++; // Incrémente l'index du chunk après le prochain chunk
+          nextNextChunkIndex++; // Augmente l'index du chunk après le prochain chunk
 
-      } */
+      } 
 
 
     public void ChunkManagement()
@@ -55,3 +59,5 @@ public class ChunkManager : MonoBehaviour // Script pour gérer le chargement et
         //Selon la direction du joueur récupéré dans les triggerZones, on charge le chunk d'après ou précédent dans le tableau et on décharge le chunk d'avant ou d'après dans le tableau
     }
 }
+
+*/

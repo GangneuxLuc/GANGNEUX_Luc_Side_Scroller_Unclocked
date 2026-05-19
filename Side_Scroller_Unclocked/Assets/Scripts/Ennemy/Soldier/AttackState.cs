@@ -12,9 +12,10 @@ public class AttackState : State // État d'attaque pour les soldats
     [SerializeField] Transform armPivot;
     public Transform t;
     [SerializeField] SpriteRenderer sprite;
-
+    [SerializeField] private Animator gunShotAnim;
     [SerializeField] private Animator anim;
     [SerializeField] private SpriteRenderer animSprite, legSprite, torsoSprite;
+    [SerializeField] private GameObject exclamationMark;
 
     [Header("Bullets infos")]
     public int bulletSpeed = 5;
@@ -26,6 +27,7 @@ public class AttackState : State // État d'attaque pour les soldats
     [Range(0f, 10f)] public int bulletPerBurst;
     [Range(0f, 5f)] public int burst;
     [Range(0f, 5f)] public int magazineNumber;
+    [SerializeField] private float minAimDistance = 1.5f;
 
     [Header("Player Sighting")]// Variables pour la détection du joueur et le champ de vision de l'ennemi
     [Range(0f, 10f)] public float sightRange;
@@ -50,7 +52,7 @@ public class AttackState : State // État d'attaque pour les soldats
         anim.SetBool("Transition", true);
         anim.SetBool("isShooting", true);
         anim.SetBool("StopShooting", false);
-
+        exclamationMark.SetActive(true);
 
     }
 
@@ -102,6 +104,7 @@ public class AttackState : State // État d'attaque pour les soldats
         anim.SetBool("Transition", false);
 
         isActivated = false;
+        exclamationMark.SetActive(false);
 
     }
     //1 gauche, -1 pour droite
@@ -115,27 +118,33 @@ public class AttackState : State // État d'attaque pour les soldats
     }
     private void playerSighting()
     {
+        // Rotation seulement si le joueur est assez loin
+        
+
         dst = Vector2.Distance(transform.position, playerPos.position);
+        bool canRotateArm = dst > minAimDistance;
         //Savoir si le joueur est à gauche ou à droite de l'ennemi pour faire face à la bonne direction
         if (playerPos.position.x < transform.position.x)
         {
             SetFacing(1);
-            //legSprite.flipX = true; torsoSprite.flipX = true; 
             armPivot.localScale = new Vector3(1, 1, 1);
-           armPivot.rotation = Quaternion.Euler(0, 0, Mathf.Atan2(-direction.y, -direction.x) * Mathf.Rad2Deg);
+            if (canRotateArm)
+                armPivot.rotation = Quaternion.Euler(0, 0, Mathf.Atan2(-direction.y, -direction.x) * Mathf.Rad2Deg);
         }
         else
         {
-            //legSprite.flipX = false; torsoSprite.flipX = false;
-            //armPivot.localScale = new Vector3(-1, 1, 1);
+           
             SetFacing(-1);
 
             //flip le sprite et inverser la roation de l'armPivot pour que le tir soit dans la bonne direction
             armPivot.localScale = new Vector3(1, 1, 1);
-            armPivot.localRotation = Quaternion.Euler(0, 0, Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg);
+            if (canRotateArm)
+                armPivot.localRotation = Quaternion.Euler(0, 0, Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg);
 
         }
 
+       
+     
         if (dst < sightRange) playerOutOfSight = false;
         else playerOutOfSight = true;
     }
@@ -190,14 +199,13 @@ public class AttackState : State // État d'attaque pour les soldats
                     {
                         bullet.transform.SetParent(activeChild.transform, true);
                     }
-
+                    gunShotAnim.SetTrigger("GunShot");
                     yield return new WaitForSeconds(shootingSpeed);
                 }
                 yield return new WaitForSeconds(burstsCooldown);
             }
         }
 
-        // Coroutine terminée : remettre la référence à null pour pouvoir relancer proprement si nécessaire
         shootCoroutine = null;
     }
 

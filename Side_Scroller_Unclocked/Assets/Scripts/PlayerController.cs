@@ -21,10 +21,12 @@ public class PlayerController : MonoBehaviour // Script qui permet de contrôler
     [SerializeField] public int HP = 100;
     [SerializeField] public int maxHP = 100;
     [SerializeField] public int attackDamage = 10;
-    [SerializeField] public int attackCooldown = 1;
+    [SerializeField] private bool canAttack = true;
+    [SerializeField] public float attackCooldown = 1;
     [SerializeField] public float attackKnockback = 5f;
     [SerializeField] public float speed;
     [SerializeField] public float speedMax = 5f;
+
 
     [Header("Sprite infos")] // Références relatives aux sprites
     [SerializeField] Color originalColor;
@@ -33,7 +35,7 @@ public class PlayerController : MonoBehaviour // Script qui permet de contrôler
     [Header("External References")]
     GameObject GameDirector;
     Rigidbody2D rb;
-    GameObject sliceSprite;
+    GameObject sliceZone;
     float inputX;
     public bool inputSlice;
     public LayerMask groundLayer;
@@ -41,6 +43,7 @@ public class PlayerController : MonoBehaviour // Script qui permet de contrôler
     private int facingDirection = 1; // 1 pour la droite, -1 pour la gauche
     public ParticleSystem landDustFX;
     public ParticleSystem sideDustFX;
+    [SerializeField] private AnimationClip attack;
 
     [Header("Debug")]
     public bool GodModeIsOn = false;
@@ -48,14 +51,15 @@ public class PlayerController : MonoBehaviour // Script qui permet de contrôler
     private Vector2 force;
     public bool isHit = false;
 
-    // état pour détection d'atterrissage / changement de direction
+
+
   
 
     private void Awake() // Dans l'Awake j'attribue les valeurs
     {
         originalColor = spriteRenderer.color;
        // DontDestroyOnLoad(gameObject);
-        sliceSprite = transform.GetChild(0).gameObject;
+        sliceZone = transform.GetChild(0).gameObject;
         rb = GetComponent<Rigidbody2D>();
         if (rb == null)
         {
@@ -110,8 +114,9 @@ public class PlayerController : MonoBehaviour // Script qui permet de contrôler
         anim.SetFloat("yVel", yVelocity);
         anim.SetBool("isGrounded", isGrounded);
 
-        if (inputSlice) StartCoroutine(SliceAttackCoroutine());
-        
+        if (inputSlice && canAttack) StartCoroutine(SliceAttackCoroutine());
+      
+
         if (GodModeIsOn) //Permet d'utiliser le godMode dans le Debug
         {
             HP = maxHP;
@@ -199,12 +204,16 @@ public class PlayerController : MonoBehaviour // Script qui permet de contrôler
 
     IEnumerator SliceAttackCoroutine()
     {
-       // anim.SetBool("SliceAttack", inputSlice);
-       sliceSprite.SetActive(true);
+        canAttack = false;
+        anim.SetTrigger("Attack");
+        yield return new WaitForSeconds(0.1f); // On attend un court instant pour que l'animation d'attaque commence avant d'activer la hitbox
+        sliceZone.SetActive(true);
+        yield return new WaitForSeconds(attack.length); // On attend la durée de l'animation d'attaque pour que la hitbox soit active pendant toute l'animation
+        sliceZone.SetActive(false);
         yield return new WaitForSeconds(attackCooldown);
-        inputSlice = false;
-        sliceSprite.SetActive(false);
-        // anim.SetBool("SliceAttack", inputSlice);
+        canAttack = true;
+
+         
         yield break;
     }
 

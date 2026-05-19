@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Runtime.InteropServices;
+﻿using System.Collections;
 using UnityEngine;
 
 public class SoldierScript : EnnemyClass

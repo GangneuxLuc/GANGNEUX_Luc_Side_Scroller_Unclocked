@@ -14,6 +14,15 @@ public class ParallaxLayer  // Classe pour gérer les couches de parallax, avec d
     private float _spriteWidth;
     private bool _infiniteX;
 
+    // ---- scaling related
+    private bool _scaleWithCamera = false;
+    private float _minScale = 0.5f;
+    private float _maxScale = 1.5f;
+    private float _referenceOrthoSize = 5f;
+    private float _scaleSmoothing = 0.1f;
+    private Vector3 _initialScale;
+    // ---------------------
+
     public ParallaxLayer(Transform t) 
     {
         _transform = t;
@@ -31,6 +40,12 @@ public class ParallaxLayer  // Classe pour gérer les couches de parallax, avec d
         {
             speedX = settings.speedX;
             speedY = settings.speedY;
+            _scaleWithCamera = settings.scaleWithCamera;
+            _minScale = settings.minScale;
+            _maxScale = settings.maxScale;
+            _referenceOrthoSize = settings.referenceOrthoSize;
+            _scaleSmoothing = settings.scaleSmoothing;
+            _initialScale = _transform.localScale;
         }
     }
 
@@ -38,9 +53,22 @@ public class ParallaxLayer  // Classe pour gérer les couches de parallax, avec d
     {
         float moveX = delta.x * (1f - speedX);
         float moveY = vertical ? delta.y * (1f - speedY) : 0f; // si vertical = true, alors on fait la suite, si false moveY = 0f
+        //Faire en sorte que le sprite grosisse en même temps que la caméra s'éloigne, et rapetisse lorsque la caméra se rapproche
+        
 
         _targetPosition += new Vector3(moveX, moveY, 0f);
         _transform.position = smoothing > 0f ? Vector3.Lerp(_transform.position, _targetPosition, smoothing) : _targetPosition;
+
+        // Apply scaling based on camera ortho size if enabled
+        if (_scaleWithCamera)
+        {
+            float camOrtho = Camera.main != null ? Camera.main.orthographicSize : _referenceOrthoSize;
+            float factor = (_referenceOrthoSize > 0f) ? camOrtho / _referenceOrthoSize : 1f;
+            factor = Mathf.Clamp(factor, _minScale, _maxScale);
+
+            Vector3 targetScale = _initialScale * factor;
+            _transform.localScale =  _scaleSmoothing > 0f ? Vector3.Lerp(_transform.localScale, targetScale, _scaleSmoothing) : targetScale;
+        }
 
         if (_infiniteX)
         {

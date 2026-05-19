@@ -25,7 +25,7 @@ public class TimeTravel : MonoBehaviour // Script pour gérer le changement de ti
     {
         if (canTimeSwitch)
         {
-            if (Input.GetButtonDown("TimelineSwap") && PlayerPrefs.HasKey("FixTimeSwap"))
+            if (Input.GetButtonDown("TimelineSwap") && PlayerPrefs.HasKey("CollectedItems") && PlayerPrefs.GetString("CollectedItems").Contains("FixTimeSwap")) //Renvoie true si le boutton est pressé et si dans les PlayerPrefs, le string CollectedItems contiens FixTimeSwap
             {
                 StartCoroutine(SwitchCooldown());
                 pastIsVisible = !pastIsVisible;
@@ -34,7 +34,7 @@ public class TimeTravel : MonoBehaviour // Script pour gérer le changement de ti
                     present.SetActive(false);
                     past.SetActive(true);
                 }
-                if (!pastIsVisible)
+                else
                 {
                     present.SetActive(true);
                     past.SetActive(false);
@@ -42,12 +42,13 @@ public class TimeTravel : MonoBehaviour // Script pour gérer le changement de ti
             }
         }
     }
-    IEnumerator SwitchCooldown() //Cooldwon sur le changement de timeline et remplissage progressive de la jauge pour feedback visuel et auditif
+    IEnumerator SwitchCooldown() //Cooldown sur le changement de timeline et remplissage progressive de la jauge pour feedback visuel et auditif
     {
         canTimeSwitch = false;
-        float segmentDuration = Mathf.Max(0.01f, switchCooldown / 3f); // On divise le cooldown en 3 segments pour faire apparaître les différentes étapes de la jauge
-        if (gauge3 != null) gauge3.SetActive(false);
-        // On laisse toujours la jauge vide visible
+        float segmentDuration = Mathf.Max(0.01f, switchCooldown / 3f); // Cooldown divisé en 3 segments pour faire apparaître les différentes étapes de la jauge
+
+        if (gauge3 != null) gauge3.SetActive(false);  // On laisse toujours la jauge vide visible
+
 
         if (gauge1 != null)
         {
@@ -63,29 +64,29 @@ public class TimeTravel : MonoBehaviour // Script pour gérer le changement de ti
         {
             yield return StartCoroutine(FadeIn(gauge3, segmentDuration));
         }
-        canTimeSwitch = true; //Une fois les 3 segments passés, on réactive le changement de timeline
+        canTimeSwitch = true; //Une fois les 3 segments passés, on peut changer de timeline à nouveau
     }
 
   
-    // Coroutine pour faire un fade-in de l'opacité de la jauge jusqu'à 1.
-    private IEnumerator FadeIn(GameObject jauge, float duration)
+   
+    private IEnumerator FadeIn(GameObject jauge, float duration) // Coroutine pour faire un fade-in de l'opacité de la jauge jusqu'à 1.
     {
         if (jauge == null)
             yield break;
 
-        // Activer l'objet avant de modifier l'alpha (sinon certains composants ne sont pas accessibles visuellement)
-        jauge.SetActive(true);
+
+        jauge.SetActive(true);// Activer la jauge avant de modifier son opacité
 
 
-        // Sinon SpriteRenderer
-        SpriteRenderer sr = jauge.GetComponent<SpriteRenderer>();
-        if (sr != null)
+        
+        SpriteRenderer sr = jauge.GetComponent<SpriteRenderer>(); // On récupère le SpriteRenderer
+        if (sr != null) 
         {
-            Color c = sr.color;
-            c.a = 0f;
-            sr.color = c;
+            Color c = sr.color; // Création d'une variable de couleur qui va stocker la couleur initiale du sprite
+            c.a = 0f; // On met son alpha ( opcaité ) à 0
+            sr.color = c; //Puis on réattribue la couleur du sprite à cette variable
             float t = 0f;
-            while (t < duration)
+            while (t < duration) // Tant que la variable t est inférieure à la durée d'un segment, on l'augmente puis on fait augmenter l'alpha de c de t divisé par duration
             {
                 t += Time.deltaTime;
                 c.a = Mathf.Clamp01(t / duration);
@@ -93,9 +94,9 @@ public class TimeTravel : MonoBehaviour // Script pour gérer le changement de ti
                 yield return null;
             }
             c.a = 1f;
-            sr.color = c;
+            sr.color = c; // On réattribue les valeurs et l'alpha à 1
             yield break;
         }
-        yield return new WaitForSeconds(duration);
+        yield return new WaitForSeconds(duration); 
     }
 }

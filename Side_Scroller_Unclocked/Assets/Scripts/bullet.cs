@@ -32,9 +32,9 @@ public class bullet : MonoBehaviour // Script pour gérer les balles tirées par l
             }
             Destroy(gameObject); // Détruire la balle après l'impact
         }
-        else //faire ignorer la collision entre les balles
+        else 
         {
-           // Destroy(gameObject); // Détruire la balle si elle touche un mur
+           Destroy(gameObject); // Détruire la balle si elle touche un autre objet
         }
     }
     void GetSpeedBack() // Fonction pour récupérer la vélocité de la balle avant qu'elle ne soit désactivée, afin de la réappliquer lorsqu'elle est réactivée
@@ -45,7 +45,7 @@ public class bullet : MonoBehaviour // Script pour gérer les balles tirées par l
         }
     }
 
-    private void OnEnable()
+    private void OnEnable() // Lorsque la balle est réactivée, on réapplique la vélocité pour qu'elle continue à se déplacer dans la même direction et à la même vitesse qu'avant d'être désactivée
     {
         rb.linearVelocity = baseSpeed;
     }

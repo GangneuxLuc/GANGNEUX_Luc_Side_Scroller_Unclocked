@@ -1,18 +1,21 @@
 using UnityEngine;
 using System.Collections;
+using UnityEditor;
 
-public class EnnemyClass : MonoBehaviour // Classe de base pour les ennemis, gère les statistiques, les collisions et la mort
+public class EnnemyClass : MonoBehaviour // Classe de base pour les ennemis, gï¿½re les statistiques, les collisions et la mort
 {
     [Header("Statistiques de l'ennemi")]
     [SerializeField] public int HP;
     [SerializeField] protected string Name;
 
-    [Header("Références")]
+    [Header("Rï¿½fï¿½rences")]
     public Transform activeTimeline;
     public GameObject player;
+    private float knockbackForce;
     public Transform playerPos;
     public SpriteRenderer sprite, legSprite, torsoSprite;
     protected Rigidbody2D rb;
+    public GameObject rewindEnergy;
 
     protected float dst;
     public bool bDebugCanMove = true;
@@ -29,30 +32,42 @@ public class EnnemyClass : MonoBehaviour // Classe de base pour les ennemis, gèr
     }
 
 
-    protected void OnTriggerEnter2D(Collider2D collision) // Détection des collisions avec le joueur
+    protected void OnTriggerEnter2D(Collider2D collision) // Dï¿½tection des collisions avec le joueur
     {
         if (collision.gameObject.CompareTag("DaggerSlice"))
         {
-            //Debug.Log("Collision détectée entre l'ennemi et la DaggerSlice");
-            HP -= player.GetComponent<PlayerController>().attackDamage; // Réduction des HP de l'ennemi
+            //Debug.Log("Collision dï¿½tectï¿½e entre l'ennemi et la DaggerSlice");
+            HP -= player.GetComponent<PlayerController>().attackDamage; // Rï¿½duction des HP de l'ennemi
+            knockbackForce = player.GetComponent<PlayerController>().attackKnockback;
 
             StartCoroutine(Feedback());
-            rb.AddForce((transform.position - playerPos.position).normalized * 2f, ForceMode2D.Impulse); // Knockback de l'ennemi
-            if (HP <= 0) // Mort de l'ennemi
-            {
-                Die();
-                Debug.Log("L'ennemi est mort !");
-            }
+            //rb.AddForce((transform.position - playerPos.position).normalized * 2f, ForceMode2D.Impulse); // Knockback de l'ennemi
+            rb.AddForce(new Vector2(playerPos.localScale.x * knockbackForce, 0f), ForceMode2D.Impulse);
+
         }
 
-        if (collision.gameObject.CompareTag("Player") && Input.GetKeyDown(KeyCode.F))
+        if (collision.gameObject.CompareTag("Bullet"))
         {
+            //Debug.Log("Collision dï¿½tectï¿½e entre l'ennemi et la Bullet");
+            HP -= collision.GetComponent<bullet>().damage; // Rï¿½duction des HP de l'ennemi
+            knockbackForce = collision.GetComponent<bullet>().knockbackForce;
             StartCoroutine(Feedback());
-            Die();
-            Debug.Log("Ennemi assassiné");
+            Vector2 direction = new Vector2((transform.position.x - collision.transform.position.x), (0)).normalized;
+            rb.AddForce(direction * knockbackForce, ForceMode2D.Impulse); // Knockback de l'ennemi
         }
+
+       
+        /* if (collision.gameObject.CompareTag("Player") && Input.GetKeyDown(KeyCode.F))
+         {
+             StartCoroutine(Feedback());
+             Die();
+             Debug.Log("Ennemi assassinï¿½");
+         }
+        */
     }
-    protected IEnumerator Feedback() // Feedback visuel lorsque l'ennemi est touché
+
+  
+    protected IEnumerator Feedback() // Feedback visuel lorsque l'ennemi est touchï¿½
     {
         sprite.color = Color.red;
         legSprite.color = Color.red;
@@ -65,12 +80,21 @@ public class EnnemyClass : MonoBehaviour // Classe de base pour les ennemis, gèr
 
     protected virtual void OnDisable()
     {
-        // Debug.Log("Ennemi désactivé, arrêt de toutes les coroutines");
+        // Debug.Log("Ennemi dï¿½sactivï¿½, arrï¿½t de toutes les coroutines");
         StopAllCoroutines();
         return;
     }
+
+    private void Update()
+    {
+        if (HP <= 0)
+        {
+            Die();
+        }
+    }
     protected virtual void Die() // Mort de l'ennemi
     {
+        Instantiate(rewindEnergy, transform.position, Quaternion.identity);
         Destroy(gameObject);
     }
 }

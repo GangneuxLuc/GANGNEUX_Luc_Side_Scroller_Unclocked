@@ -13,7 +13,7 @@ public class ignoreForce : MonoBehaviour
     {
         if (playerController != null)
         {
-            playerController.ignoreForce = !playerController.ignoreForce; // Toggle God Mode on/off
+            playerController.ignoreForce = !playerController.ignoreForce; // Met le ignoreForce en on/off
             if (playerController.ignoreForce)
             {
                 Button godModeButton = GetComponent<Button>();

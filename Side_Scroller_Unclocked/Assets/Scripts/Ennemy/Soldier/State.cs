@@ -10,7 +10,7 @@ public abstract class State : MonoBehaviour // State pour les soldats
     protected Transform activeTimeline;
     protected Transform playerPos;
 
-    public abstract State RunCurrentState();
+    public abstract State RunCurrentState(); 
     public void Awake()
     {
        soldierScript = GetComponentInParent<SoldierScript>();

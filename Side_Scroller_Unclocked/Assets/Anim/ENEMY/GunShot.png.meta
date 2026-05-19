@@ -127,12 +127,12 @@ TextureImporter:
       name: GunShot_0
       rect:
         serializedVersion: 2
-        x: 3208
-        y: 722
-        width: 29
-        height: 15
+        x: 1310
+        y: 602
+        width: 195
+        height: 133
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -149,12 +149,12 @@ TextureImporter:
       name: GunShot_1
       rect:
         serializedVersion: 2
-        x: 1333
-        y: 695
-        width: 27
-        height: 26
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 3204
+        y: 604
+        width: 212
+        height: 131
+      alignment: 9
+      pivot: {x: 0.55, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -171,12 +171,12 @@ TextureImporter:
       name: GunShot_2
       rect:
         serializedVersion: 2
-        x: 5069
-        y: 688
-        width: 28
-        height: 23
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 5063
+        y: 604
+        width: 259
+        height: 105
+      alignment: 9
+      pivot: {x: 0.7, y: 0.6}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -193,12 +193,12 @@ TextureImporter:
       name: GunShot_3
       rect:
         serializedVersion: 2
-        x: 6983
-        y: 711
-        width: 9
-        height: 10
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 6973
+        y: 619
+        width: 270
+        height: 65
+      alignment: 9
+      pivot: {x: 0.7, y: 0.7}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -211,121 +211,11 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
-    - serializedVersion: 2
-      name: GunShot_4
-      rect:
-        serializedVersion: 2
-        x: 1402
-        y: 606
-        width: 106
-        height: 79
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 25d682949c3ba1820800000000000000
-      internalID: 2889819788008779090
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: GunShot_5
-      rect:
-        serializedVersion: 2
-        x: 3319
-        y: 605
-        width: 95
-        height: 73
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 7ae26fa2ed752b4d0800000000000000
-      internalID: -3120334980099199321
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: GunShot_6
-      rect:
-        serializedVersion: 2
-        x: 5241
-        y: 609
-        width: 83
-        height: 68
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 9e61faaef9fc2a3d0800000000000000
-      internalID: -3196764499735537943
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: GunShot_7
-      rect:
-        serializedVersion: 2
-        x: 6980
-        y: 648
-        width: 24
-        height: 29
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: f4e502cf048b8cd60800000000000000
-      internalID: 7910775334723673679
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: GunShot_8
-      rect:
-        serializedVersion: 2
-        x: 7159
-        y: 623
-        width: 84
-        height: 54
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 430d3f72d3a629530800000000000000
-      internalID: 3860264641505775668
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
     outline: []
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 52a7089c29dc64d4f8f5f5b216c2729e
     internalID: 0
     vertices: []
     indices: 
@@ -344,6 +234,7 @@ TextureImporter:
       GunShot_6: -3196764499735537943
       GunShot_7: 7910775334723673679
       GunShot_8: 3860264641505775668
+      GunShot_9: 429033392
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

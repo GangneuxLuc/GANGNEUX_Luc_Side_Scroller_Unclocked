@@ -11,7 +11,7 @@ public class PatrolState : State // Classe représentant l'état de patrouille d
     [SerializeField] private SpriteRenderer animSprite, legSprite, torsoSprite;
     [SerializeField] private AnimationClip shootTransition;
     [SerializeField] private GameObject questionMark;
-    [SerializeField] private GameObject exclamationMark;
+    
 
     [Header("Patrol settings")]
     public Transform[] myPatrolTarget;
@@ -37,6 +37,9 @@ public class PatrolState : State // Classe représentant l'état de patrouille d
     [Range(0f, 180f)] public float investigationSpreadAngle = 45f;
     Coroutine Investigation;
     [SerializeField] private float investigationDuration = 5f;
+    private float investigationTimer;
+    [SerializeField] private float flipSearchTime = 4f;
+    private Vector2 investigationTarget;
 
     [Header("Debug")]
     public bool showDebugRays = true;
@@ -44,15 +47,16 @@ public class PatrolState : State // Classe représentant l'état de patrouille d
 
     int curTarget = 0;
     public bool pWait;
-    
+
     private void Start()
     {
         GetDirection();
+        pWait = false;
     }
 
     private void OnEnable()
     {
-       
+
         onPatrol = true;
         // animSprite.enabled = true;
         anim.SetBool("Transition", false);
@@ -61,22 +65,16 @@ public class PatrolState : State // Classe représentant l'état de patrouille d
         anim.SetBool("StopShooting", true);
         anim.SetBool("onPatrol", true);
         GetDirection();
-       
+
 
 
     }
-    IEnumerator WaitForTransition()
-    {
-        anim.SetBool("StopShooting", true);
-        yield return new WaitForSeconds(shootTransition.length);
-        Debug.Log("Transition finished");
-        GetDirection();
-        anim.SetBool("onPatrol", true);
-    }
+
     private void OnDisable()
     {
         anim.SetBool("onPatrol", false);
         anim.SetBool("StopShooting", false);
+        questionMark.SetActive(false);
 
 
 
@@ -123,9 +121,9 @@ public class PatrolState : State // Classe représentant l'état de patrouille d
         }
         return isPlayerDetected;
     }
- private bool PlayerInvestigation(bool isPlayerInRange = false)
+    private bool PlayerInvestigation(bool isPlayerInRange = false)
     {
-       
+
         if (playerPos == null) return false;
         float startAngle = -investigationSpreadAngle / 2f;
         float angleStep = investigationRayCount > 1 ? investigationSpreadAngle / (investigationRayCount - 1) : 0f;
@@ -154,7 +152,7 @@ public class PatrolState : State // Classe représentant l'état de patrouille d
         float cos = Mathf.Cos(rad); // Calcul du cosinus de l'angle
         return new Vector2(cos * v.x - sin * v.y, sin * v.x + cos * v.y); // Application de la rotation au vecteur d'origine pour obtenir le nouveau vecteur de direction
     }
-  
+
     IEnumerator Wait()
     {
         yield return new WaitForSeconds(waitDuration);
@@ -171,7 +169,7 @@ public class PatrolState : State // Classe représentant l'état de patrouille d
         Vector2 s = t.localScale;
         s.x = Mathf.Abs(s.x) * direction;
         t.localScale = s;
-        
+
     }
 
     private void OnTriggerEnter2D(Collider2D collision) // Méthode pour détédcter la présence du joueur si il est trop près de l'ennemi
@@ -181,96 +179,164 @@ public class PatrolState : State // Classe représentant l'état de patrouille d
             Debug.Log("Player detected by trigger");
             playerDetected = true;
         }
-    } 
+    }
 
 
     void Update()
     {
         anim.SetBool("wait", pWait);
+
+        // PATROUILLE
         if (!pWait && onPatrol)
         {
             rb.linearVelocity = new Vector2(direction.x * speed, rb.linearVelocity.y);
-            
 
             if (direction.x < 0)
             {
-                
-                 SetFacing(-1);
-                //animSprite.flipX = true;
+                SetFacing(-1);
                 IsFacingLeft = true;
             }
             else
             {
                 SetFacing(1);
-                //animSprite.flipX = false;
                 IsFacingLeft = false;
             }
-           
-           
 
-            if (Vector3.Distance(myPatrolTarget[curTarget].position, t.position) <= 0.5)
+            if (Vector3.Distance(myPatrolTarget[curTarget].position, t.position) <= 0.5f)
             {
                 curTarget++;
+
                 pWait = true;
 
-                if (curTarget >= myPatrolTarget.Length) curTarget = 0;
+                if (curTarget >= myPatrolTarget.Length)
+                    curTarget = 0;
+
                 StartCoroutine(Wait());
             }
-           //Si on sort de la zone de patrouille, on y retourne
         }
+        
+        // INVESTIGATION
+        if (onInvestigation)
+        {
+            Vector2 dir = (investigationTarget - (Vector2)transform.position).normalized;
+
+            rb.linearVelocity = new Vector2(dir.x * speed, rb.linearVelocity.y);
+
+            if (dir.x < 0)
+            {
+                SetFacing(-1);
+                questionMark.transform.localScale = new Vector3(-1.274f, 1.274f, 1.274f);
+                IsFacingLeft = true;
+            }
+            else
+            {
+                SetFacing(1);
+                questionMark.transform.localScale = new Vector3(1.274f, 1.274f, 1.274f);
+                IsFacingLeft = false;
+            }
+
+           
+        }
+
     }
 
     IEnumerator Investigate()
     {
+        // Timer pour limiter la durée de l'investigation, si le joueur n'est pas retrouvé au bout d'un moment, l'ennemi retourne à sa patrouille
+        investigationTimer = investigationDuration;
+        speed += 2f; // L'ennemi se déplace plus vite pendant l'investigation pour tenter de retrouver le joueur
+        Debug.Log("Investigation started, timer set to " + investigationTimer);
         Debug.Log("Player detected for investigation");
+
         onInvestigation = true;
         onPatrol = false;
-        // Code pour faire enquêter l'ennemi vers la dernière position connue du joueur
-        //faire apapraitre le ?
-        //faire un fade in du ? pour indiquer que l'ennemi est en mode enquête
+        anim.SetBool("onPatrol", true);
+
 
         SpriteRenderer qSprite = questionMark.GetComponent<SpriteRenderer>();
+       
 
-       // questionMark.transform.localScale =  // Ajuster la taille du point d'interrogation
-       if (t.localScale.x > 0)
-        {
-
-            questionMark.transform.localScale = new Vector3(1.274f, 1.274f, 1.274f);
-        }
-        else
-        {
-            questionMark.transform.localScale = new Vector3(1.274f, 1.274f, 1.274f);
-        }
         questionMark.SetActive(true);
-        float duration = 0.5f; // Durée du fade-in en secondes
+
+        float duration = 1f;
+
         Color c = qSprite.color;
         c.a = 0f;
         qSprite.color = c;
+
         float time = 0f;
-        while (time < duration) 
+
+        while (time < duration)
         {
             time += Time.deltaTime;
             c.a = Mathf.Clamp01(time / duration);
             qSprite.color = c;
             yield return null;
         }
-        c.a = 1f;
-        qSprite.color = c;
-        
-        
-        new WaitForSeconds(0.5f); // Attendre un moment avant de commencer à enquêter
 
-         Vector2 lastKnownPosition = playerPos.position; // Obtenir la dernière position connue du joueur
-        // Déplacer l'ennemi vers la dernière position connue du joueur
-        rb.linearVelocity = Vector2.zero; // Arrêter le mouvement actuel
-        Vector2 directionToLastKnown = (lastKnownPosition - (new Vector2(transform.position.x, transform.position.y))).normalized; // Calculer la direction vers la dernière position connue
-        rb.linearVelocity.x = directionToLastKnown * speed; // Déplacer l'ennemi vers la dernière position connue
+        // Attendre un peu
+        yield return new WaitForSeconds(0.5f);
 
+        // Sauvegarder la dernière position connue
+        investigationTarget = playerPos.position;
 
-        yield return new WaitForSeconds(investigationDuration); // Attendre un moment avant de revenir à la patrouille
-        questionMark.SetActive(false); // Faire disparaître le ? après l'enquête
-        onInvestigation = false; // L'ennemi n'est plus en mode enquête
-        GetDirection(); // Recalculer la direction vers la cible de patrouille
+        // Attendre jusqu'à ce que l'ennemi atteigne la position OU que le timer arrive à 0
+        while (Vector2.Distance(transform.position, investigationTarget) > 3f && investigationTimer > 0f)
+        {
+          
+            investigationTimer -= Time.deltaTime;
+            Debug.Log("Investigating... Time left: " + investigationTimer);
+            yield return null;
+        }
+
+        // Si le timer est écoulé => cleanup et retour à la patrouille
+        if (investigationTimer <= 0f)
+        {
+            Debug.Log("Investigation timed out, returning to patrol");
+            questionMark.SetActive(false);
+            onInvestigation = false;
+            onPatrol = true;
+            speed -= 2f; // Remettre la vitesse normale
+            GetDirection();
+            Investigation = null;
+            
+            yield break;
+        }
+
+        // Attendre un peu et tourner dans les deux sens pour simuler la recherche du joueur
+        float searchTime = 0f;
+        while (searchTime < flipSearchTime && investigationTimer > 0f)
+        {
+            searchTime += Time.deltaTime;
+            if (searchTime < flipSearchTime / 2f)
+            {
+                SetFacing(1);
+            }
+            else
+            {
+                SetFacing(-1);
+            }
+
+            // Baisser le timer pendant la recherche aussi
+            investigationTimer -= Time.deltaTime;
+            if (investigationTimer <= 0f)
+            {
+                Debug.Log("Investigation timed out during search, returning to patrol");
+                break;
+            }
+
+            yield return null;
+        }
+
+        // Fin investigation 
+        questionMark.SetActive(false);
+
+        onInvestigation = false;
+        onPatrol = true;
+
+        GetDirection();
+
+        Investigation = null;
     }
 }
 
